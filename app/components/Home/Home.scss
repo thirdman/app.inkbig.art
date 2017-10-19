@@ -1,0 +1,64 @@
+.Home{
+	display: flex;
+	flex-direction: row;
+	.column{
+		flex-basis: 1;
+		width: 50%;
+		height: 100%;
+		padding: 24px;
+	}
+	.previewImageWrap, .renderImageWrap{
+		width: 100%;
+		padding: 24px;
+		background: #e9e9e9;
+		overflow: hidden;
+	}
+	.newImg{
+		overflow: scroll;
+	}
+	//ITEMS
+	.formItem{
+		border-bottom: 1px dashed #ddd;
+		padding: 8px 0;
+		position: relative;
+		button{
+			position: absolute;
+			right: 0;
+			top: 8px;
+		}
+
+		&.isActive{
+			background: rgba(0,0,0,.03);
+			h5{
+				span{
+					color: lime;
+				}
+			}
+			button{
+				background: lime;
+			}
+		}
+	}
+
+	// IMAGE cards
+	.imageCard{
+		width: 150px;
+		height: 200px;
+		background: #f9f9f9;
+		box-shadow: 0 1px 4px rgba(0,0,0,.1);
+		display: inline-block; 
+		margin: 0 16px;
+		font-size: 11px;
+		// overflow: hidden;
+		position: relative;
+		&:hover{
+			background: #fff;
+			box-shadow: 0 1px 4px rgba(0,0,0,.2);
+		}
+		button{
+			position: absolute;
+			bottom: -10px;
+			left: 50%;
+		}
+	}
+}

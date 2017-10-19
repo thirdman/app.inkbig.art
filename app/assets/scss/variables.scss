@@ -1,0 +1,236 @@
+
+	// VARUABLEs
+	$hue: 167;
+	$hue: 199; // blue
+	// $hue: 104; // green
+	// $hue: 24; // pale red
+	// $hue: 306; // purple
+	
+	
+	// OTHER
+	// $hue: 84;
+	// $hue: 64;
+	// $hue: 0;
+	// $hue: 306;
+	
+	// background: hsl(199,41%,69%);
+	
+	
+	
+	// ORIGNINAL PALE BLUE
+	/*
+	$hue: 199; // blue
+	$primaryColor: hsl($hue, 54%, 37%);
+	$lighter: hsl($hue, 31%, 61%);
+	$lightest: hsl($hue, 41%, 79%);
+	$darker: hsl($hue, 100%, 16%);
+	$darkest: hsl($hue, 70%, 10%);
+	*/
+	
+	
+	/*
+	$hue: 199; // blue
+	
+	$primaryColor: hsl($hue, 54%, 37%);
+	$lighter: hsl($hue, 54%, 61%);
+	$lightest: hsl($hue, 54%, 79%);
+	$darker: hsl($hue, 54%, 16%);
+	$darkest: hsl($hue, 54%, 10%);
+	*/
+	
+	
+	// GOLD
+	// hsl(44, 82%, 57%) mustardy gold
+	$hue: 44;
+	$primaryColor: hsl($hue, 82%, 37%);
+	$lighter: hsl($hue, 82%, 61%);
+	$lightest: hsl($hue, 82%, 79%);
+	$darker: hsl($hue, 182%, 16%);
+	$darkest: hsl($hue, 82%, 10%);
+	
+	
+	/*
+	$primaryColor: rgb(44, 147, 124); //hsl(167, 54%, 37%)
+	$lighter: rgb(125, 187, 173); // hsl(166, 31%, 61%)
+	// $lightest: #B2DFD5; // hsl(167, 41%, 79%)
+	$darker: rgb(0, 81, 63);	// hsl(167, 100%, 16%)
+	$darkest: rgb(8, 45, 37);  // hsl(167, 70%, 10%)
+	*/
+	
+	$other: #028063;
+	
+	
+	$shadow: rgba(0,0,0,.1);
+	$highlight: rgba(255,255,255,.2);
+	$highlight_tone: hsla($hue, 82%, 79%, .2);
+	
+	.lightest{
+		// background: $lightest;
+		path{
+			fill: $lightest;	
+		}
+		&#Background{
+			rect{
+				fill: $lightest;		
+			}
+		}
+	}
+	.lighter{
+		// background: $lighter;
+		path{
+			fill: $lighter;	
+		}
+		&#Background{
+			rect{
+				fill: $lighter;
+			}
+		}
+	}
+	.primary{
+		// background: $primaryColor;
+		path{
+			fill: $primaryColor;	
+		}
+	}
+	.darker{
+		// background: #00513f;
+		path{
+			fill: $darker;	
+		}
+	}
+	.darkest{
+		// background: $darkest;
+		path{
+			fill: $darkest;	
+		}
+	}
+	.other{
+		// background: $other;
+		path{
+			fill: $other;	
+		}
+	}
+	
+	.shadow{
+		// background: $shadow;
+		background: hsla($hue, 100%, 16%, .1);
+		path{
+			fill: $shadow;	
+			fill: hsla($hue, 100%, 16%, .1);
+			fill-opacity: 1;
+		}
+	}
+	
+	.lightest{
+		// background: $lightest;
+		path{
+			fill: $lightest;	
+		}
+		&#Background{
+			rect{
+				fill: $lightest;
+			}
+		}
+	}
+	.lightestFill{
+		fill: $lightest;	
+	}
+	
+	
+	.lighter{
+		// background: $lighter;
+		path{
+			fill: $lighter;	
+		}
+		&#Background{
+			rect{
+				fill: $lighter;
+			}
+		}
+	}
+	.lighterFill{
+		fill: $lighter;	
+	}
+	.primary{
+		path{
+			fill: $primaryColor;	
+		}
+	}
+	.primaryFill{
+		fill: $primaryColor;	
+	}
+	
+	.darker{
+		path{
+			fill: $darker;	
+		}
+	}
+	.darkerFill{
+		fill: $darker;	
+	}
+	
+	
+	.darkest{
+		// background: $darkest;
+		path{
+			fill: $darkest;	
+		}
+	}
+	.darkestFill{
+		fill: $darkest;	
+	}
+	
+	
+	.other{
+		// background: $other;
+		path{
+			fill: $other;	
+		}
+	}
+	
+	.shadow{
+		// background: $shadow;
+		background: hsla($hue, 100%, 16%, .1);
+		path{
+			fill: $shadow;	
+			fill: hsla($hue, 100%, 16%, .1);
+			fill-opacity: 1;
+		}
+	}
+	
+	.highlight{
+		background: hsla($hue, 78%, 80%, .2);
+		background:transparent;
+		path{
+			// fill: hsla($hue, 78%, 16%, .1);
+			fill: hsla($hue, 78%, 80%, 0.2)
+		}
+	}
+	
+	.white{
+		background: #fff;
+		path{
+			fill: #fff;	
+		}
+	}
+	
+	// BACKGROUNDS
+	
+	.background{
+		background: $lighter;
+		&.lightest{
+			background: $lightest;	
+		}
+	}
+	
+	.bgLightestLighter{
+		.imgWrap{
+			background: linear-gradient(to bottom, $lightest 0%, $lightest 50%, $lighter 50%, $lighter 100%);		
+			//linear-gradient(to bottom, #ffd152 0%, #fff3d2 40%, #ffe089 40%, #ffe089 50%, #d09900 100%)
+		}
+	}
+	.bgLighterPrimary{
+		.imgWrap{
+			background: linear-gradient(to bottom, $lighter 0%, $lighter 50%, $primaryColor 50%, $primaryColor 50%, $primaryColor 100%);		
+		}
+	}

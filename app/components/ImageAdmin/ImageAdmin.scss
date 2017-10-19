@@ -1,0 +1,56 @@
+.ImageAdmin{
+	position: relative;
+	.notice{
+		position: absolute;
+		right: 16px;
+		top: 16px;
+		min-width: 200px;
+		min-height: 50px;
+		visibility: hidden;
+		opacity: 0;
+		transition: opacity .3s ease;
+		line-height: 2em;
+		padding: 8px;
+		color: #627323;
+	}
+	&.isUpdated{
+		.notice{
+			visibility: visible;
+			opacity: 1;
+			border: 1px solid #AFD621;
+			background: #f9f9f9;		
+			transition: opacity .3s ease;
+		}
+		.theTick{
+			display: block;
+			svg{
+		    g{
+			    path{
+				    fill: #AFD621;
+			    }
+		    }
+			}
+		}
+	}
+	.theTick{
+		vertical-align: middle;
+		display: none; // overridden when updating
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: -4px;
+    left: -8px;
+		svg{
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100%;
+	    g{
+		    path{
+			    fill: rgba(0,0,0,.1);
+		    }
+	    }
+		}
+	}
+}

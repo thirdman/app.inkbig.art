@@ -1,0 +1,206 @@
+.DisplayImage{
+	width: 300px;
+	height: 400px;
+	position: relative;
+  box-sizing: border-box;
+  border: 0px solid red;
+  overflow: hidden;
+  background: pink;
+  margin: 0;
+	.theSvg{
+		// width: 100%;
+		// height: 100%;
+		box-sizing: border-box;
+		overflow: hidden;
+		margin: 0 !important;
+		position: absolute;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+	
+	// MODES
+	&.thumbnail{
+		&.portrait{
+			width: 120px;
+			height: 160px;
+			overflow: hidden;
+			.theSvg{
+				width: 120px;
+				height: 160px;
+			}
+		}
+		&.landscape{
+			width: 160px;
+			height: 120px;
+			overflow: hidden;
+			.theSvg{
+				width: 160px;
+				height: 120px;
+			}
+		}
+		&.hasFrame{
+    	.imgFrame{
+	    	border: 6px solid #f9f9f9;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				top: 6px;
+				left: 6px;
+				bottom: 6px;
+				right: 6px;
+		    box-shadow: 1px 1px 8px -2px rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+		}
+	}
+	&.medium{
+		&.portrait{
+			width: 600px;
+			height: 800px;
+			overflow: hidden;
+			.theSvg{
+				width: 600px;
+				height: 800px;
+			}
+		}
+		&.landscape{
+			width: 800px;
+			height: 600px;
+			overflow: hidden;
+			.theSvg{
+				width: 800px;
+				height: 600px;
+			}
+		}
+		&.hasFrame{
+    	.imgFrame{
+	    	border: 9px solid #f9f9f9;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				top: 9px;
+				left: 9px;
+				bottom: 9px;
+				right: 9px;
+		    box-shadow: 1px 1px 8px -2px rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+		}
+	}
+	&.preview, &.small{
+		&.portrait{
+			width: 300px;
+			height: 400px;
+			overflow: hidden;
+			.theSvg{
+				width: 300px;
+				height: 400px;
+			}
+		}
+		&.landscape{
+			width: 400px;
+			height: 300px;
+			overflow: hidden;
+			.theSvg{
+				width: 400px;
+				height: 300px;
+			}
+		}
+	}
+	&.large{
+		&.portrait{
+			width: 3000px;
+			height: 4004px;
+			overflow: hidden;
+			.theSvg{
+				width: 3000px;
+				height: 4004px;
+			}
+		}
+		&.landscape{
+			width: 4000px;
+			height: 3004px;
+			overflow: hidden;
+			.theSvg{
+				width: 4000px;
+				height: 3004px;
+			}
+		}
+	}
+	&.print{
+		&.portrait{
+			width: 6000px;
+			height: 8004px;
+			overflow: hidden;
+			.theSvg{
+				width: 6000px;
+				height: 8004px;
+			}
+		}
+		&.landscape{
+			width: 6000px;
+			height: 8004px;
+			overflow: hidden;
+			.theSvg{
+				width: 6000px;
+				height: 8004px;
+			}
+		}
+	}
+	
+	// display tweaks
+	&.hasMargin{
+		margin: 16px;
+		// display: inline-block;
+		// vertical-align: middle;
+	}
+	&.isInline{
+		display: inline-block;
+	}
+	&.hasHighlight{
+		&.hasFrame{
+			.imgFrame{
+				background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.00) 100%);
+			}
+		}
+	}
+	&.hasFrame{
+    box-shadow: 1px 1px 9px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    box-sizing: border-box;
+		&:after{
+	    content: "";
+	    position: absolute;
+			top: 12px;
+			left: 12px;
+			bottom: 12px;
+			right: 12px;
+	    box-shadow: 1px 1px 8px -2px rgba(0, 0, 0, 0.3) inset;
+	    z-index: 11;
+		}
+		.theSvg{
+			// margin: 12px;
+			// top: 12px;
+			// left: 12px;
+			// bottom: 12px;
+			// right: 12px;
+		}
+    .imgFrame{
+	    border: 12px solid #f9f9f9;
+			position: absolute;
+			z-index: 11;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			display: block;
+	    // border: none;
+    }
+	}
+}

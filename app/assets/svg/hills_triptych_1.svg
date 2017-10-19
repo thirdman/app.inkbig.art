@@ -1,0 +1,25 @@
+<svg
+	version="1.1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	x="0" y="0"
+	width="100%" height="100%"
+	viewBox="0 0 3000 3000"
+	preserveAspectRatio="xMidYMid slice"
+	>
+  <g id="Background">
+    <rect x="0" y="0" width="3000" height="3000" fill="#FFFFFF"/>
+  </g>
+  <g id="Bg" class="lightest">
+    <path d="M-0,-0 L3000,-0 L3000,3000 L-0,3000 z" fill="#6A8EB4"/>
+  </g>
+  <g id="Hill_back" class="primary">
+    <path d="M-0,2322.335 C1032.548,2171.912 2204.77,2311.606 3017.221,2442.491 C4187.474,2631.017 3002.452,3008.376 3002.452,3008.376 L2.452,3008.376 L-0,2322.335 z" fill="#294867"/>
+  </g>
+  <g id="Hill_mid" class="darker">
+    <path d="M0,2515 C0,2515 1625,2305 3017.221,2284.24 L3002.452,3008.376 L2.451,3008.376 C2.451,3008.376 0,2515 0,2515 z" fill="#192D41"/>
+  </g>
+  <g id="Hill_front" class="darkest">
+    <path d="M3002.452,2573.376 C1890,2810 10,2821.777 10,2821.777 C10,2821.777 2.452,3008.376 2.452,3008.376 L3002.452,3008.376 L3002.452,2573.376 z" fill="#122131"/>
+  </g>
+</svg>
