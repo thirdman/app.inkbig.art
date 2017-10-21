@@ -1,0 +1,122 @@
+/*
+	$hue: 199; // blue
+	$primaryColor: hsl($hue, 54%, 37%);
+	$lighter: hsl($hue, 31%, 61%);
+	$lightest: hsl($hue, 41%, 79%);
+	$darker: hsl($hue, 100%, 16%);
+	$darkest: hsl($hue, 70%, 10%);
+	*/
+/*
+	$hue: 199; // blue
+	
+	$primaryColor: hsl($hue, 54%, 37%);
+	$lighter: hsl($hue, 54%, 61%);
+	$lightest: hsl($hue, 54%, 79%);
+	$darker: hsl($hue, 54%, 16%);
+	$darkest: hsl($hue, 54%, 10%);
+	*/
+/*
+	$primaryColor: rgb(44, 147, 124); //hsl(167, 54%, 37%)
+	$lighter: rgb(125, 187, 173); // hsl(166, 31%, 61%)
+	// $lightest: #B2DFD5; // hsl(167, 41%, 79%)
+	$darker: rgb(0, 81, 63);	// hsl(167, 100%, 16%)
+	$darkest: rgb(8, 45, 37);  // hsl(167, 70%, 10%)
+	*/
+.lightest path {
+  fill: #f5de9e; }
+
+.lightest#Background rect {
+  fill: #f5de9e; }
+
+.lighter path {
+  fill: #edc24a; }
+
+.lighter#Background rect {
+  fill: #edc24a; }
+
+.primary path {
+  fill: #ac8211; }
+
+.darker path {
+  fill: #523c00; }
+
+.darkest path {
+  fill: #2e2305; }
+
+.other path {
+  fill: #028063; }
+
+.shadow {
+  background: rgba(82, 60, 0, 0.1); }
+  .shadow path {
+    fill: rgba(0, 0, 0, 0.1);
+    fill: rgba(82, 60, 0, 0.1);
+    fill-opacity: 1; }
+
+.lightest path {
+  fill: #f5de9e; }
+
+.lightest#Background rect {
+  fill: #f5de9e; }
+
+.lightestFill {
+  fill: #f5de9e; }
+
+.lighter path {
+  fill: #edc24a; }
+
+.lighter#Background rect {
+  fill: #edc24a; }
+
+.lighterFill {
+  fill: #edc24a; }
+
+.primary path {
+  fill: #ac8211; }
+
+.primaryFill {
+  fill: #ac8211; }
+
+.darker path {
+  fill: #523c00; }
+
+.darkerFill {
+  fill: #523c00; }
+
+.darkest path {
+  fill: #2e2305; }
+
+.darkestFill {
+  fill: #2e2305; }
+
+.other path {
+  fill: #028063; }
+
+.shadow {
+  background: rgba(82, 60, 0, 0.1); }
+  .shadow path {
+    fill: rgba(0, 0, 0, 0.1);
+    fill: rgba(82, 60, 0, 0.1);
+    fill-opacity: 1; }
+
+.highlight {
+  background: rgba(244, 223, 164, 0.2);
+  background: transparent; }
+  .highlight path {
+    fill: rgba(244, 223, 164, 0.2); }
+
+.white {
+  background: #fff; }
+  .white path {
+    fill: #fff; }
+
+.background {
+  background: #edc24a; }
+  .background.lightest {
+    background: #f5de9e; }
+
+.bgLightestLighter .imgWrap {
+  background: linear-gradient(to bottom, #f5de9e 0%, #f5de9e 50%, #edc24a 50%, #edc24a 100%); }
+
+.bgLighterPrimary .imgWrap {
+  background: linear-gradient(to bottom, #edc24a 0%, #edc24a 50%, #ac8211 50%, #ac8211 50%, #ac8211 100%); }

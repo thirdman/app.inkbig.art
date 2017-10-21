@@ -66,10 +66,12 @@ export default class DisplayImage extends Component {
 			file = 'montenegro',
 			aspect = 'portrait',
 			mode = 'preview',
+			hasBackground = false,
 			hasFrame = true,
 			hasMargin = false,
 			hasHighlight = false,
 			isInline = false,
+			imageLevels = [10, 16, 37, 61, 79],
 			hue = 10,
 			saturation = 82,
 			lightness = 37,
@@ -142,31 +144,62 @@ export default class DisplayImage extends Component {
 						// fill: hsl(${hue}, 82%, 61%);
 						// fill: hsl(${hue}, 82%, 79%);
 		const theTransform = `scale(${scale}) translateX(${translateX}%) translateY(${translateY}%)`;
+
 		return (
 			<InlineCss
 			stylesheet={`
 				background: red;
-				.darkest path, .darkestFill, .darkest rect, .darkest circle, .darkest polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${(lightness - 0.35) * 100}%);
+				#svg${file}${this.state.theId} svg .darkest path,
+				#svg${file}${this.state.theId} svg .darkestFill, .darkest rect,
+				#svg${file}${this.state.theId} svg .darkest circle,
+				#svg${file}${this.state.theId} svg .darkest polygon{
+						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[0]}%);
 				}
-				.darker path, .darkerFill, .darker rect, .darker circle, .darker polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${(lightness - 0.2) * 100}%);
+				#svg${file}${this.state.theId} svg .darker path,
+				#svg${file}${this.state.theId} svg .darkerFill,
+				#svg${file}${this.state.theId} svg .darker rect,
+				#svg${file}${this.state.theId} svg .darker circle,
+				#svg${file}${this.state.theId} svg .darker polygon{
+						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[1]}%);
 				}
-				.primary path, .primaryFill, .primary rect, .primary circle, .primary polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${lightness * 100}%);
+
+				#svg${file}${this.state.theId} svg .primary path,
+				#svg${file}${this.state.theId} svg .primaryFill,
+				#svg${file}${this.state.theId} svg .primary rect,
+				#svg${file}${this.state.theId} svg .primary circle,
+				#svg${file}${this.state.theId} svg .primary polygon{
+						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
 				}
-				.lighter  path, .lighterFill, .lighter rect, .lighter circle, .lighter polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${(lightness + 0.2) * 100}%);
+				#svg${file}${this.state.theId} svg .lighter path,
+				#svg${file}${this.state.theId} svg .lighterFill,
+				#svg${file}${this.state.theId} svg .lighter rect,
+				#svg${file}${this.state.theId} svg .lighter circle,
+				#svg${file}${this.state.theId} svg .lighter polygon{
+						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[3]}%);
 				}
-				.lightest path, .lightestFill, .lightest rect, .lightest circle, .lightest polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${(lightness + 0.4) * 100}%);
+				#svg${file}${this.state.theId} svg .lightest path,
+				#svg${file}${this.state.theId} svg .lightestFill,
+				#svg${file}${this.state.theId} svg .lightest rect,
+				#svg${file}${this.state.theId} svg .lightest circle,
+				#svg${file}${this.state.theId} svg .lightest polygon{
+						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[4]}%);
 				}
-				.shadow path, .shadow rect, .shadow circle, .shadow polygon{
-						fill: hsla(${hue}, ${saturation * 100}%, ${(lightness - 0.35) * 100}%, 0.1);
+
+				#svg${file}${this.state.theId} svg .shadow path,
+				#svg${file}${this.state.theId} svg .shadowFill,
+				#svg${file}${this.state.theId} svg .shadow rect,
+				#svg${file}${this.state.theId} svg .shadow circle,
+				#svg${file}${this.state.theId} svg .shadow polygon{
+						fill: hsla(${hue}, ${saturation * 100}%, ${imageLevels[0]}%, 0.1);
 				}
-				.highlight path, .highlight rect, .highlight circle, .highlight polygon{
-						fill: hsla(${hue}, ${saturation * 100}%, ${(lightness + 0.35) * 100}%, 0.1);
+				#svg${file}${this.state.theId} svg .highlight path,
+				#svg${file}${this.state.theId} svg .highlightFill,
+				#svg${file}${this.state.theId} svg .highlight rect,
+				#svg${file}${this.state.theId} svg .highlight circle,
+				#svg${file}${this.state.theId} svg .highlight polygon{
+						fill: hsla(${hue}, ${saturation * 100}%, ${imageLevels[4]}%, 0.1);
 				}
+
 			.color1 {
 			  stop-color: hsl(${hue}, ${saturation * 100}%, ${(lightness + 0.2) * 100}%);
 			}
@@ -191,7 +224,7 @@ export default class DisplayImage extends Component {
 				`}
 				style={{ display: `${isInline ? 'inline-block' : 'block'}` }}
 			>
-			<div className={`${styles.DisplayImage} ${variables.colorScope} ${styles[aspect]} ${styles[mode]} ${hasHighlight ? styles.hasHighlight : ''} ${isLoading ? styles.isLoading : ''} ${hasFrame ? styles.hasFrame : ''} ${isInline ? styles.isInline : ''} ${hasMargin ? styles.hasMargin : ''}`} id={`theImage${mode}`}>
+			<div className={`${styles.DisplayImage} ${variables.colorScope} ${styles[aspect]} ${styles[mode]} ${hasHighlight ? styles.hasHighlight : ''} ${isLoading ? styles.isLoading : ''} ${hasFrame ? styles.hasFrame : ''}  ${hasBackground ? styles.hasBackground : ''} ${isInline ? styles.isInline : ''} ${hasMargin ? styles.hasMargin : ''}`} id={`theImage${mode}`}>
 				{hasFrame &&
 				<div className={styles.imgFrame} style={tempStyle} />
 				}
@@ -206,3 +239,12 @@ export default class DisplayImage extends Component {
 	}
 	// FUCNTIONS
 }
+/*
+	// darkest fill: hsl(${hue}, ${saturation * 100}%, ${(lightness - 0.35) * 100}%);
+	// darker fill: hsl(${hue}, ${saturation * 100}%, ${(lightness - 0.2) * 100}%);
+	// primary fill: hsl(${hue}, ${saturation * 100}%, ${lightness * 100}%);
+	// lighter fill: hsl(${hue}, ${saturation * 100}%, ${(lightness + 0.2) * 100}%);
+	// lightest fill: hsl(${hue}, ${saturation * 100}%, ${(lightness + 0.4) * 100}%);
+	// shadow fill: hsla(${hue}, ${saturation * 100}%, ${(lightness - 0.35) * 100}%, 0.1);
+	// highlight fill: hsla(${hue}, ${saturation * 100}%, ${(lightness + 0.35) * 100}%, 0.1);
+*/

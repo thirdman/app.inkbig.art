@@ -2,14 +2,21 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import domtoimage from 'dom-to-image';
 import { Link } from 'react-router-dom';
-import { BlockPicker, SliderPicker, SketchPicker } from 'react-color';
-import Slider from 'rc-slider'; // , { Range }
+import { ChromePicker, BlockPicker, SliderPicker, SketchPicker } from 'react-color';
+import Toggle from 'react-toggle';
+import Slider, { Range } from 'rc-slider';
+import 'react-toggle/style.css';
 import '../../assets/scss/rcSlider.css';
+// import '../../assets/scss/toggle.css';
+import fbase from '../../firebase';
 
 // import Dispimport variables from '../../assets/scss/variables.scss';
 import Tick from '../../assets/icons/tick.svg';
 import Loading from '../../assets/icons/loading.svg';
-import { DisplayImage } from '../../components';
+import {
+	// DisplayColor,
+	DisplayImage
+	} from '../../components';
 import styles from './Edit.scss';
 
 const imageSizes = [
@@ -19,6 +26,7 @@ const imageSizes = [
 	'Large',
 	'Print'
 ];
+
 export default class Edit extends Component {
 /*
 	static propTypes = {
@@ -33,16 +41,22 @@ export default class Edit extends Component {
 		image: (this.props.location.state && this.props.location.state.image) || 'montenegro',
 		aspect: 'portrait',
 		hasFrame: false,
-		isPreview: true,
+		hasBackground: false,
+		// isPreview: true,
 		isPortrait: true,
 		showSources: false,
 		showRendered: true,
+		showColorEdit: false,
+		Adjustments: false,
+		imageLevels: [10, 16, 37, 61, 79],
+		colorsArray: []
 	};
 
 	componentWillMount() {
   }
 
 	componentDidMount() {
+		this.getColors();
 	}
 
 	componentWillUnmount() {
@@ -54,13 +68,16 @@ export default class Edit extends Component {
 			file,
 		} = this.props;
 		const {
+			aspect,
 			hasMenu,
 			isPortrait,
 			image,
 			colorObj = this.props.location.state && this.props.location.state.colorObj,
-			isPreview,
+			colorsArray,
+			// isPreview,
 			hasHighlight = false,
 			hasFrame = false,
+			hasBackground,
 			theScale = 1,
 			theTranslateX = 0,
 			theTranslateY = 0,
@@ -71,6 +88,8 @@ export default class Edit extends Component {
 			theLightness = (this.props.location.state &&
 				this.props.location.state.colorObj.hsl.l) || 0.5,
 			isRendering,
+			imageLevels,
+/*
 			doingThumbnail = false,
 			doingSmall = false,
 			doingMedium = false,
@@ -81,6 +100,7 @@ export default class Edit extends Component {
 			doneMedium = false,
 			doneLarge = false,
 			donePrint = false,
+*/
 /*
 			savingThumbnail = false,
 			savingSmall = false,
@@ -93,12 +113,14 @@ export default class Edit extends Component {
 			savedLarge = false,
 			savedPrint = false,
 */
+/*
 			renderLocationThumbnail = null,
 			renderLocationSmall = null,
 			renderLocationMedium = null,
-			// renderLocationLarge = null,
+			renderLocationLarge = null,
 			renderUrlLarge = null,
 			renderLocationPrint = null,
+*/
 			// theHue
 			// image = 'montenegro',
 			// aspect = 'portrait'
@@ -106,7 +128,7 @@ export default class Edit extends Component {
 
 		// console.log('state is', this.state);
 		// console.log('props is', this.props);
-		console.log(file);
+		console.log('edit file (to be depricated)', file);
 		if (!firebase.apps.length) {
 			// firebase.initializeApp();
 		} else {
@@ -126,10 +148,12 @@ export default class Edit extends Component {
 					<div className={styles.previewImageWrap}>
 						<DisplayImage
 							file={image}
-							aspect={isPortrait ? 'portrait' : 'landscape'}
-							mode={isPreview ? 'preview' : 'print'}
+							aspect={aspect}
+							mode={'preview'}
 							hasHighlight={hasHighlight}
 							hasFrame={hasFrame}
+							hasBackground={hasBackground}
+							imageLevels={imageLevels}
 							hue={theHue}
 							saturation={theSaturation}
 							lightness={theLightness}
@@ -147,10 +171,11 @@ export default class Edit extends Component {
 						<div className={`${styles.sourceImage} ${styles.th}`}>
 							<DisplayImage
 								file={image}
-								aspect={isPortrait ? 'portrait' : 'landscape'}
+								aspect={aspect}
 								mode={'thumbnail'}
 								hasHighlight={hasHighlight}
 								hasFrame={hasFrame}
+								hasBackground={hasBackground}
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
@@ -159,10 +184,11 @@ export default class Edit extends Component {
 						<div className={`${styles.sourceImage} ${styles.small}`}>
 							<DisplayImage
 								file={image}
-								aspect={isPortrait ? 'portrait' : 'landscape'}
+								aspect={aspect}
 								mode={'small'}
 								hasHighlight={hasHighlight}
 								hasFrame={hasFrame}
+								hasBackground={hasBackground}
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
@@ -171,10 +197,11 @@ export default class Edit extends Component {
 						<div className={`${styles.sourceImage} ${styles.medium}`}>
 							<DisplayImage
 								file={image}
-								aspect={isPortrait ? 'portrait' : 'landscape'}
+								aspect={aspect}
 								mode={'medium'}
 								hasHighlight={hasHighlight}
 								hasFrame={hasFrame}
+								hasBackground={hasBackground}
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
@@ -183,10 +210,11 @@ export default class Edit extends Component {
 						<div className={`${styles.sourceImage} ${styles.large}`}>
 							<DisplayImage
 								file={image}
-								aspect={isPortrait ? 'portrait' : 'landscape'}
+								aspect={aspect}
 								mode={'large'}
 								hasHighlight={hasHighlight}
 								hasFrame={hasFrame}
+								hasBackground={hasBackground}
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
@@ -195,10 +223,11 @@ export default class Edit extends Component {
 						<div className={`${styles.sourceImage} ${styles.print}`}>
 							<DisplayImage
 								file={image}
-								aspect={isPortrait ? 'portrait' : 'landscape'}
+								aspect={aspect}
 								mode={'print'}
 								hasHighlight={hasHighlight}
 								hasFrame={hasFrame}
+								hasBackground={hasBackground}
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
@@ -209,7 +238,7 @@ export default class Edit extends Component {
 						<h4>Rendered Images</h4>
 						<button onClick={() => this.toggleViewRendered()} >{this.state.showRendered ? 'hide renders' : 'show renders'}</button>
 					</div>
-					<div style={{ border: '1px solid red' }}>
+					<div className={`${styles.renderImageWrap} ${this.state.showRendered ? styles.visible : ''} ${isRendering ? styles.loading : ''}`}>
 					{
 						imageSizes.map((size) => {
 							// const renderDoneState = `done${size}`;
@@ -221,7 +250,7 @@ export default class Edit extends Component {
 										className={styles.theTick}
 										dangerouslySetInnerHTML={{ __html: Tick }}
 									/>
-									{doingLarge &&
+									{this.state[`doing${size}`] &&
 										<div className={styles.placeholder}>
 											<div
 												className={styles.theLoading}
@@ -256,215 +285,300 @@ export default class Edit extends Component {
 						})
 					}
 					</div>
-					<div className={`${styles.renderImageWrap} ${this.state.showRendered ? styles.visible : ''} ${isRendering ? styles.loading : ''}`}>
-						<div className={`${styles.renderImage} ${styles.th} ${doneThumbnail ? styles.done : ''}`}>
-							<h4>Thumb</h4>
-							<div
-								className={styles.theTick}
-								dangerouslySetInnerHTML={{ __html: Tick }}
-							/>
-							{doingThumbnail &&
-								<div className={styles.placeholder}>Rendering...</div>
-							}
-							<div id="newImgTh" />
-							{renderLocationThumbnail && <p>{renderLocationThumbnail}</p>}
-						</div>
-
-						<div className={`${styles.renderImage} ${styles.small} ${doneSmall ? styles.done : ''}`}>
-							<h4>small</h4>
-							<div
-								className={styles.theTick}
-								dangerouslySetInnerHTML={{ __html: Tick }}
-							/>
-							{doingSmall &&
-								<div className={styles.placeholder}>Rendering...</div>
-							}
-							<div id="newImgSmall" />
-							{renderLocationSmall && <p>{renderLocationSmall}</p>}
-						</div>
-						<div className={`${styles.renderImage} ${styles.medium} ${doneMedium ? styles.done : ''}`}>
-							<h4>Medium</h4>
-							<div
-								className={styles.theTick}
-								dangerouslySetInnerHTML={{ __html: Tick }}
-							/>
-							{doingMedium &&
-								<div className={styles.placeholder}>Rendering...</div>
-							}
-							<div id="newImgMedium" />
-							{renderLocationMedium && <p>{renderLocationMedium}</p>}
-						</div>
-						<div className={`${styles.renderImage} ${styles.large} ${doneLarge ? styles.done : ''}`}>
-							<h4>Large</h4>
-							<div
-								className={styles.theTick}
-								dangerouslySetInnerHTML={{ __html: Tick }}
-							/>
-								{doingLarge &&
-									<div className={styles.placeholder}>
-										<div
-											className={styles.theLoading}
-											dangerouslySetInnerHTML={{ __html: Loading }}
-										/>
-										Rendering...
-									</div>
-								}
-								<div id="newImgLarge" />
-								{!this.state.savedLarge && this.state.savingLarge &&
-									<div className={styles.saving}>
-									<div
-										className={styles.theLoading}
-										dangerouslySetInnerHTML={{ __html: Loading }}
-									/>
-									saving....
-									</div>
-								}
-								{renderUrlLarge &&
-									<div>
-										<Link
-											target="blank"
-											to={renderUrlLarge}
-											className={styles.link}
-										>
-											Link
-										</Link>
-									</div>
-								}
-						</div>
-						<div className={`${styles.renderImage} ${styles.print} ${donePrint ? styles.done : ''}`}>
-							<h4>Print</h4>
-							<div
-								className={styles.theTick}
-								dangerouslySetInnerHTML={{ __html: Tick }}
-							/>
-							{doingPrint &&
-								<div className={styles.placeholder}>Rendering...</div>
-							}
-							<div id="newImgPrint" />
-							{renderLocationPrint &&
-								<div>
-									<p>{renderLocationPrint}</p>
-									<Link
-										target="blank"
-										to={`https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/${renderLocationPrint}?alt=media&token=b19f8b35-7e91-40e1-9154-7fb2eb00ad69`}
-										className={styles.link}
-									>
-										View File
-									</Link>
-								</div>
-							}
-						</div>
-					</div>
-					{doneThumbnail &&
-						<h5>Done Thumnail</h5>
-					}
-					{doneSmall &&
-						<h5>Done Small</h5>
-					}
-					{doneMedium &&
-						<h5>Done medium</h5>
-					}
-					{doneLarge &&
-						<h5>Done large</h5>
-					}
-					{donePrint &&
-						<h5>Done Print</h5>
-					}
 				</div>
 				<div className={`${styles.column} `}>
-					<div className={`${styles.formItem} ${this.state.isPreview ? styles.isActive : ''}`}>
-						<h5>IsPreview: <span>{this.state.isPreview ? 'yes' : 'no'}</span></h5>
-						<button
-							className={styles.button}
-							onClick={() => this.toggleRenderMode()}
-						>
-							toggle Render Mode
-						</button>
+					<div className={styles.titleBlock}>
+						<h3>Settings</h3>
+					</div>
+					<div className={`${styles.formItem} ${this.state.hasBackground ? styles.isActive : ''}`}>
+						<h5>hasBackground: <span>{this.state.hasBackground ? 'yes' : 'no'}</span></h5>
+						<div className={styles.switchWrap}>
+							<Toggle
+								className={styles.theToggle}
+								id="hasBckgroundToggle"
+								defaultChecked={this.state.hasBackground}
+								onChange={this.toggleBackground}
+							/>
+							<label htmlFor="hasBckgroundToggle">Add a background</label>
+						</div>
 					</div>
 					<div className={`${styles.formItem} ${this.state.hasFrame ? styles.isActive : ''}`}>
 						<h5>Has Frame: <span>{this.state.hasFrame ? 'yes' : 'no'}</span></h5>
-						<button
-							className={styles.button}
-							onClick={() => this.toggleFrame()}
-						>
-							toggle Frame
-						</button>
+						<div className={styles.switchWrap}>
+							<Toggle
+								className={styles.theToggle}
+								id="hasFrameToggle"
+								defaultChecked={this.state.hasFrame}
+								onChange={this.toggleFrame}
+							/>
+							<label htmlFor="hasFrameToggle">Add a frame</label>
+						</div>
 					</div>
 					<div className={`${styles.formItem} ${isPortrait ? styles.isActive : ''}`}>
 						<h5>Aspect: {this.state.isPortrait ? 'Portrait' : 'Landscape'}</h5>
-						<button
-							className={styles.button}
-							onClick={() => this.togglePortrait()}
-						>
-							toggle Portrait
-						</button>
+						<div className={styles.buttonGroup}>
+							<div
+								className={`${styles.btn} ${styles.portrait} ${aspect === 'portrait' ? styles.selected : ''}`}
+								onClick={() => this.setAspect('portrait')}
+								role="presentation"
+							>
+								portrait
+							</div>
+							<div
+								className={`${styles.btn} ${styles.landscape} ${aspect === 'landscape' ? styles.selected : ''}`}
+								onClick={() => this.setAspect('landscape')}
+								role="presentation"
+							>
+								Landscape
+							</div>
+							<div
+								className={`${styles.btn} ${styles.square} ${aspect === 'square' ? styles.selected : ''}`}
+								onClick={() => this.setAspect('square')}
+								role="presentation"
+							>
+								Square
+							</div>
+							<div
+								className={`${styles.btn} ${styles.circle} ${aspect === 'circle' ? styles.selected : ''}`}
+								onClick={() => this.setAspect('circle')}
+								role="presentation"
+							>
+								Circle
+							</div>
+						</div>
 					</div>
-					<div className={`${styles.formItem}`}>
-						<h5>Scale: {theScale}</h5>
-						<Slider
-							step={0.1}
-							min={0}
-							max={2}
-							defaultValue={theScale}
-							onChange={this.onSliderChange}
-						/>
+
+					<div className={styles.titleBlock}>
+						<h3>Adjustments</h3>
+						<button onClick={() => this.toggleViewAdjustments()} >{this.state.showAdjustments ? 'hide adjustments' : 'show adjustments'}</button>
 					</div>
-					<div className={`${styles.formItem}`}>
-						<h5>TranslateX: {theTranslateX}</h5>
-						<Slider
-							step={1}
-							min={-50}
-							max={50}
-							defaultValue={theTranslateX}
-							onChange={this.onTranslateXChange}
-						/>
+					<div className={`${styles.adjustmentsWrap} ${this.state.showAdjustments ? styles.visible : ''}`}>
+						<div className={`${styles.formItem}`}>
+							<h5>Scale: {theScale}</h5>
+							<Slider
+								step={0.1}
+								min={0}
+								max={2}
+								defaultValue={theScale}
+								onChange={this.onSliderChange}
+							/>
+						</div>
+						<div className={`${styles.formItem}`}>
+							<h5>TranslateX: {theTranslateX}</h5>
+							<Slider
+								step={1}
+								min={-50}
+								max={50}
+								defaultValue={theTranslateX}
+								onChange={this.onTranslateXChange}
+							/>
+						</div>
+						<div className={`${styles.formItem}`}>
+							<h5>TranslateY: {theTranslateY}</h5>
+							<Slider
+								step={1}
+								min={-50}
+								max={50}
+								defaultValue={theTranslateY}
+								onChange={this.onTranslateYChange}
+							/>
+						</div>
 					</div>
-					<div className={`${styles.formItem}`}>
-						<h5>TranslateY: {theTranslateY}</h5>
-						<Slider
-							step={1}
-							min={-50}
-							max={50}
-							defaultValue={theTranslateY}
-							onChange={this.onTranslateYChange}
-						/>
+					<div style={{ display: 'none' }}>
+						<button onClick={() => this.loadImage('montenegro', 'portrait')} >montenegro</button>
+						<button onClick={() => this.loadImage('auckland', 'landscape')} >auckland</button>
+						<button onClick={() => this.loadImage('sydney', 'portrait')} >sydney</button>
+						<button onClick={() => this.loadImage('fiordland_falls', 'portrait')} >fiordland_falls</button>
+						<button onClick={() => this.loadImage('teanau', 'portrait')} >te anau</button>
+						<button onClick={() => this.loadImage('dune')} >Dune</button>
+						<button onClick={() => this.loadImage('doubtful')} >doubtful</button>
+						<button onClick={() => this.loadImage('cottage_shore')} >cottage (shore)</button>
+						<button onClick={() => this.loadImage('cottage_mountains')} >cottage (mountains)</button>
+						<button onClick={() => this.loadImage('cave')} >cave</button>
+						<button onClick={() => this.loadImage('cathedral')} >cathedral cove</button>
+						<button onClick={() => this.loadImage('moeraki')} >Moeraki</button>
+						<button onClick={() => this.loadImage('hillsTriptych1')} >hillsTriptych1</button>
+						<button onClick={() => this.loadImage('hillsTriptych2')} >hillsTriptych2</button>
+						<button onClick={() => this.loadImage('hillsTriptych3')} >hillsTriptych3</button>
+						<button onClick={() => this.loadImage('Port')} >Port</button>
 					</div>
-					<button onClick={() => this.loadImage('montenegro', 'portrait')} >montenegro</button>
-					<button onClick={() => this.loadImage('auckland', 'landscape')} >auckland</button>
-					<button onClick={() => this.loadImage('sydney', 'portrait')} >sydney</button>
-					<button onClick={() => this.loadImage('fiordland_falls', 'portrait')} >fiordland_falls</button>
-					<button onClick={() => this.loadImage('teanau', 'portrait')} >te anau</button>
-					<button onClick={() => this.loadImage('dune')} >Dune</button>
-					<button onClick={() => this.loadImage('doubtful')} >doubtful</button>
-					<button onClick={() => this.loadImage('cottage_shore')} >cottage (shore)</button>
-					<button onClick={() => this.loadImage('cottage_mountains')} >cottage (mountains)</button>
-					<button onClick={() => this.loadImage('cave')} >cave</button>
-					<button onClick={() => this.loadImage('cathedral')} >cathedral cove</button>
-					<button onClick={() => this.loadImage('moeraki')} >Moeraki</button>
-					<button onClick={() => this.loadImage('hillsTriptych1')} >hillsTriptych1</button>
-					<button onClick={() => this.loadImage('hillsTriptych2')} >hillsTriptych2</button>
-					<button onClick={() => this.loadImage('hillsTriptych3')} >hillsTriptych3</button>
-					<button onClick={() => this.loadImage('Port')} >Port</button>
-					<div className={styles.formItem}>
-						<BlockPicker onChange={(color) => { this.setColor(color); }} />
+					<div className={styles.titleBlock}>
+						<h3>Color</h3>
+						<button onClick={() => this.toggleColorEdit()} >{this.state.showColorEdit ? 'hide edit' : 'show edit'}</button>
 					</div>
-					<div className={styles.formItem}>
-						<SliderPicker
-							color={colorObj && colorObj.hsl}
-							onChange={(color) => { this.setColor(color); }}
-						/>
-					</div>
-					<div className={styles.formItem}>
-						<SketchPicker
-							color={colorObj && colorObj.hsl}
-							onChange={(color) => { this.setColor(color); }}
-						/>
+					<section className={styles.alt}>
+						<div className={styles.formItem}>
+							<div className={styles.row}>
+							<div className={styles.swatchWrap}>
+								<h5>Darkest <span>{imageLevels[0]}</span></h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[0]}%, 1)` }}
+									/>
+								</div>
+							</div>
+							<div className={styles.swatchWrap}>
+								<h5>Darker <span>{imageLevels[1]}</span></h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[1]}%, 1)` }}
+									/>
+								</div>
+							</div>
+							<div className={styles.swatchWrap}>
+								<h5>Primary <span>{imageLevels[2]}</span></h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[2]}%, 1)` }}
+									/>
+								</div>
+							</div>
+							<div className={styles.swatchWrap}>
+								<h5>Lighter <span>{imageLevels[3]}</span></h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[3]}%, 1)` }}
+									/>
+								</div>
+							</div>
+							<div className={styles.swatchWrap}>
+								<h5>Lightest <span>{imageLevels[4]}</span></h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[4]}%, 1)` }}
+									/>
+								</div>
+							</div>
+							</div>
+						</div>
+						<div className={styles.formItem}>
+							<h5>Levels</h5>
+							<Range
+								value={this.state.imageLevels}
+								min={0}
+								max={100}
+								pushable={2}
+								onChange={(values) => { this.onChangeHues(values); }}
+							/>
+						</div>
+						<div className={`${styles.colorEditWrap} ${this.state.showColorEdit ? styles.visible : ''}`}>
+							<div className={styles.formItem}>
+								<SliderPicker
+									color={colorObj && colorObj.hsl}
+									onChange={(color) => { this.setColor(color); }}
+								/>
+							</div>
+							<div className={styles.row}>
+								<div className={styles.column}>
+									<SketchPicker
+										color={colorObj && colorObj.hsl}
+										onChange={(color) => { this.setColor(color); }}
+									/>
+								</div>
+								<div className={styles.column}>
+									<ChromePicker
+										color={colorObj && colorObj.hsl}
+										onChange={(color) => { this.setColor(color); }}
+									/>
+								</div>
+								<div className={styles.column}>
+									<BlockPicker
+										color={colorObj && colorObj.hsl}
+										onChange={(color) => { this.setColor(color); }}
+									/>
+								</div>
+							</div>
+							<button
+								className={styles.button}
+								onClick={() => this.doSaveColor()}
+							>
+								save color
+							</button>
+						</div>
+					</section>
+					<div className={styles.formitem}>
+					<h3>Existing Colors</h3>
+						{colorsArray && colorsArray.map((color) => {
+							return (
+								<div
+									key={`img${color.id}`}
+									className={styles.colorCard}
+									role="presentation"
+									// onClick={() => this.doRouteImageEdit('/image/admin', img.id)}
+									// eslint-disable-line
+								>
+									<div className={styles.swatch} onClick={() => this.loadColor(color.id)} role="presentation">
+										<div
+											className={styles.color}
+												style={{ backgroundColor: `hsla(${color.data.colorObj.hsl.h}, ${color.data.colorObj.hsl.s * 100}%, ${color.data.colorObj.hsl.l * 100}%, 1)` }}
+										/>
+									</div>
+									<button
+										onClick={() => this.loadColor(color.id)} // eslint-disable-line
+										// style={{ background: 'red' }}
+									>
+										use this color
+									</button>
+									<button
+										onClick={() => this.updateColor(color.id)} // eslint-disable-line
+									>
+										Overwrite
+									</button>
+								</div>
+							);
+							})
+						}
 					</div>
 				</div>
 			</div>
 		);
 	}
 	// FUCNTIONS
+	getColors() {
+		const colorsRef = fbase.collection('colors');
+		const colorsArray = [];
+		colorsRef.get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				console.log(doc.id, ' => ', doc.data());
+				// imagesArray[doc.id] = doc.data();
+				const tempThing = {};
+				tempThing.id = doc.id;
+				tempThing.data = doc.data();
+				colorsArray.push(tempThing);
+			});
+			this.setState({
+				colorsArray
+			});
+		});
+	}
+
+	loadColor(colorId) {
+		const { colorsArray } = this.state;
+		console.log('loading color data from: ', colorId);
+		console.log('colorsArray is: ', colorsArray);
+		const docRef = fbase.collection('colors').doc(colorId);
+		docRef.get().then((doc) => {
+			if (doc.exists) {
+				console.log('color data:', doc.data());
+				this.setState({
+					colorObj: doc.data().colorObj,
+					imageLevels: doc.data().imageLevels,
+					theHue: doc.data().colorObj.hsl.h,
+					theSaturation: doc.data().colorObj.hsl.s,
+					theLightness: doc.data().colorObj.hsl.l,
+				});
+			} else {
+				console.log('No such color!');
+			}
+		}).catch((error) => {
+			console.log('Error getting color:', error);
+		});
+	}
 	doSave = () => {
 		// NOTE: the 'mode' is passed through to display image and used for an id as theImage + 'mode'
 		// eg theImage + thumbnail
@@ -677,6 +791,45 @@ export default class Edit extends Component {
 		}
 	}
 
+	doSaveColor(colorId) {
+		if (colorId) {
+			console.log('Saving the color wid id: ', colorId);
+		} else {
+			console.log('Saving a new colour since there is no id');
+		}
+		const {
+			colorObj,
+			imageLevels,
+			} = this.state;
+		const currentDateTime = new Date();
+		if (!colorId) {
+			fbase.collection('colors').add({
+				colorObj,
+				imageLevels,
+				modifiedDate: currentDateTime
+			})
+			.then((docRef) => {
+				console.log('Color successfully written!, with reference of: ', docRef);
+				this.setState({
+					colorSaved: true,
+					isError: false
+				});
+				setTimeout(() => {
+					this.setState({
+						colorSaved: false,
+					});
+				}, 2000);
+			})
+			.catch(((error) => {
+				console.error('Error writing color: ', error);
+				this.setState({
+					colorSaved: false,
+					isError: true
+				});
+			}));
+		}
+	}
+
 	loadImage = (name, aspect) => {
 		this.setState({
 			image: name,
@@ -685,19 +838,20 @@ export default class Edit extends Component {
 		});
 	}
 
-	toggleRenderMode = () => {
+	// TOGGLE OPTIONS
+	setAspect = (aspect) => {
 		this.setState({
-			isPreview: !this.state.isPreview
-		});
-	}
-	togglePortrait = () => {
-		this.setState({
-			isPortrait: !this.state.isPortrait
+			aspect
 		});
 	}
 	toggleFrame = () => {
 		this.setState({
 			hasFrame: !this.state.hasFrame
+		});
+	}
+	toggleBackground = () => {
+		this.setState({
+			hasBackground: !this.state.hasBackground
 		});
 	}
 	toggleViewSources = () => {
@@ -708,6 +862,16 @@ export default class Edit extends Component {
 	toggleViewRendered = () => {
 		this.setState({
 			showRendered: !this.state.showRendered
+		});
+	}
+	toggleViewAdjustments = () => {
+		this.setState({
+			showAdjustments: !this.state.showAdjustments
+		});
+	}
+	toggleColorEdit = () => {
+		this.setState({
+			showColorEdit: !this.state.showColorEdit
 		});
 	}
 	setColor(color) {
@@ -740,9 +904,24 @@ export default class Edit extends Component {
 			theTranslateY: value,
 		});
   }
+	onChangeHues = (values) => {
+		console.log('on change hues was called with', values);
+		this.setState({
+			imageLevels: values
+		});
+	}
 }
 /*
+							<DisplayColor colorObj={colorObj} hsl={colorObj.hsl} hsv={colorObj.hsv} />
 					<DisplayImage file="montenegro" aspect="portrait" />
 					<DisplayImage file="auckland" aspect="landscape" />
 					<DisplayImage file="sydney" aspect="portrait" />
+
+											// $primaryColor: hsl($hue, 82%, 37%);
+											// $lighter: hsl($hue, 82%, 61%);
+											// $lightest: hsl($hue, 82%, 79%);
+											// $darker: hsl($hue, 182%, 16%);
+											// $darkest: hsl($hue, 82%, 10%);
+											//	`hsla(${colorObj.hsl.h},
+											// ${colorObj.hsl.s}, ${colorObj.hsl.l}, ${colorObj.hsl.a})` }}
 */

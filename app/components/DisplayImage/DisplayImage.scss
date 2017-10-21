@@ -1,3 +1,39 @@
+
+$thumbnailShort: 120px;
+$thumbnailLong: 160px;
+$thumbnailFrame: 6px;
+$thumbnailShadow: 8px;
+$thumbnailBgMore: 60px;
+$thumbnailBgLess: 20px;
+
+$smallShort: 300px;
+$smallLong: 400px;
+$smallFrame: 12px;
+$smallShadow: 8px;
+$smallBgMore: 160px;
+$smallBgLess: 60px;
+
+$mediumShort: 600px;
+$mediumLong: 800px;
+$mediumFrame: 24px;
+$mediumShadow: 16px;
+$mediumBgMore: 320px;
+$mediumBgLess: 120px;
+
+$largeShort: 3000px;
+$largeLong: 4004px;
+$largeFrame: 120px;
+$largeShadow: 80px;
+$largeBgMore: 1600px;
+$largeBgLess: 600px;
+
+$printShort: 6000px;
+$printLong: 8004px;
+$printFrame: 240px;
+$printShadow: 160px;
+$printBgMore: 3200px;
+$printBgLess: 1200px;
+
 .DisplayImage{
 	width: 300px;
 	height: 400px;
@@ -22,6 +58,7 @@
 	}
 	
 	// MODES
+/*
 	&.thumbnail{
 		&.portrait{
 			width: 120px;
@@ -41,6 +78,15 @@
 				height: 120px;
 			}
 		}
+		&.hasBackground{
+			width: calc(#{$thumbnailShort} + 60px);
+			height: calc(#{$thumbnailLong} + 20px);
+			background: red;
+			.theSvg{
+				left: 30px;
+				top: 10px;
+			}
+		}
 		&.hasFrame{
     	.imgFrame{
 	    	border: 6px solid #f9f9f9;
@@ -57,6 +103,572 @@
 			}
 		}
 	}
+*/
+	&.thumbnail{
+		&.hasFrame{
+			.imgFrame{
+	    	border: $thumbnailFrame solid #f9f9f9;
+	    }
+			.theSvg{
+				padding: $thumbnailFrame;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				left: $thumbnailFrame;
+				right: $thumbnailFrame;
+				top: $thumbnailFrame;
+				bottom: $thumbnailFrame;
+		    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+	  }
+		&.portrait{
+			width: $thumbnailShort;
+			height: $thumbnailLong;
+			overflow: hidden;
+			.theSvg{
+				width: $thumbnailShort;
+				height: $thumbnailLong;
+			}
+			&.hasBackground{
+				width: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				height: calc(#{$thumbnailLong} + #{$thumbnailBgLess});
+				background: #eee;
+				.theSvg{
+					left: #{$thumbnailBgMore/2};
+					top: #{$thumbnailBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $thumbnailFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $thumbnailFrame solid #f9f9f9;
+						left: calc(#{$thumbnailBgMore}/2);
+						right: calc(#{$thumbnailBgMore}/2);
+						top: calc(#{$thumbnailBgLess}/2;
+						bottom: calc(#{$thumbnailBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$thumbnailBgMore}/2);
+						right: calc(#{$thumbnailBgMore}/2);
+						top: calc(#{$thumbnailBgLess}/2);
+						bottom: calc(#{$thumbnailBgLess}/2);
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						right: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						top: calc((#{$thumbnailBgLess}/2) + #{$thumbnailFrame});
+						bottom: calc((#{$thumbnailBgLess}/2) + #{$thumbnailFrame});
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.landscape{
+			width: $thumbnailLong;
+			height: $thumbnailShort;
+			overflow: hidden;
+			.theSvg{
+				width: $thumbnailLong;
+				height: $thumbnailShort;
+			}
+			&.hasBackground{
+				height: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				width: calc(#{$thumbnailLong} + #{$thumbnailBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$thumbnailBgMore/2};
+					left: #{$thumbnailBgLess/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				width: calc(#{$thumbnailLong} + #{$thumbnailBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$thumbnailBgMore/2};
+					left: #{$thumbnailBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $thumbnailFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $thumbnailFrame solid #f9f9f9;
+						top: calc(#{$thumbnailBgMore}/2);
+						bottom: calc(#{$thumbnailBgMore}/2);
+						left: calc(#{$thumbnailBgLess}/2;
+						right: calc(#{$thumbnailBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$thumbnailBgMore}/2);
+						bottom: calc(#{$thumbnailBgMore}/2);
+						left: calc(#{$thumbnailBgLess}/2);
+						right: calc(#{$thumbnailBgLess}/2);
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						bottom: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						left: calc((#{$thumbnailBgLess}/2) + #{$thumbnailFrame});
+						right: calc((#{$thumbnailBgLess}/2) + #{$thumbnailFrame});
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.square{
+			width: $thumbnailShort;
+			height: $thumbnailShort;
+			overflow: hidden;
+			.theSvg{
+				width: $thumbnailShort;
+				height: $thumbnailShort;
+			}
+			&.hasBackground{
+				height: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				width: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$thumbnailBgMore/2};
+					left: #{$thumbnailBgMore/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				width: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$thumbnailBgMore/2};
+					left: #{$thumbnailBgMore/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $thumbnailFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $thumbnailFrame solid #f9f9f9;
+						top: calc(#{$thumbnailBgMore}/2);
+						bottom: calc(#{$thumbnailBgMore}/2);
+						left: calc(#{$thumbnailBgMore}/2;
+						right: calc(#{$thumbnailBgMore}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$thumbnailBgMore}/2);
+						bottom: calc(#{$thumbnailBgMore}/2);
+						left: calc(#{$thumbnailBgMore}/2);
+						right: calc(#{$thumbnailBgMore}/2);
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						bottom: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						left: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						right: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.circle{
+			width: $thumbnailShort;
+			height: $thumbnailLong;
+			overflow: hidden;
+			background: #fff; // force the paper color
+			.theSvg{
+				width: calc(#{$thumbnailShort} * 0.8);
+				height: calc(#{$thumbnailShort} * 0.8);
+				left: calc(#{$thumbnailShort} * 0.2 / 2); // 10% of the length, divided by 2
+				top: calc(((#{$thumbnailLong} / 2) - ((#{$thumbnailShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				border-radius: $thumbnailShort; // make the circle
+			}
+			&.hasFrame{
+				.imgFrame{
+		    	border: $thumbnailFrame solid #f9f9f9;
+		    }
+				.theSvg{
+					padding: $thumbnailFrame;
+					width: calc((#{$thumbnailShort} - #{$thumbnailFrame}) * 0.8);
+					height: calc((#{$thumbnailShort} - #{$thumbnailFrame}) * 0.8);
+					left: calc((#{$thumbnailShort} * 0.2 / 2) + (#{$thumbnailFrame} /2)); // 10% of the length, divided by 2
+					top: calc(((#{$thumbnailLong} / 2) - (((#{$thumbnailShort} - #{$thumbnailFrame}) * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+					border-radius: $thumbnailShort; // make the circle
+					padding: 0;
+				}
+				&:after{
+			    content: "";
+			    position: absolute;
+					left: $thumbnailFrame;
+					right: $thumbnailFrame;
+					top: $thumbnailFrame;
+					bottom: $thumbnailFrame;
+			    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3) inset;
+			    z-index: 11;
+				}
+		  }
+			&.hasBackground{
+				width: calc(#{$thumbnailShort} + #{$thumbnailBgMore});
+				height: calc(#{$thumbnailLong} + #{$thumbnailBgLess});
+				background: #eee;
+				.theSvg{
+					// left: #{$thumbnailBgMore/2};
+					// top: #{$thumbnailBgLess/2};	
+					width: calc(#{$thumbnailShort} * 0.8);
+					height: calc(#{$thumbnailShort} * 0.8);
+					left: calc((((#{$thumbnailLong} + #{$thumbnailBgLess}) / 2) - (((#{$thumbnailShort}) * 0.8) / 2));
+					top: calc((((#{$thumbnailLong} + #{$thumbnailBgLess}) / 2) - (((#{$thumbnailShort}) * 0.8) / 2));
+
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: 0 !important;
+						left: calc((((#{$thumbnailLong} + #{$thumbnailBgLess}) / 2) - (((#{$thumbnailShort}) * 0.8) / 2));
+						top: calc((((#{$thumbnailLong} + #{$thumbnailBgLess}) / 2) - (((#{$thumbnailShort}) * 0.8) / 2));
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $thumbnailFrame solid #f9f9f9;
+						left: calc(#{$thumbnailBgMore}/2);
+						right: calc(#{$thumbnailBgMore}/2);
+						top: calc(#{$thumbnailBgLess}/2;
+						bottom: calc(#{$thumbnailBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$thumbnailBgMore}/2);
+						right: calc(#{$thumbnailBgMore}/2);
+						top: calc(#{$thumbnailBgLess}/2);
+						bottom: calc(#{$thumbnailBgLess}/2);
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 0;
+				    background: #fff; 
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						right: calc((#{$thumbnailBgMore}/2) + #{$thumbnailFrame});
+						top: calc((#{$thumbnailBgLess}/2) + #{$thumbnailFrame});
+						bottom: calc((#{$thumbnailBgLess}/2) + #{$thumbnailFrame});
+				    box-shadow: ($thumbnailShadow/8) ($thumbnailShadow/8) $thumbnailShadow (-$thumbnailShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+	}
+	&.preview, &.small{
+		&.hasFrame{
+			.imgFrame{
+	    	border: $smallFrame solid #f9f9f9;
+	    }
+			.theSvg{
+				padding: $smallFrame;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				left: $smallFrame;
+				right: $smallFrame;
+				top: $smallFrame;
+				bottom: $smallFrame;
+		    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+	  }
+		&.portrait{
+			width: $smallShort;
+			height: $smallLong;
+			overflow: hidden;
+			.theSvg{
+				width: $smallShort;
+				height: $smallLong;
+			}
+			&.hasBackground{
+				width: calc(#{$smallShort} + #{$smallBgMore});
+				height: calc(#{$smallLong} + #{$smallBgLess});
+				background: #eee;
+				.theSvg{
+					left: #{$smallBgMore/2};
+					top: #{$smallBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $smallFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $smallFrame solid #f9f9f9;
+						left: calc(#{$smallBgMore}/2);
+						right: calc(#{$smallBgMore}/2);
+						top: calc(#{$smallBgLess}/2;
+						bottom: calc(#{$smallBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$smallBgMore}/2);
+						right: calc(#{$smallBgMore}/2);
+						top: calc(#{$smallBgLess}/2);
+						bottom: calc(#{$smallBgLess}/2);
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						right: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						top: calc((#{$smallBgLess}/2) + #{$smallFrame});
+						bottom: calc((#{$smallBgLess}/2) + #{$smallFrame});
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.landscape{
+			width: $smallLong;
+			height: $smallShort;
+			overflow: hidden;
+			.theSvg{
+				width: $smallLong;
+				height: $smallShort;
+			}
+			&.hasBackground{
+				height: calc(#{$smallShort} + #{$smallBgMore});
+				width: calc(#{$smallLong} + #{$smallBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$smallBgMore/2};
+					left: #{$smallBgLess/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$smallShort} + #{$smallBgMore});
+				width: calc(#{$smallLong} + #{$smallBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$smallBgMore/2};
+					left: #{$smallBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $smallFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $smallFrame solid #f9f9f9;
+						top: calc(#{$smallBgMore}/2);
+						bottom: calc(#{$smallBgMore}/2);
+						left: calc(#{$smallBgLess}/2;
+						right: calc(#{$smallBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$smallBgMore}/2);
+						bottom: calc(#{$smallBgMore}/2);
+						left: calc(#{$smallBgLess}/2);
+						right: calc(#{$smallBgLess}/2);
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						bottom: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						left: calc((#{$smallBgLess}/2) + #{$smallFrame});
+						right: calc((#{$smallBgLess}/2) + #{$smallFrame});
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.square{
+			width: $smallShort;
+			height: $smallShort;
+			overflow: hidden;
+			.theSvg{
+				width: $smallShort;
+				height: $smallShort;
+			}
+			&.hasBackground{
+				height: calc(#{$smallShort} + #{$smallBgMore});
+				width: calc(#{$smallShort} + #{$smallBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$smallBgMore/2};
+					left: #{$smallBgMore/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$smallShort} + #{$smallBgMore});
+				width: calc(#{$smallShort} + #{$smallBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$smallBgMore/2};
+					left: #{$smallBgMore/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $smallFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $smallFrame solid #f9f9f9;
+						top: calc(#{$smallBgMore}/2);
+						bottom: calc(#{$smallBgMore}/2);
+						left: calc(#{$smallBgMore}/2;
+						right: calc(#{$smallBgMore}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$smallBgMore}/2);
+						bottom: calc(#{$smallBgMore}/2);
+						left: calc(#{$smallBgMore}/2);
+						right: calc(#{$smallBgMore}/2);
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						bottom: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						left: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						right: calc((#{$smallBgMore}/2) + #{$smallFrame});
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.circle{
+			width: $smallShort;
+			height: $smallLong;
+			overflow: hidden;
+			background: #fff; // force the paper color
+			.theSvg{
+				width: calc(#{$smallShort} * 0.8);
+				height: calc(#{$smallShort} * 0.8);
+				left: calc(#{$smallShort} * 0.2 / 2); // 10% of the length, divided by 2
+				top: calc(((#{$smallLong} / 2) - ((#{$smallShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				border-radius: $smallShort; // make the circle
+			}
+			&.hasFrame{
+				.imgFrame{
+		    	border: $smallFrame solid #f9f9f9;
+		    }
+				.theSvg{
+					padding: $smallFrame;
+					width: calc((#{$smallShort} - #{$smallFrame}) * 0.8);
+					height: calc((#{$smallShort} - #{$smallFrame}) * 0.8);
+					left: calc((#{$smallShort} * 0.2 / 2) + (#{$smallFrame} /2)); // 10% of the length, divided by 2
+					top: calc(((#{$smallLong} / 2) - (((#{$smallShort} - #{$smallFrame}) * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+					border-radius: $smallShort; // make the circle
+					padding: 0;
+				}
+				&:after{
+			    content: "";
+			    position: absolute;
+					left: $smallFrame;
+					right: $smallFrame;
+					top: $smallFrame;
+					bottom: $smallFrame;
+			    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3) inset;
+			    z-index: 11;
+				}
+		  }
+			&.hasBackground{
+				width: calc(#{$smallShort} + #{$smallBgMore});
+				height: calc(#{$smallLong} + #{$smallBgLess});
+				background: #eee;
+				.theSvg{
+					// left: #{$smallBgMore/2};
+					// top: #{$smallBgLess/2};	
+					width: calc(#{$smallShort} * 0.8);
+					height: calc(#{$smallShort} * 0.8);
+					left: calc((((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
+					top: calc((((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
+
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: 0 !important;
+						left: calc((((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
+						top: calc((((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $smallFrame solid #f9f9f9;
+						left: calc(#{$smallBgMore}/2);
+						right: calc(#{$smallBgMore}/2);
+						top: calc(#{$smallBgLess}/2;
+						bottom: calc(#{$smallBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$smallBgMore}/2);
+						right: calc(#{$smallBgMore}/2);
+						top: calc(#{$smallBgLess}/2);
+						bottom: calc(#{$smallBgLess}/2);
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 0;
+				    background: #fff; 
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						right: calc((#{$smallBgMore}/2) + #{$smallFrame});
+						top: calc((#{$smallBgLess}/2) + #{$smallFrame});
+						bottom: calc((#{$smallBgLess}/2) + #{$smallFrame});
+				    box-shadow: ($smallShadow/8) ($smallShadow/8) $smallShadow (-$smallShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+	}
+/*
 	&.medium{
 		&.portrait{
 			width: 600px;
@@ -92,26 +704,290 @@
 			}
 		}
 	}
-	&.preview, &.small{
+*/
+	&.medium{
+		&.hasFrame{
+			.imgFrame{
+	    	border: $mediumFrame solid #f9f9f9;
+	    }
+			.theSvg{
+				padding: $mediumFrame;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				left: $mediumFrame;
+				right: $mediumFrame;
+				top: $mediumFrame;
+				bottom: $mediumFrame;
+		    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+	  }
 		&.portrait{
-			width: 300px;
-			height: 400px;
+			width: $mediumShort;
+			height: $mediumLong;
 			overflow: hidden;
 			.theSvg{
-				width: 300px;
-				height: 400px;
+				width: $mediumShort;
+				height: $mediumLong;
+			}
+			&.hasBackground{
+				width: calc(#{$mediumShort} + #{$mediumBgMore});
+				height: calc(#{$mediumLong} + #{$mediumBgLess});
+				background: #eee;
+				.theSvg{
+					left: #{$mediumBgMore/2};
+					top: #{$mediumBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $mediumFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $mediumFrame solid #f9f9f9;
+						left: calc(#{$mediumBgMore}/2);
+						right: calc(#{$mediumBgMore}/2);
+						top: calc(#{$mediumBgLess}/2;
+						bottom: calc(#{$mediumBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$mediumBgMore}/2);
+						right: calc(#{$mediumBgMore}/2);
+						top: calc(#{$mediumBgLess}/2);
+						bottom: calc(#{$mediumBgLess}/2);
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						right: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						top: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+						bottom: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
 			}
 		}
 		&.landscape{
-			width: 400px;
-			height: 300px;
+			width: $mediumLong;
+			height: $mediumShort;
 			overflow: hidden;
 			.theSvg{
-				width: 400px;
-				height: 300px;
+				width: $mediumLong;
+				height: $mediumShort;
+			}
+			&.hasBackground{
+				height: calc(#{$mediumShort} + #{$mediumBgMore});
+				width: calc(#{$mediumLong} + #{$mediumBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$mediumBgMore/2};
+					left: #{$mediumBgLess/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$mediumShort} + #{$mediumBgMore});
+				width: calc(#{$mediumLong} + #{$mediumBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$mediumBgMore/2};
+					left: #{$mediumBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $mediumFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $mediumFrame solid #f9f9f9;
+						top: calc(#{$mediumBgMore}/2);
+						bottom: calc(#{$mediumBgMore}/2);
+						left: calc(#{$mediumBgLess}/2;
+						right: calc(#{$mediumBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$mediumBgMore}/2);
+						bottom: calc(#{$mediumBgMore}/2);
+						left: calc(#{$mediumBgLess}/2);
+						right: calc(#{$mediumBgLess}/2);
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						bottom: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						left: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+						right: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.square{
+			width: $mediumShort;
+			height: $mediumShort;
+			overflow: hidden;
+			.theSvg{
+				width: $mediumShort;
+				height: $mediumShort;
+			}
+			&.hasBackground{
+				height: calc(#{$mediumShort} + #{$mediumBgMore});
+				width: calc(#{$mediumShort} + #{$mediumBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$mediumBgMore/2};
+					left: #{$mediumBgMore/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$mediumShort} + #{$mediumBgMore});
+				width: calc(#{$mediumShort} + #{$mediumBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$mediumBgMore/2};
+					left: #{$mediumBgMore/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $mediumFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $mediumFrame solid #f9f9f9;
+						top: calc(#{$mediumBgMore}/2);
+						bottom: calc(#{$mediumBgMore}/2);
+						left: calc(#{$mediumBgMore}/2;
+						right: calc(#{$mediumBgMore}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$mediumBgMore}/2);
+						bottom: calc(#{$mediumBgMore}/2);
+						left: calc(#{$mediumBgMore}/2);
+						right: calc(#{$mediumBgMore}/2);
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						bottom: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						left: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						right: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.circle{
+			width: $mediumShort;
+			height: $mediumLong;
+			overflow: hidden;
+			background: #fff; // force the paper color
+			.theSvg{
+				width: calc(#{$mediumShort} * 0.8);
+				height: calc(#{$mediumShort} * 0.8);
+				left: calc(#{$mediumShort} * 0.2 / 2); // 10% of the length, divided by 2
+				top: calc(((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				border-radius: $mediumShort; // make the circle
+			}
+			&.hasFrame{
+				.imgFrame{
+		    	border: $mediumFrame solid #f9f9f9;
+		    }
+				.theSvg{
+					padding: $mediumFrame;
+					width: calc((#{$mediumShort} - #{$mediumFrame}) * 0.8);
+					height: calc((#{$mediumShort} - #{$mediumFrame}) * 0.8);
+					left: calc((#{$mediumShort} * 0.2 / 2) + (#{$mediumFrame} /2)); // 10% of the length, divided by 2
+					top: calc(((#{$mediumLong} / 2) - (((#{$mediumShort} - #{$mediumFrame}) * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+					border-radius: $mediumShort; // make the circle
+					padding: 0;
+				}
+				&:after{
+			    content: "";
+			    position: absolute;
+					left: $mediumFrame;
+					right: $mediumFrame;
+					top: $mediumFrame;
+					bottom: $mediumFrame;
+			    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+			    z-index: 11;
+				}
+		  }
+			&.hasBackground{
+				width: calc(#{$mediumShort} + #{$mediumBgMore});
+				height: calc(#{$mediumLong} + #{$mediumBgLess});
+				background: #eee;
+				.theSvg{
+					// left: #{$mediumBgMore/2};
+					// top: #{$mediumBgLess/2};	
+					width: calc(#{$mediumShort} * 0.8);
+					height: calc(#{$mediumShort} * 0.8);
+					left: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+					top: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: 0 !important;
+						left: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+						top: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $mediumFrame solid #f9f9f9;
+						left: calc(#{$mediumBgMore}/2);
+						right: calc(#{$mediumBgMore}/2);
+						top: calc(#{$mediumBgLess}/2;
+						bottom: calc(#{$mediumBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$mediumBgMore}/2);
+						right: calc(#{$mediumBgMore}/2);
+						top: calc(#{$mediumBgLess}/2);
+						bottom: calc(#{$mediumBgLess}/2);
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 0;
+				    background: #fff; 
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						right: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+						top: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+						bottom: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
 			}
 		}
 	}
+/*
 	&.large{
 		&.portrait{
 			width: 3000px;
@@ -132,6 +1008,290 @@
 			}
 		}
 	}
+*/
+	&.large{
+		&.hasFrame{
+			.imgFrame{
+	    	border: $largeFrame solid #f9f9f9;
+	    }
+			.theSvg{
+				padding: $largeFrame;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				left: $largeFrame;
+				right: $largeFrame;
+				top: $largeFrame;
+				bottom: $largeFrame;
+		    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+	  }
+		&.portrait{
+			width: $largeShort;
+			height: $largeLong;
+			overflow: hidden;
+			.theSvg{
+				width: $largeShort;
+				height: $largeLong;
+			}
+			&.hasBackground{
+				width: calc(#{$largeShort} + #{$largeBgMore});
+				height: calc(#{$largeLong} + #{$largeBgLess});
+				background: #eee;
+				.theSvg{
+					left: #{$largeBgMore/2};
+					top: #{$largeBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $largeFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $largeFrame solid #f9f9f9;
+						left: calc(#{$largeBgMore}/2);
+						right: calc(#{$largeBgMore}/2);
+						top: calc(#{$largeBgLess}/2;
+						bottom: calc(#{$largeBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$largeBgMore}/2);
+						right: calc(#{$largeBgMore}/2);
+						top: calc(#{$largeBgLess}/2);
+						bottom: calc(#{$largeBgLess}/2);
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						right: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						top: calc((#{$largeBgLess}/2) + #{$largeFrame});
+						bottom: calc((#{$largeBgLess}/2) + #{$largeFrame});
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.landscape{
+			width: $largeLong;
+			height: $largeShort;
+			overflow: hidden;
+			.theSvg{
+				width: $largeLong;
+				height: $largeShort;
+			}
+			&.hasBackground{
+				height: calc(#{$largeShort} + #{$largeBgMore});
+				width: calc(#{$largeLong} + #{$largeBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$largeBgMore/2};
+					left: #{$largeBgLess/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$largeShort} + #{$largeBgMore});
+				width: calc(#{$largeLong} + #{$largeBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$largeBgMore/2};
+					left: #{$largeBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $largeFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $largeFrame solid #f9f9f9;
+						top: calc(#{$largeBgMore}/2);
+						bottom: calc(#{$largeBgMore}/2);
+						left: calc(#{$largeBgLess}/2;
+						right: calc(#{$largeBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$largeBgMore}/2);
+						bottom: calc(#{$largeBgMore}/2);
+						left: calc(#{$largeBgLess}/2);
+						right: calc(#{$largeBgLess}/2);
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						bottom: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						left: calc((#{$largeBgLess}/2) + #{$largeFrame});
+						right: calc((#{$largeBgLess}/2) + #{$largeFrame});
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.square{
+			width: $largeShort;
+			height: $largeShort;
+			overflow: hidden;
+			.theSvg{
+				width: $largeShort;
+				height: $largeShort;
+			}
+			&.hasBackground{
+				height: calc(#{$largeShort} + #{$largeBgMore});
+				width: calc(#{$largeShort} + #{$largeBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$largeBgMore/2};
+					left: #{$largeBgMore/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$largeShort} + #{$largeBgMore});
+				width: calc(#{$largeShort} + #{$largeBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$largeBgMore/2};
+					left: #{$largeBgMore/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $largeFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $largeFrame solid #f9f9f9;
+						top: calc(#{$largeBgMore}/2);
+						bottom: calc(#{$largeBgMore}/2);
+						left: calc(#{$largeBgMore}/2;
+						right: calc(#{$largeBgMore}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$largeBgMore}/2);
+						bottom: calc(#{$largeBgMore}/2);
+						left: calc(#{$largeBgMore}/2);
+						right: calc(#{$largeBgMore}/2);
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						bottom: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						left: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						right: calc((#{$largeBgMore}/2) + #{$largeFrame});
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.circle{
+			width: $largeShort;
+			height: $largeLong;
+			overflow: hidden;
+			background: #fff; // force the paper color
+			.theSvg{
+				width: calc(#{$largeShort} * 0.8);
+				height: calc(#{$largeShort} * 0.8);
+				left: calc(#{$largeShort} * 0.2 / 2); // 10% of the length, divided by 2
+				top: calc(((#{$largeLong} / 2) - ((#{$largeShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				border-radius: $largeShort; // make the circle
+			}
+			&.hasFrame{
+				.imgFrame{
+		    	border: $largeFrame solid #f9f9f9;
+		    }
+				.theSvg{
+					padding: $largeFrame;
+					width: calc((#{$largeShort} - #{$largeFrame}) * 0.8);
+					height: calc((#{$largeShort} - #{$largeFrame}) * 0.8);
+					left: calc((#{$largeShort} * 0.2 / 2) + (#{$largeFrame} /2)); // 10% of the length, divided by 2
+					top: calc(((#{$largeLong} / 2) - (((#{$largeShort} - #{$largeFrame}) * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+					border-radius: $largeShort; // make the circle
+					padding: 0;
+				}
+				&:after{
+			    content: "";
+			    position: absolute;
+					left: $largeFrame;
+					right: $largeFrame;
+					top: $largeFrame;
+					bottom: $largeFrame;
+			    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3) inset;
+			    z-index: 11;
+				}
+		  }
+			&.hasBackground{
+				width: calc(#{$largeShort} + #{$largeBgMore});
+				height: calc(#{$largeLong} + #{$largeBgLess});
+				background: #eee;
+				.theSvg{
+					// left: #{$largeBgMore/2};
+					// top: #{$largeBgLess/2};	
+					width: calc(#{$largeShort} * 0.8);
+					height: calc(#{$largeShort} * 0.8);
+					left: calc((((#{$largeLong} + #{$largeBgLess}) / 2) - (((#{$largeShort}) * 0.8) / 2));
+					top: calc((((#{$largeLong} + #{$largeBgLess}) / 2) - (((#{$largeShort}) * 0.8) / 2));
+
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: 0 !important;
+						left: calc((((#{$largeLong} + #{$largeBgLess}) / 2) - (((#{$largeShort}) * 0.8) / 2));
+						top: calc((((#{$largeLong} + #{$largeBgLess}) / 2) - (((#{$largeShort}) * 0.8) / 2));
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $largeFrame solid #f9f9f9;
+						left: calc(#{$largeBgMore}/2);
+						right: calc(#{$largeBgMore}/2);
+						top: calc(#{$largeBgLess}/2;
+						bottom: calc(#{$largeBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$largeBgMore}/2);
+						right: calc(#{$largeBgMore}/2);
+						top: calc(#{$largeBgLess}/2);
+						bottom: calc(#{$largeBgLess}/2);
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 0;
+				    background: #fff; 
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						right: calc((#{$largeBgMore}/2) + #{$largeFrame});
+						top: calc((#{$largeBgLess}/2) + #{$largeFrame});
+						bottom: calc((#{$largeBgLess}/2) + #{$largeFrame});
+				    box-shadow: ($largeShadow/8) ($largeShadow/8) $largeShadow (-$largeShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+	}
+/*
 	&.print{
 		&.portrait{
 			width: 6000px;
@@ -152,7 +1312,290 @@
 			}
 		}
 	}
-	
+*/
+	&.print{
+		&.hasFrame{
+			.imgFrame{
+	    	border: $printFrame solid #f9f9f9;
+	    }
+			.theSvg{
+				padding: $printFrame;
+			}
+			&:after{
+		    content: "";
+		    position: absolute;
+				left: $printFrame;
+				right: $printFrame;
+				top: $printFrame;
+				bottom: $printFrame;
+		    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3) inset;
+		    z-index: 11;
+			}
+	  }
+		&.portrait{
+			width: $printShort;
+			height: $printLong;
+			overflow: hidden;
+			.theSvg{
+				width: $printShort;
+				height: $printLong;
+			}
+			&.hasBackground{
+				width: calc(#{$printShort} + #{$printBgMore});
+				height: calc(#{$printLong} + #{$printBgLess});
+				background: #eee;
+				.theSvg{
+					left: #{$printBgMore/2};
+					top: #{$printBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $printFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $printFrame solid #f9f9f9;
+						left: calc(#{$printBgMore}/2);
+						right: calc(#{$printBgMore}/2);
+						top: calc(#{$printBgLess}/2;
+						bottom: calc(#{$printBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$printBgMore}/2);
+						right: calc(#{$printBgMore}/2);
+						top: calc(#{$printBgLess}/2);
+						bottom: calc(#{$printBgLess}/2);
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$printBgMore}/2) + #{$printFrame});
+						right: calc((#{$printBgMore}/2) + #{$printFrame});
+						top: calc((#{$printBgLess}/2) + #{$printFrame});
+						bottom: calc((#{$printBgLess}/2) + #{$printFrame});
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.landscape{
+			width: $printLong;
+			height: $printShort;
+			overflow: hidden;
+			.theSvg{
+				width: $printLong;
+				height: $printShort;
+			}
+			&.hasBackground{
+				height: calc(#{$printShort} + #{$printBgMore});
+				width: calc(#{$printLong} + #{$printBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$printBgMore/2};
+					left: #{$printBgLess/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$printShort} + #{$printBgMore});
+				width: calc(#{$printLong} + #{$printBgLess});
+				background: #eee;
+				.theSvg{
+					top: #{$printBgMore/2};
+					left: #{$printBgLess/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $printFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $printFrame solid #f9f9f9;
+						top: calc(#{$printBgMore}/2);
+						bottom: calc(#{$printBgMore}/2);
+						left: calc(#{$printBgLess}/2;
+						right: calc(#{$printBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$printBgMore}/2);
+						bottom: calc(#{$printBgMore}/2);
+						left: calc(#{$printBgLess}/2);
+						right: calc(#{$printBgLess}/2);
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$printBgMore}/2) + #{$printFrame});
+						bottom: calc((#{$printBgMore}/2) + #{$printFrame});
+						left: calc((#{$printBgLess}/2) + #{$printFrame});
+						right: calc((#{$printBgLess}/2) + #{$printFrame});
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.square{
+			width: $printShort;
+			height: $printShort;
+			overflow: hidden;
+			.theSvg{
+				width: $printShort;
+				height: $printShort;
+			}
+			&.hasBackground{
+				height: calc(#{$printShort} + #{$printBgMore});
+				width: calc(#{$printShort} + #{$printBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$printBgMore/2};
+					left: #{$printBgMore/2};					
+				}
+			}
+			&.hasBackground{
+				height: calc(#{$printShort} + #{$printBgMore});
+				width: calc(#{$printShort} + #{$printBgMore});
+				background: #eee;
+				.theSvg{
+					top: #{$printBgMore/2};
+					left: #{$printBgMore/2};					
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: $printFrame;
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $printFrame solid #f9f9f9;
+						top: calc(#{$printBgMore}/2);
+						bottom: calc(#{$printBgMore}/2);
+						left: calc(#{$printBgMore}/2;
+						right: calc(#{$printBgMore}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						top: calc(#{$printBgMore}/2);
+						bottom: calc(#{$printBgMore}/2);
+						left: calc(#{$printBgMore}/2);
+						right: calc(#{$printBgMore}/2);
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 11;
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						top: calc((#{$printBgMore}/2) + #{$printFrame});
+						bottom: calc((#{$printBgMore}/2) + #{$printFrame});
+						left: calc((#{$printBgMore}/2) + #{$printFrame});
+						right: calc((#{$printBgMore}/2) + #{$printFrame});
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+		&.circle{
+			width: $printShort;
+			height: $printLong;
+			overflow: hidden;
+			background: #fff; // force the paper color
+			.theSvg{
+				width: calc(#{$printShort} * 0.8);
+				height: calc(#{$printShort} * 0.8);
+				left: calc(#{$printShort} * 0.2 / 2); // 10% of the length, divided by 2
+				top: calc(((#{$printLong} / 2) - ((#{$printShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				border-radius: $printShort; // make the circle
+			}
+			&.hasFrame{
+				.imgFrame{
+		    	border: $printFrame solid #f9f9f9;
+		    }
+				.theSvg{
+					padding: $printFrame;
+					width: calc((#{$printShort} - #{$printFrame}) * 0.8);
+					height: calc((#{$printShort} - #{$printFrame}) * 0.8);
+					left: calc((#{$printShort} * 0.2 / 2) + (#{$printFrame} /2)); // 10% of the length, divided by 2
+					top: calc(((#{$printLong} / 2) - (((#{$printShort} - #{$printFrame}) * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+					border-radius: $printShort; // make the circle
+					padding: 0;
+				}
+				&:after{
+			    content: "";
+			    position: absolute;
+					left: $printFrame;
+					right: $printFrame;
+					top: $printFrame;
+					bottom: $printFrame;
+			    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3) inset;
+			    z-index: 11;
+				}
+		  }
+			&.hasBackground{
+				width: calc(#{$printShort} + #{$printBgMore});
+				height: calc(#{$printLong} + #{$printBgLess});
+				background: #eee;
+				.theSvg{
+					// left: #{$printBgMore/2};
+					// top: #{$printBgLess/2};	
+					width: calc(#{$printShort} * 0.8);
+					height: calc(#{$printShort} * 0.8);
+					left: calc((((#{$printLong} + #{$printBgLess}) / 2) - (((#{$printShort}) * 0.8) / 2));
+					top: calc((((#{$printLong} + #{$printBgLess}) / 2) - (((#{$printShort}) * 0.8) / 2));
+
+				}
+				&.hasFrame{
+					box-shadow: none; // added later
+					.theSvg{
+						padding: 0 !important;
+						left: calc((((#{$printLong} + #{$printBgLess}) / 2) - (((#{$printShort}) * 0.8) / 2));
+						top: calc((((#{$printLong} + #{$printBgLess}) / 2) - (((#{$printShort}) * 0.8) / 2));
+					}
+		    	.imgFrame{
+			    	// border: 12px solid #f9f9f9;
+			    	border: $printFrame solid #f9f9f9;
+						left: calc(#{$printBgMore}/2);
+						right: calc(#{$printBgMore}/2);
+						top: calc(#{$printBgLess}/2;
+						bottom: calc(#{$printBgLess}/2);
+					}
+					&:before{
+				    content: "";
+				    position: absolute;
+						left: calc(#{$printBgMore}/2);
+						right: calc(#{$printBgMore}/2);
+						top: calc(#{$printBgLess}/2);
+						bottom: calc(#{$printBgLess}/2);
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3);
+				    z-index: 0;
+				    background: #fff; 
+					}
+					&:after{
+				    content: "";
+				    position: absolute;
+						left: calc((#{$printBgMore}/2) + #{$printFrame});
+						right: calc((#{$printBgMore}/2) + #{$printFrame});
+						top: calc((#{$printBgLess}/2) + #{$printFrame});
+						bottom: calc((#{$printBgLess}/2) + #{$printFrame});
+				    box-shadow: ($printShadow/8) ($printShadow/8) $printShadow (-$printShadow/4) rgba(0, 0, 0, 0.3) inset;
+				    z-index: 11;
+					}
+				}
+			}
+		}
+	}
+
 	// display tweaks
 	&.hasMargin{
 		margin: 16px;
@@ -169,6 +1612,13 @@
 			}
 		}
 	}
+/*
+	&.hasBackground{
+		.theSvg{
+			border: 20px solid #eee;
+		}
+	}
+*/
 	&.hasFrame{
     box-shadow: 1px 1px 9px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
