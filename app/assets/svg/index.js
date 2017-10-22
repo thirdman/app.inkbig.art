@@ -15,10 +15,12 @@ export { default as FiordlandFalls } from './fiordland_falls.svg'; // eslint-dis
 export { default as HillsTriptych1 } from './hills_triptych_1.svg'; // eslint-disable-line
 export { default as HillsTriptych2 } from './hills_triptych_2.svg'; // eslint-disable-line
 export { default as HillsTriptych3 } from './hills_triptych_3.svg'; // eslint-disable-line
+export { default as Kahurangi } from './Kahurangi.svg'; // eslint-disable-line
 export { default as MilfordSound } from './milfordSound.svg'; // eslint-disable-line
 export { default as NorthEastValley } from './northEastValley.svg'; // eslint-disable-line
 export { default as Moeraki } from './moeraki.svg'; // eslint-disable-line
 export { default as Montenegro } from './montenegro.svg'; // eslint-disable-line
 export { default as Port } from './port.svg'; // eslint-disable-line
+export { default as Rakiura } from './rakiura.svg'; // eslint-disable-line
 export { default as Sydney } from './sydney.svg'; // eslint-disable-line
 export { default as Teanau } from './teanau.svg'; // eslint-disable-line

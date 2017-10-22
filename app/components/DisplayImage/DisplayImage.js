@@ -16,11 +16,13 @@ import {
 	HillsTriptych1,
 	HillsTriptych2,
 	HillsTriptych3,
+	Kahurangi,
 	MilfordSound,
 	Moeraki,
 	Montenegro,
 	NorthEastValley,
 	Port,
+	Rakiura,
 	Sydney,
 	Teanau,
 	FiordlandFalls,
@@ -134,6 +136,12 @@ export default class DisplayImage extends Component {
 		if (file === 'NorthEastValley') {
 			theSvg = NorthEastValley;
 		}
+		if (file === 'Rakiura') {
+			theSvg = Rakiura;
+		}
+		if (file === 'Kahurangi') {
+			theSvg = Kahurangi;
+		}
 		const tempStyle = {
 			// backgroundColor: `hsl(${theHue}, 82%, 37%)`
 			// backgroundColor: `hsl(${theHue}, 50%, 50%)`
@@ -148,9 +156,9 @@ export default class DisplayImage extends Component {
 		return (
 			<InlineCss
 			stylesheet={`
-				background: red;
 				#svg${file}${this.state.theId} svg .darkest path,
-				#svg${file}${this.state.theId} svg .darkestFill, .darkest rect,
+				#svg${file}${this.state.theId} svg .darkestFill,
+				#svg${file}${this.state.theId} svg .darkest rect,
 				#svg${file}${this.state.theId} svg .darkest circle,
 				#svg${file}${this.state.theId} svg .darkest polygon{
 						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[0]}%);

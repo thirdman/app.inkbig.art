@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="3000px" height="3000px" viewBox="0 0 3000 3000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>template - rakiura</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="template---rakiura" fill-rule="nonzero">
+            <g id="background" fill="#8B9BB2">
+                <rect id="bgsky" x="0" y="0" width="3014" height="3000"></rect>
+            </g>
+            <g id="sea" transform="translate(0.000000, 1492.000000)" fill="#55677C">
+                <rect x="0" y="0" width="3014" height="1508"></rect>
+            </g>
+            <g id="hills-back" transform="translate(-338.000000, 1397.000000)" fill="#3C4D62">
+                <polygon id="hills_back" points="3153.51565 108 0 108 398.016539 74.25 876.907265 74.8369565 1097.00059 69.5543478 1168 49 1339.62315 54.8804348 1424 34 1568.95924 53.4130435 1676.11754 37.2717391 1820.53574 63.9782609 1878.01418 47.8369565 2096.95216 55.4673913 2179.27053 27.2934783 2392.14294 50.4782609 2421 27.2934783 2536.56113 28.7608696 2603.57118 0 2785 40 2890 40 2951 65 3346.45836 69.8478261 3423 107.413043"></polygon>
+            </g>
+            <g id="hills_mid" transform="translate(178.000000, 1423.000000)" fill="#24303D">
+                <polygon id="Shape" points="2885.62776 81.4082377 2585 41 2436.7909 38.4822615 2374.15579 13.8713684 2144 46 2021 3 1905 0 1873.36353 26.7491613 1662 2 1536.51941 42.4886859 1302.4315 39.9131274 1160 11 904.395471 42.2025128 652 23 447 82"></polygon>
+                <polygon id="Shape" points="301.052633 82.0578201 223.119545 56.8745807 121.80653 46 0 81.1993005"></polygon>
+            </g>
+            <g id="hills_front" transform="translate(813.000000, 1423.000000)" fill="#0B1219">
+                <polygon id="Shape" points="1556.71148 81 1511.41407 46.2857143 1269.63556 0 1239.05259 22.8535714 1026.41444 2.31428571 780.885185 81"></polygon>
+                <polygon id="Shape" points="508.658148 81.9821429 273.227037 14 0 81.9821429"></polygon>
+                <polygon id="Shape" points="780.65 82.2357143 668.127778 40 508 82.2357143"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

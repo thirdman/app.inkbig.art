@@ -18,6 +18,7 @@ const imageNames = [
 	'cave',
 	'cathedral',
 	'NorthEastValley',
+	'Kahurangi',
 	'MilfordSound',
 	'moeraki',
 	'cottage_shore',
@@ -26,6 +27,7 @@ const imageNames = [
 	'hillsTriptych1',
 	'hillsTriptych2',
 	'hillsTriptych3',
+	'Rakiura',
 	'Port',
 	'montenegro',
 ];
