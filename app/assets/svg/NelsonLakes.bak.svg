@@ -1,0 +1,102 @@
+<svg
+	version="1.1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"
+	viewBox="0, 0, 3000, 3000"
+	width="100%" height="100%"
+	preserveAspectRatio="xMidYMid slice"
+>
+  <title>
+    Nelson Lakes
+  </title>
+  <g id="Canvas">
+    <g id="NelsonLakes">
+      <g id="Bg" class="lightest">
+        <use xlink:href="#path0_fill" fill="#95A8BB" id="Shape"/>
+      </g>
+      <g id="Hillsback " class="lighter">
+        <use xlink:href="#path1_fill" transform="translate(1322.74 1347.633)" fill="#6A8EB4" id="Vector"/>
+      </g>
+      <g id="Hills_mid" fill="#4D739B" class="primary">
+        <use xlink:href="#path2_fill" transform="translate(1423.218 1306.63)" id="Vector"/>
+        <use xlink:href="#path3_fill" transform="translate(1456.87 1482.32)" id="Vector"/>
+      </g>
+      <g id="Hills main" fill="#2B5580" class="darker">
+        <use xlink:href="#path4_fill" transform="translate(0 912)" id="Vector"/>
+        <use xlink:href="#path5_fill" transform="translate(1522.655 987.966)" id="Vector"/>
+      </g>
+      <g id="Water" class="primary">
+        <use xlink:href="#path6_fill" transform="translate(0 1509)" fill="#4D739B" id="Vector"/>
+      </g>
+      <g id="Water highlight" fill="#6A8EB4" class="lighter">
+        <use xlink:href="#path7_fill" transform="translate(408.85 1507)" id="Vector"/>
+        <use xlink:href="#path8_fill" transform="translate(172.08 1639.744)" id="Vector"/>
+        <use xlink:href="#path9_fill" transform="translate(778.05 1682.74)" id="Vector"/>
+        <use xlink:href="#path10_fill" transform="translate(1447.855 1507.124)" id="Vector"/>
+        <use xlink:href="#path11_fill" transform="translate(874.237 1509.23)" id="Vector"/>
+      </g>
+      <g id="Hills low front" fill="#192D41" class="darkest">
+        <use xlink:href="#path12_fill" transform="translate(0 1376)" id="Vector"/>
+        <use xlink:href="#path13_fill" transform="translate(2349.55 1385.476)" id="Vector"/>
+      </g>
+      <g id="Jetty" fill="#192D41" class="darkest">
+        <use xlink:href="#path14_fill" transform="translate(650.37 2029.25)" id="Vector"/>
+        <use xlink:href="#path15_fill" transform="translate(407.42 2687.97)" id="Vector"/>
+      </g>
+      <g id="Jetty posts" fill="#192D41" class="darkest">
+        <use xlink:href="#path16_fill" transform="translate(1218.5 1847.538)" id="Vector"/>
+        <use xlink:href="#path17_fill" transform="translate(1115.84 1893.846)" id="Vector"/>
+        <use xlink:href="#path18_fill" transform="translate(949.687 1970.486)" id="Vector"/>
+        <use xlink:href="#path19_fill" transform="translate(620.37 2114)" id="Vector"/>
+        <use xlink:href="#path20_fill" transform="translate(1763.588 1847.538)" id="Vector"/>
+        <use xlink:href="#path21_fill" transform="translate(1854.777 1888.732)" id="Vector"/>
+        <use xlink:href="#path22_fill" transform="translate(1986.135 1970.486)" id="Vector"/>
+        <use xlink:href="#path23_fill" transform="translate(2254.36 2100.35)" id="Vector"/>
+      </g>
+      <g id="Post highlights" fill="#2B5580" class="darker">
+        <use xlink:href="#path24_fill" transform="translate(1986.264 1970.486)" id="Vector"/>
+        <use xlink:href="#path25_fill" transform="translate(2254.36 2100.35)" id="Vector"/>
+        <use xlink:href="#path26_fill" transform="translate(1854.777 1888.732)" id="Vector"/>
+        <use xlink:href="#path27_fill" transform="translate(1763.588 1847.538)" id="Vector"/>
+        <use xlink:href="#path28_fill" transform="translate(949.687 1970.486)" id="Vector"/>
+        <use xlink:href="#path29_fill" transform="translate(620.37 2114)" id="Vector"/>
+        <use xlink:href="#path30_fill" transform="translate(1218.5 1847.538)" id="Vector"/>
+        <use xlink:href="#path31_fill" transform="translate(1115.84 1893.846)" id="Vector"/>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <path id="path0_fill" d="M0 0h3000v3000H0V0z"/>
+    <path id="path1_fill" d="M246.839 52.009l-80.442-38.266-25.976 15.083-34.832-16.62-16.202 7.35L56.068 2.57 39.755 8.492 21.558.0000566.0000137 8.55694 2.16005 17.933 136.79 134.686l110.049-82.677z"/>
+    <path id="path2_fill" d="M28.21 157.813L194.402 38.266l20.39 1.118 13.128-8.938 54.187-3.352 13.407-13.687 21.507 1.397 19.273-13.12797L390.37 0 175.409 195.241 0 186.582l28.21-28.769z"/>
+    <path id="path3_fill" d="M5.79201-.0000303L116.18 13.031l-9.881 13.88H.0000186L5.79201-.0000303z"/>
+    <path id="path4_fill" d="M1519.18 598.097l-194.51-154.582-131.06-78.167-291.768-121.696-57.44 14.196-156.68-62.966-55.758 9.776-246.105-94.169-36.071 11.099L0 0v609.5l1519.18-11.403z"/>
+    <path id="path5_fill" d="M4.14392 522.263L0 511.214 472.383 160.84l120.793-62.5535 23.213 6.8815 310.313-55.3595 49.035 21.1069 33.703-24.339 212.81-14.1209S1325.58.946495 1334.39.019495c8.8-.927 142.95 31.514005 142.95 31.514005V518.546L4.14392 522.263z"/>
+    <path id="path6_fill" d="M0-.0000176h3000V1491H0V-.0000176z"/>
+    <path id="path7_fill" d="M465.385 7.15694L955.397 22.88l-203.58 2.9279 108.906 14.313S575.488 50.387 577.828 48.925c2.339-1.463 164.8 18.8419 164.8 18.8419L299.273 80.409l223.935 24.38L0 132.744l411.24 52.408 642.22 35.386 986.12-44.798-825.68-36.812 602.13-6.184-426.45-35.2311 173.63-25.6659-358.07-16.5281 213.25-14.8239-353.37-23.4731L1944.15 0 916.047 7.26998l-450.662-.11304z"/>
+    <path id="path8_fill" d="M.0000018 59.357L1064.69.0000186 1268.62 87.794.0000018 59.357z"/>
+    <path id="path9_fill" d="M705.778-.0000098L1278.27 62.642 705.778 85.9921.0000254 66.229 311.114 20.142 705.778-.0000098z"/>
+    <path id="path10_fill" d="M78.944 2.10596L1038.05 0 905.145.291853 0 8.04895l78.944-5.94299z"/>
+    <path id="path11_fill" d="M643.835-.0000195h8.727L651.266 4.92698 428.751 10.792-e-7 4.92698 643.835-.0000195z"/>
+    <path id="path12_fill" d="M0 0l793.573 96.551 76.562 25.976 4.102 20.508L0 155V0z"/>
+    <path id="path13_fill" d="M516.61-.000048L299.035 15.255 39.0831 92.513 3.63604 118.872.0000488 135.233 650.45 138.546V1.024L516.61-.000048z"/>
+    <path id="path14_fill" d="M1115.63-.0000234L1669.01 696.345.0000278 697.826 596.338 2.96299 1115.63-.0000234z"/>
+    <path id="path15_fill" d="M1890.76 0l247.97 312.035H0L259.804 9.30688 1890.76 0z"/>
+    <path id="path16_fill" d="M-.0000234-.000036H30.3821V194.895L.667945 241.542-.0000234-.000036z"/>
+    <path id="path17_fill" d="M.619984 300.252L-.0000107.148995 43.7519-.0000527V255.203L.619984 300.252z"/>
+    <path id="path18_fill" d="M62.086-.000038L62.404 343.62.0000117 415.459.547009.694054 62.086-.000038z"/>
+    <path id="path19_fill" d="M101.427 0l-.825 560.189L-.000019 689.212V1.24097L101.427 0z"/>
+    <path id="path20_fill" d="M.0000127-.000036H36.369V228.726L.0000127 184.936V-.000036z"/>
+    <path id="path21_fill" d="M-.0000225.0000557H41.053V306.657L-.0000225 255.68V.0000557z"/>
+    <path id="path22_fill" d="M.0000098-.000038H62.085L61.9429 415.459.129038 337.939.0000098-.000038z"/>
+    <path id="path23_fill" d="M.000084-.000048H95.189L93.3841 723.162.000084 638.8V-.000048z"/>
+    <path id="path24_fill" d="M.0129775-.000038H20.736l-1 363.014038L.000038 337.939"/>
+    <path id="path25_fill" d="M.0188828-.000048H30.2711L28.8111 587.614.000084 547.024"/>
+    <path id="path26_fill" d="M.0090107.0000557H13.818L13.151 270.411-.0000225 251.733"/>
+    <path id="path27_fill" d="M.0069707-.000036H11.156L10.6181 193.509.0000127 180.142"/>
+    <path id="path28_fill" d="M.0130122-.000038H20.736l-1 384.602038L.0000117 406.496"/>
+    <path id="path29_fill" d="M.019024 0H29.998l-1.446 607.865-28.552019 34.604"/>
+    <path id="path30_fill" d="M.005958-.000036H9.62803L9.16404 205.525l-9.1640634 11.7"/>
+    <path id="path31_fill" d="M.0090225-.0000527H14.071L13.3931 275.307-.0000107 290.979"/>
+  </defs>
+</svg>

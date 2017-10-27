@@ -39,8 +39,10 @@ export default class Edit extends Component {
 		isAdding: false,
 		isEditing: false,
 		image: (this.props.location.state && this.props.location.state.image) || 'montenegro',
+		imageSaved: false,
 		aspect: 'portrait',
 		hasFrame: false,
+		hasHighlight: false,
 		hasBackground: false,
 		// isPreview: true,
 		isPortrait: true,
@@ -49,7 +51,10 @@ export default class Edit extends Component {
 		showColorEdit: false,
 		Adjustments: false,
 		imageLevels: [10, 16, 37, 61, 79],
-		colorsArray: []
+		colorsArray: [],
+		theScale: 1,
+		theTranslateX: 0,
+		theTranslateY: 0,
 	};
 
 	componentWillMount() {
@@ -69,18 +74,20 @@ export default class Edit extends Component {
 		} = this.props;
 		const {
 			aspect,
+			colorSaved = false,
 			hasMenu,
 			isPortrait,
 			image,
+			imageSaved,
 			colorObj = this.props.location.state && this.props.location.state.colorObj,
 			colorsArray,
 			// isPreview,
 			hasHighlight = false,
 			hasFrame = false,
 			hasBackground,
-			theScale = 1,
-			theTranslateX = 0,
-			theTranslateY = 0,
+			theScale,
+			theTranslateX,
+			theTranslateY,
 			theHue = (this.props.location.state &&
 				this.props.location.state.colorObj.hsl.h) || 187.82608695652172,
 			theSaturation = (this.props.location.state &&
@@ -89,41 +96,6 @@ export default class Edit extends Component {
 				this.props.location.state.colorObj.hsl.l) || 0.5,
 			isRendering,
 			imageLevels,
-/*
-			doingThumbnail = false,
-			doingSmall = false,
-			doingMedium = false,
-			doingLarge = false,
-			doingPrint = false,
-			doneThumbnail = false,
-			doneSmall = false,
-			doneMedium = false,
-			doneLarge = false,
-			donePrint = false,
-*/
-/*
-			savingThumbnail = false,
-			savingSmall = false,
-			savingMedium = false,
-			savingLarge = false,
-			savingPrint = false,
-			savedThumbnail = false,
-			savedSmall = false,
-			savedMedium = false,
-			savedLarge = false,
-			savedPrint = false,
-*/
-/*
-			renderLocationThumbnail = null,
-			renderLocationSmall = null,
-			renderLocationMedium = null,
-			renderLocationLarge = null,
-			renderUrlLarge = null,
-			renderLocationPrint = null,
-*/
-			// theHue
-			// image = 'montenegro',
-			// aspect = 'portrait'
 			} = this.state;
 
 		// console.log('state is', this.state);
@@ -139,11 +111,24 @@ export default class Edit extends Component {
 		return (
 			<div className={`${styles.Edit} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
 				<div className={`${styles.column} `}>
+					<div className={styles.row}>
+						{this.state.image &&
+							<button onClick={() => this.doRenderImages()} >Generate Images</button>
+						}
+						{this.state.image &&
+							<button onClick={() => this.doSaveImage()} >Save Image</button>
+						}
+						{this.state.image &&
+							<button onClick={() => this.doSaveRenders()} >Save All renders async</button>
+						}
+						{this.state.image &&
+							<button onClick={() => this.doRenderThumbnail()} >Render THumbnail only</button>
+						}
+						{imageSaved && 'Image saved!'}
+						{colorSaved && 'Color saved!'}
+					</div>
 					<div className={styles.titleBlock}>
 						<h4>Preview SVG</h4>
-						{this.state.image &&
-							<button onClick={() => this.doSave()} >Generate Images</button>
-						}
 					</div>
 					<div className={styles.previewImageWrap}>
 						<DisplayImage
@@ -544,7 +529,7 @@ export default class Edit extends Component {
 		const colorsArray = [];
 		colorsRef.get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
-				console.log(doc.id, ' => ', doc.data());
+				// console.log(doc.id, ' => ', doc.data());
 				// imagesArray[doc.id] = doc.data();
 				const tempThing = {};
 				tempThing.id = doc.id;
@@ -579,7 +564,7 @@ export default class Edit extends Component {
 			console.log('Error getting color:', error);
 		});
 	}
-	doSave = () => {
+	doRenderImages = () => {
 		// NOTE: the 'mode' is passed through to display image and used for an id as theImage + 'mode'
 		// eg theImage + thumbnail
 		const theImageTh = document.getElementById('theImagethumbnail');
@@ -791,6 +776,88 @@ export default class Edit extends Component {
 		}
 	}
 
+	doRenderThumbnail = () => {
+		const theImageTh = document.getElementById('theImagethumbnail');
+		const { colorObj } = this.state;
+		if (theImageTh) {
+			const fStorage = firebase.storage();
+			const newImgTh = document.getElementById('newImgThumbnail');
+			domtoimage.toJpeg(theImageTh, { quality: 0.75 })
+			.then((dataUrl) => {
+				const img = new Image();
+				img.src = dataUrl;
+				const innerContent = newImgTh && newImgTh.innerHTML;
+				const innerContentExists = innerContent.length;
+				if (innerContentExists > 0) {
+					newImgTh.replaceChild(img, newImgTh.children[0]);
+				} else {
+					newImgTh.appendChild(img);
+				}
+				this.setState({
+					doneThumbnail: true,
+					doingThumbnail: false,
+					savingThumbnail: true,
+					savedThumbnail: false,
+				});
+				const renderLocationThumbnail = `renders/${this.state.image}_${(colorObj && colorObj.hex) || ''}_thumbnail.jpg`;
+				const storageRefThumbnail = fStorage.ref().child(renderLocationThumbnail);
+				storageRefThumbnail.putString(dataUrl, 'data_url').then((snapshot) => {
+					console.log('Uploaded a blob or file!');
+					console.log(snapshot);
+					this.setState({
+						renderLocationThumbnail,
+						renderUrlThumbnail: snapshot.downloadURL,
+						savingThumbnail: false,
+						savedThumbnail: true,
+					});
+					this.doSaveRender(snapshot, 'thumbnail', colorObj.hex);
+				});
+			})
+			.catch((error) => {
+				console.error('oops, something went wrong!', error);
+			});
+		}
+	}
+
+	doSaveRender = (snapshot, size, hex) => {
+		console.log('doSaveRender was called', snapshot, hex);
+		const currentDateTime = new Date();
+		const {
+			image,
+			aspect,
+			} = this.state;
+		const renderObj = {};
+		renderObj.aspect = aspect;
+		renderObj.size = size;
+		renderObj.imageId = image;
+		renderObj.slug = image;
+		renderObj.downloadURL = snapshot.downloadURL;
+		renderObj.fullPath = snapshot.metadata && snapshot.metadata.fullPath;
+		renderObj.modifiedDate = currentDateTime;
+			if (image) {
+				fbase.collection('renders').add({
+					hex: hex || 'none',
+					slug: image,
+					modifiedDate: currentDateTime,
+					[size]: renderObj
+				})
+			.then((renderRef) => {
+				console.log('render successfully added to db, with reference of: ', renderRef);
+				this.setState({
+					isError: false
+				});
+			})
+			.catch(((error) => {
+				console.error('Error writing render: ', error);
+				this.setState({
+					isError: true
+				});
+			}));
+		}
+	}
+	doSaveRenders = async () => {
+	}
+
 	doSaveColor(colorId) {
 		if (colorId) {
 			console.log('Saving the color wid id: ', colorId);
@@ -816,6 +883,71 @@ export default class Edit extends Component {
 				});
 				setTimeout(() => {
 					this.setState({
+						imageSaved: false,
+					});
+				}, 2000);
+			})
+			.catch(((error) => {
+				console.error('Error writing image: ', error);
+				this.setState({
+					imageSaved: false,
+					isError: true
+				});
+			}));
+		}
+	}
+	doSaveImage() {
+		console.log('this will save the image');
+		const currentDateTime = new Date();
+
+		const {
+			aspect,
+			colorObj = this.props.location.state && this.props.location.state.colorObj,
+			hasFrame,
+			hasHighlight,
+			hasBackground,
+			image,
+			imageLevels,
+			theScale,
+			theTranslateX,
+			theTranslateY,
+			} = this.state;
+		const { file } = this.props;
+		console.log('do save iamge: ', image, file);
+		console.log('trying to save:',
+				aspect,
+				colorObj,
+				hasFrame,
+				hasHighlight,
+				hasBackground,
+				image,
+				imageLevels,
+				theScale,
+				theTranslateX,
+				theTranslateY
+				);
+			if (image) {
+				fbase.collection('images').add({
+				aspect,
+				colorObj,
+				hasFrame,
+				hasHighlight,
+				hasBackground,
+				image,
+				imageLevels,
+				theScale,
+				theTranslateX,
+				theTranslateY,
+				modifiedDate: currentDateTime
+			})
+			.then((imageRef) => {
+				console.log('Image successfully written!, with reference of: ', imageRef);
+				this.setState({
+					imageSaved: true,
+					isError: false
+				});
+				setTimeout(() => {
+					this.setState({
 						colorSaved: false,
 					});
 				}, 2000);
@@ -829,7 +961,6 @@ export default class Edit extends Component {
 			}));
 		}
 	}
-
 	loadImage = (name, aspect) => {
 		this.setState({
 			image: name,
@@ -924,4 +1055,40 @@ export default class Edit extends Component {
 											// $darkest: hsl($hue, 82%, 10%);
 											//	`hsla(${colorObj.hsl.h},
 											// ${colorObj.hsl.s}, ${colorObj.hsl.l}, ${colorObj.hsl.a})` }}
+
+/*
+			doingThumbnail = false,
+			doingSmall = false,
+			doingMedium = false,
+			doingLarge = false,
+			doingPrint = false,
+			doneThumbnail = false,
+			doneSmall = false,
+			doneMedium = false,
+			doneLarge = false,
+			donePrint = false,
+*/
+/*
+			savingThumbnail = false,
+			savingSmall = false,
+			savingMedium = false,
+			savingLarge = false,
+			savingPrint = false,
+			savedThumbnail = false,
+			savedSmall = false,
+			savedMedium = false,
+			savedLarge = false,
+			savedPrint = false,
+*/
+/*
+			renderLocationThumbnail = null,
+			renderLocationSmall = null,
+			renderLocationMedium = null,
+			renderLocationLarge = null,
+			renderUrlLarge = null,
+			renderLocationPrint = null,
+			// theHue
+			// image = 'montenegro',
+			// aspect = 'portrait'
+
 */

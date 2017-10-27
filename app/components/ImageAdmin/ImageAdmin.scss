@@ -1,3 +1,5 @@
+@import '../../assets/scss/_global.scss';
+
 .ImageAdmin{
 	position: relative;
 	.notice{
@@ -30,6 +32,20 @@
 			    }
 		    }
 			}
+		}
+	}
+	.listItem{
+		font-size: 11px;
+		border-top: 1px solid #ddd;
+		padding: 4px 0;
+		&:hover{
+			background: rgba(255,255,255, .2);
+		}
+		&.isActive{
+			background: #fff;
+		}
+		.thumbnail{
+			height: 30px;
 		}
 	}
 	.theTick{

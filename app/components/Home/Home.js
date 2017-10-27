@@ -21,15 +21,19 @@ const imageNames = [
 	'Kahurangi',
 	'MilfordSound',
 	'moeraki',
-	'cottage_shore',
-	'cottage_mountains',
-	'dune',
+	'Hokonui',
 	'hillsTriptych1',
 	'hillsTriptych2',
 	'hillsTriptych3',
+	'cottage_shore',
+	'cottage_mountains',
+	'dune',
 	'Rakiura',
 	'Port',
 	'montenegro',
+	'NelsonLakes',
+	'StClair',
+	'Wakatipu',
 ];
 const colorObj = {
 	hsl: {
@@ -65,7 +69,8 @@ export default class Home extends Component {
 		loggedIn: false,
 		theHue: 215.625,
 		theLightness: 0.45,
-		theSaturation: 0.50
+		theSaturation: 0.50,
+		isLoading: true,
 	};
 
 	componentWillMount() {
@@ -87,7 +92,8 @@ export default class Home extends Component {
 			theHue,
 			theLightness,
 			theSaturation,
-			imagesArray
+			imagesArray,
+			isLoading,
 			} = this.state;
 		console.log('fbase: ', fbase);
 		console.log('history: ', history);
@@ -97,7 +103,7 @@ export default class Home extends Component {
 		return (
 			<div className={`${styles.Home} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
 				<div className={`${styles.column} `}>
-					<h2>Home</h2>
+					<h2>Home: svg</h2>
 				{imageNames.map((name) => {
 					return (
 						<a
@@ -122,8 +128,8 @@ export default class Home extends Component {
 				})}
 				</div>
 				<div className={`${styles.column} `}>
-					<div className={styles.row}>
-						<h2>Data base images</h2>
+					<h2>Data base images</h2>
+					<div className={`${styles.row} ${isLoading ? styles.loading : ''}`}>
 						{imagesArray && imagesArray.map((img) => {
 							return (
 								<div
@@ -132,15 +138,29 @@ export default class Home extends Component {
 									role="presentation"
 									onClick={() => this.doRouteImageEdit('/image/admin', img.id)} // eslint-disable-line
 								>
-									<h5>{img.id}
+										{img.data && img.data.image &&
+										<DisplayImage
+											file={img.data.image}
+											aspect={'square'}
+											mode={'thumbnail'}
+											hasHighlight
+											hasFrame={false}
+											isInline
+											hasMargin={false}
+											hue={theHue}
+											saturation={theSaturation}
+											lightness={theLightness}
+										/>
+									}
+									<h5>
+										{img.data.name}
+									</h5>
 									<button
 										// onClick={() => this.showEdit(img.id)} // eslint-disable-line
 										// role="button"
 										onClick={() => this.doRouteImageEdit('/image/admin', img.id)} // eslint-disable-line
 									>edit
 									</button>
-									</h5>
-									{img.data.name}
 								</div>
 							);
 							})
@@ -177,7 +197,8 @@ export default class Home extends Component {
 				imagesArray.push(tempThing);
 			});
 			this.setState({
-				imagesArray
+				imagesArray,
+				isLoading: false,
 			});
 		});
 	}

@@ -13,6 +13,7 @@ import {
 	CottageShore,
 	CottageMountains,
 	Doubtful,
+	Hokonui,
 	HillsTriptych1,
 	HillsTriptych2,
 	HillsTriptych3,
@@ -21,11 +22,14 @@ import {
 	Moeraki,
 	Montenegro,
 	NorthEastValley,
+	NelsonLakes,
 	Port,
 	Rakiura,
+	StClair,
 	Sydney,
 	Teanau,
 	FiordlandFalls,
+	Wakatipu,
 	} from '../../assets/svg';
 
 export default class DisplayImage extends Component {
@@ -45,6 +49,18 @@ export default class DisplayImage extends Component {
   }
 
 	componentDidMount() {
+/*
+		if (this.props.file === 'Wakatipu' && this.props.aspect === 'portrait') {
+			const theWakatipu = document.getElementById('svgWakatipu');
+			console.log('theWakatipu', theWakatipu);
+			// theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+			theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMin meet');
+		}
+*/
+		if (this.props.file === 'Wakatipu' && this.props.aspect === 'landscape') {
+			const theWakatipu = document.getElementById('svgWakatipu');
+			theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+		}
 	}
 
 	componentWillUnmount() {
@@ -142,6 +158,18 @@ export default class DisplayImage extends Component {
 		if (file === 'Kahurangi') {
 			theSvg = Kahurangi;
 		}
+		if (file === 'Wakatipu') {
+			theSvg = Wakatipu;
+		}
+		if (file === 'StClair') {
+			theSvg = StClair;
+		}
+		if (file === 'NelsonLakes') {
+			theSvg = NelsonLakes;
+		}
+		if (file === 'Hokonui') {
+			theSvg = Hokonui;
+		}
 		const tempStyle = {
 			// backgroundColor: `hsl(${theHue}, 82%, 37%)`
 			// backgroundColor: `hsl(${theHue}, 50%, 50%)`
@@ -228,6 +256,9 @@ export default class DisplayImage extends Component {
 			}
 			#svg${file}${this.state.theId} svg {
 				transform: ${theTransform};
+			}
+			#svg${file}${this.state.theId}{
+				background: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
 			}
 				`}
 				style={{ display: `${isInline ? 'inline-block' : 'block'}` }}

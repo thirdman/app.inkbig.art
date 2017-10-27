@@ -3,6 +3,7 @@
 .Home{
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	.column{
 		flex-basis: 1;
 		width: 50%;
@@ -53,14 +54,25 @@
 		font-size: 11px;
 		// overflow: hidden;
 		position: relative;
+		h5{
+			// display: none;
+			// position: absolute;
+			// left: 0;
+			// bottom: 0;
+			// background: #eee;
+			padding: 2px;
+		}
 		&:hover{
 			background: #fff;
-			box-shadow: 0 1px 4px rgba(0,0,0,.2);
+			box-shadow: 0 1px 8px rgba(0,0,0,.3);
+			h5{
+			display: block;
+			}
 		}
 		button{
-			position: absolute;
-			bottom: -10px;
-			left: 50%;
+			position: relative;
+			background: transparent;
+			box-shadow: none;
 		}
 	}
 }
