@@ -14,8 +14,8 @@ import fbase from '../../firebase';
 import Tick from '../../assets/icons/tick.svg';
 import Loading from '../../assets/icons/loading.svg';
 import {
-	// DisplayColor,
-	DisplayImage
+	DisplayImage,
+	RenderImage,
 	} from '../../components';
 import styles from './Edit.scss';
 
@@ -35,6 +35,7 @@ export default class Edit extends Component {
 */
 	state = {
 		profile: {},
+		colorType: 'hue',
 		loggedIn: false,
 		isAdding: false,
 		isEditing: false,
@@ -52,6 +53,9 @@ export default class Edit extends Component {
 		Adjustments: false,
 		imageLevels: [10, 16, 37, 61, 79],
 		colorsArray: [],
+		pairColor1: '#444444',
+		pairColor2: '#dddddd',
+		pairColorArray: [],
 		theScale: 1,
 		theTranslateX: 0,
 		theTranslateY: 0,
@@ -75,6 +79,8 @@ export default class Edit extends Component {
 		const {
 			aspect,
 			colorSaved = false,
+			colorType,
+			doSave = false,
 			hasMenu,
 			isPortrait,
 			image,
@@ -85,6 +91,9 @@ export default class Edit extends Component {
 			hasHighlight = false,
 			hasFrame = false,
 			hasBackground,
+			pairColor1,
+			pairColor2,
+			pairColorArray,
 			theScale,
 			theTranslateX,
 			theTranslateY,
@@ -145,6 +154,7 @@ export default class Edit extends Component {
 							scale={theScale}
 							translateX={theTranslateX}
 							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
 						/>
 					{this.state.previewImage}
 					</div>
@@ -164,6 +174,7 @@ export default class Edit extends Component {
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
+								imageColorArray={pairColorArray}
 							/>
 						</div>
 						<div className={`${styles.sourceImage} ${styles.small}`}>
@@ -177,6 +188,7 @@ export default class Edit extends Component {
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
+								imageColorArray={pairColorArray}
 							/>
 						</div>
 						<div className={`${styles.sourceImage} ${styles.medium}`}>
@@ -190,6 +202,7 @@ export default class Edit extends Component {
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
+								imageColorArray={pairColorArray}
 							/>
 						</div>
 						<div className={`${styles.sourceImage} ${styles.large}`}>
@@ -203,6 +216,7 @@ export default class Edit extends Component {
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
+								imageColorArray={pairColorArray}
 							/>
 						</div>
 						<div className={`${styles.sourceImage} ${styles.print}`}>
@@ -216,6 +230,7 @@ export default class Edit extends Component {
 								hue={theHue}
 								saturation={theSaturation}
 								lightness={theLightness}
+								imageColorArray={pairColorArray}
 							/>
 						</div>
 					</div>
@@ -270,10 +285,42 @@ export default class Edit extends Component {
 						})
 					}
 					</div>
+					<div className={styles.titleBlock}>
+						<h4>New Rendered Images</h4>
+						<RenderImage
+							doSave={doSave}
+							file={image}
+							aspect={aspect}
+							mode={'preview'}
+							hasHighlight={hasHighlight}
+							hasFrame={hasFrame}
+							hasBackground={hasBackground}
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+						/>
+					</div>
 				</div>
 				<div className={`${styles.column} `}>
 					<div className={styles.titleBlock}>
 						<h3>Settings</h3>
+					</div>
+					<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
+						<h5>Save Mode</h5>
+						<div className={styles.switchWrap}>
+							<Toggle
+								className={styles.theToggle}
+								id="doSaveToggle"
+								defaultChecked={this.state.doSave}
+								onChange={this.toggleDoSave}
+							/>
+							<label htmlFor="doSaveToggle">Save on render</label>
+						</div>
 					</div>
 					<div className={`${styles.formItem} ${this.state.hasBackground ? styles.isActive : ''}`}>
 						<h5>hasBackground: <span>{this.state.hasBackground ? 'yes' : 'no'}</span></h5>
@@ -332,7 +379,6 @@ export default class Edit extends Component {
 							</div>
 						</div>
 					</div>
-
 					<div className={styles.titleBlock}>
 						<h3>Adjustments</h3>
 						<button onClick={() => this.toggleViewAdjustments()} >{this.state.showAdjustments ? 'hide adjustments' : 'show adjustments'}</button>
@@ -390,6 +436,115 @@ export default class Edit extends Component {
 					<div className={styles.titleBlock}>
 						<h3>Color</h3>
 						<button onClick={() => this.toggleColorEdit()} >{this.state.showColorEdit ? 'hide edit' : 'show edit'}</button>
+					</div>
+					<div className={`${styles.formItem}`}>
+						<h5>Color type</h5>
+						<div className={styles.buttonGroup}>
+							<div
+								className={`${styles.btn} ${colorType === 'hue' ? styles.selected : ''}`}
+								onClick={() => this.setColorType('hue')}
+								role="presentation"
+							>
+								Hue
+							</div>
+							<div
+								className={`${styles.btn} ${colorType === 'pair' ? styles.selected : ''}`}
+								onClick={() => this.setColorType('pair')}
+								role="presentation"
+							>
+								Pair
+							</div>
+							<div
+								className={`${styles.btn} ${colorType === 'custom' ? styles.selected : ''}`}
+								onClick={() => this.setColorType('custom')}
+								role="presentation"
+							>
+								Custom
+							</div>
+						</div>
+					</div>
+					<div className={`${styles.formItem}`} style={{ display: `${colorType === 'pair' ? 'block' : 'none'}` }}>
+						<h5>Pair</h5>
+						<div className={styles.row}>
+							<div className={styles.column}>
+								<h5>Color 1.</h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: pairColor1 }}
+									/>
+								</div>
+									<ChromePicker
+										color={pairColor1}
+										onChange={(color) => { this.setColor1(color); }}
+									/>
+							</div>
+							<div className={styles.column}>
+								<h5>Color 2.</h5>
+								<div className={styles.swatch}>
+									<div
+										className={styles.color}
+											style={{ backgroundColor: pairColor2 }}
+									/>
+								</div>
+									<ChromePicker
+										color={pairColor2}
+										onChange={(color) => { this.setColor2(color); }}
+									/>
+							</div>
+						</div>
+						<div className={styles.formItem}>
+							<h4>pair color array</h4>
+								{pairColorArray &&
+							<div className={styles.row}>
+								<div className={styles.swatchWrap}>
+									<h5>Darkest <span>{imageLevels[0]}</span></h5>
+									<div className={styles.swatch}>
+										<div
+											className={styles.color}
+												style={{ backgroundColor: `${pairColorArray[0]}` }}
+										/>
+									</div>
+								</div>
+								<div className={styles.swatchWrap}>
+									<h5>Darker <span>{imageLevels[1]}</span></h5>
+									<div className={styles.swatch}>
+										<div
+											className={styles.color}
+												style={{ backgroundColor: `${pairColorArray[1]}` }}
+										/>
+									</div>
+								</div>
+								<div className={styles.swatchWrap}>
+									<h5>Primary <span>{imageLevels[2]}</span></h5>
+									<div className={styles.swatch}>
+										<div
+											className={styles.color}
+												style={{ backgroundColor: `${pairColorArray[2]}` }}
+										/>
+									</div>
+								</div>
+								<div className={styles.swatchWrap}>
+									<h5>Lighter <span>{imageLevels[3]}</span></h5>
+									<div className={styles.swatch}>
+										<div
+											className={styles.color}
+												style={{ backgroundColor: `${pairColorArray[3]}` }}
+										/>
+									</div>
+								</div>
+								<div className={styles.swatchWrap}>
+									<h5>Lightest <span>{imageLevels[4]}</span></h5>
+									<div className={styles.swatch}>
+										<div
+											className={styles.color}
+												style={{ backgroundColor: `${pairColorArray[4]}` }}
+										/>
+									</div>
+								</div>
+							</div>
+							}
+						</div>
 					</div>
 					<section className={styles.alt}>
 						<div className={styles.formItem}>
@@ -1005,6 +1160,16 @@ export default class Edit extends Component {
 			showColorEdit: !this.state.showColorEdit
 		});
 	}
+	toggleDoSave = () => {
+		this.setState({
+			doSave: !this.state.doSave
+		});
+	}
+	setColorType = (type) => {
+		this.setState({
+			colorType: type
+		});
+	}
 	setColor(color) {
 		console.log('setting the color', color);
 		this.setState({
@@ -1012,6 +1177,32 @@ export default class Edit extends Component {
 			theHue: color.hsl.h,
 			theSaturation: color.hsl.s,
 			theLightness: color.hsl.l,
+		});
+	}
+	setColor1(color) {
+		console.log('setting the color1', color);
+		const { pairColor2 } = this.state;
+		const colorStop3 = this.hexAverage(color.hex, pairColor2);// calculate the middle
+		const colorStop2 = this.hexAverage(color.hex, colorStop3); // between middle and initial
+		const colorStop4 = this.hexAverage(colorStop3, pairColor2); // between middle and final
+		const tempArray = [color.hex, colorStop2, colorStop3, colorStop4, pairColor2];
+		console.log(tempArray);
+		this.setState({
+			pairColor1: color.hex,
+			pairColorArray: tempArray,
+		});
+	}
+	setColor2(color) {
+		console.log('setting the color2', color);
+		const { pairColor1 } = this.state;
+		console.log('the hex middle averege is thereforre: ', this.hexAverage(pairColor1, color.hex));
+		const colorStop3 = this.hexAverage(pairColor1, color.hex);	// calc the middle
+		const colorStop2 = this.hexAverage(pairColor1, colorStop3); // between middle and initial
+		const colorStop4 = this.hexAverage(colorStop3, color.hex); // between middle and final
+		const tempArray = [pairColor1, colorStop2, colorStop3, colorStop4, color.hex];
+		this.setState({
+			pairColor2: color.hex,
+			pairColorArray: tempArray,
 		});
 	}
 	setScale(value) {
@@ -1041,8 +1232,50 @@ export default class Edit extends Component {
 			imageLevels: values
 		});
 	}
+	padToTwo(numberString) {
+		console.log(this.state);
+		let newNumberString = numberString;
+		if (numberString.length < 2) {
+			newNumberString = `0${numberString}`; // eslint-disable-line;
+			}
+		return newNumberString;
+	}
+
+	hexAverage(...args) {
+		// const args = Array.prototype.slice.call(arguments); // eslint-disable-line;
+		return args.reduce((previousValue, currentValue) => {
+			return currentValue
+			.replace(/^#/, '')
+			.match(/.{2}/g)
+			.map((value, index) => {
+				console.log('value', value);
+				return previousValue[index] + parseInt(value, 16);
+			});
+		}, [0, 0, 0])
+		.reduce((previousValue, currentValue) => {
+			return previousValue + this.padToTwo(Math.floor(currentValue / args.length).toString(16));
+		}, '#');
+	}
 }
 /*
+			// console.log(previousValue, currentValue);
+			tempArray.push(previousValue);
+			tempArray.push(previousValue
+			+ this.padToTwo(Math.floor(currentValue / 5).toString(16)));
+			tempArray.push(previousValue
+			+ this.padToTwo(Math.floor((currentValue / 5) * 2).toString(16))); // eslint-disable-line;
+			tempArray.push(previousValue
+			+ this.padToTwo(Math.floor((currentValue / 5) * 3).toString(16))); // eslint-disable-line;
+			tempArray.push(currentValue);
+			// console.log('therefore the array is: ', tempArray);
+			// console.log('2nd color stop =/5',
+			previousValue + this.padToTwo(Math.floor(currentValue / 5).toString(16)));
+			// console.log('3rd color stop =/5*2',
+			previousValue + this.padToTwo(Math.floor((currentValue / 5) * 2).toString(16)));
+			// console.log('4th color stop =/5*2',
+			previousValue + this.padToTwo(Math.floor((currentValue / 5) * 3).toString(16)));
+
+
 							<DisplayColor colorObj={colorObj} hsl={colorObj.hsl} hsv={colorObj.hsv} />
 					<DisplayImage file="montenegro" aspect="portrait" />
 					<DisplayImage file="auckland" aspect="landscape" />

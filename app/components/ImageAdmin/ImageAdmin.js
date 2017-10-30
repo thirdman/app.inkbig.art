@@ -203,7 +203,6 @@ export default class ImageAdmin extends Component {
 		const {
 			imageId = (this.props.location.state && this.props.location.state.imageId) || 'milfordSound',
 		} = this.props;
-		console.log('image id in props is', imageId);
 		const imageRef = fbase.collection('images').doc(imageId);
 		imageRef.get().then((doc) => {
 			if (doc.exists) {
@@ -222,11 +221,9 @@ export default class ImageAdmin extends Component {
 	}
 
 	getAvailableFiles(imageId) {
-		console.log('the image id is: ', imageId);
 		const filesRef = fbase.collection('renders').where('slug', '==', imageId);
 		const filesArray = [];
 		filesRef.get().then((querySnapshot) => {
-			console.log('querySnapshot', querySnapshot);
 			querySnapshot.forEach((doc) => {
 				const tempThing = {};
 				tempThing.id = doc.id;
@@ -246,7 +243,6 @@ export default class ImageAdmin extends Component {
 		const rendersRef = fbase.collection('images').doc(imageId).collection('renders');
 		const currentRendersArray = [];
 		rendersRef.get().then((querySnapshot) => {
-			console.log('currentRendersArray querySnapshot', querySnapshot, imageId, '6BdyvanYXJum2kxzuXiV');
 			querySnapshot.forEach((doc) => {
 				console.log(doc);
 				const tempThing = {};
@@ -309,20 +305,16 @@ export default class ImageAdmin extends Component {
 	}
 
 	toggleIncludeRender(renderId) {
-		console.log('this will toggle render id:', renderId);
-//		const currentDateTime = new Date();
 		const { currentRendersArray } = this.state;
 		const {
 			imageId = (this.props.location.state && this.props.location.state.imageId) || 'milfordSound',
 		} = this.props;
 		const renderObj = { renderId, test: 'bbb' };
 		const imageRef = fbase.collection('images').doc(imageId).collection('renders').doc(renderId);
-		console.log('exists: ', imageRef);
 		this.setState({
 			isAdding: true,
 		});
 		if (currentRendersArray.includes(renderId)) {
-			console.log('THIS DOES NOTHING');
 			const currentRendersArrayTemp = currentRendersArray.slice();
 			const index = currentRendersArrayTemp.findIndex((o) => {
 				return o === renderId;
@@ -350,12 +342,8 @@ export default class ImageAdmin extends Component {
 			});
 		} else {
 			imageRef.set(renderObj, { merge: true })
-			// fbase.collection('renders').doc(renderId).coll
-			// ection('images').add(imgObj) // , { merge: true })
-			.then((doc) => {
+			.then(() => {
 				const currentRendersArrayTemp = currentRendersArray.slice();
-				console.log('success: ', doc);
-				// console.log('DOC: => ', doc.data());
 				currentRendersArrayTemp.push(renderId);
 				this.setState({
 					isUpdated: true,

@@ -96,6 +96,7 @@ export default class DisplayImage extends Component {
 			scale = 1,
 			translateX = 0,
 			translateY = 0,
+			imageColorArray,
 		} = this.props;
 		let theSvg = file;
 		if (file === 'montenegro') {
@@ -180,7 +181,19 @@ export default class DisplayImage extends Component {
 						// fill: hsl(${hue}, 82%, 61%);
 						// fill: hsl(${hue}, 82%, 79%);
 		const theTransform = `scale(${scale}) translateX(${translateX}%) translateY(${translateY}%)`;
-
+		let colorStop1 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[0]}%)`;
+		let colorStop2 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[1]}%)`;
+		let colorStop3 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%)`;
+		let colorStop4 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[3]}%)`;
+		let colorStop5 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[4]}%)`;
+		console.log('colorStop1 and imageColorArray', colorStop1, imageColorArray);
+		if (imageColorArray) {
+			colorStop1 = imageColorArray[0];
+			colorStop2 = imageColorArray[1];
+			colorStop3 = imageColorArray[2];
+			colorStop4 = imageColorArray[3];
+			colorStop5 = imageColorArray[4];
+		}
 		return (
 			<InlineCss
 			stylesheet={`
@@ -189,14 +202,14 @@ export default class DisplayImage extends Component {
 				#svg${file}${this.state.theId} svg .darkest rect,
 				#svg${file}${this.state.theId} svg .darkest circle,
 				#svg${file}${this.state.theId} svg .darkest polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[0]}%);
+						fill: ${colorStop1};
 				}
 				#svg${file}${this.state.theId} svg .darker path,
 				#svg${file}${this.state.theId} svg .darkerFill,
 				#svg${file}${this.state.theId} svg .darker rect,
 				#svg${file}${this.state.theId} svg .darker circle,
 				#svg${file}${this.state.theId} svg .darker polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[1]}%);
+						fill: ${colorStop2};
 				}
 
 				#svg${file}${this.state.theId} svg .primary path,
@@ -204,21 +217,21 @@ export default class DisplayImage extends Component {
 				#svg${file}${this.state.theId} svg .primary rect,
 				#svg${file}${this.state.theId} svg .primary circle,
 				#svg${file}${this.state.theId} svg .primary polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
+						fill: ${colorStop3};
 				}
 				#svg${file}${this.state.theId} svg .lighter path,
 				#svg${file}${this.state.theId} svg .lighterFill,
 				#svg${file}${this.state.theId} svg .lighter rect,
 				#svg${file}${this.state.theId} svg .lighter circle,
 				#svg${file}${this.state.theId} svg .lighter polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[3]}%);
+						fill: ${colorStop4};
 				}
 				#svg${file}${this.state.theId} svg .lightest path,
 				#svg${file}${this.state.theId} svg .lightestFill,
 				#svg${file}${this.state.theId} svg .lightest rect,
 				#svg${file}${this.state.theId} svg .lightest circle,
 				#svg${file}${this.state.theId} svg .lightest polygon{
-						fill: hsl(${hue}, ${saturation * 100}%, ${imageLevels[4]}%);
+						fill: ${colorStop5};
 				}
 
 				#svg${file}${this.state.theId} svg .shadow path,
