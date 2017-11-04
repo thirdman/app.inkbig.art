@@ -5,6 +5,7 @@
  */
 
 export { default as Auckland } from './auckland.svg'; // eslint-disable-line
+export { default as AucklandSkyline } from './Auckland_Skyline.svg'; // eslint-disable-line
 export { default as CathedralCove } from './cathedral_cove.svg'; // eslint-disable-line
 export { default as Cave } from './cave.svg'; // eslint-disable-line
 export { default as CottageMountains } from './cottage_mountains.svg'; // eslint-disable-line

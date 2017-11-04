@@ -7,6 +7,7 @@ import '../../assets/scss/variables.css';
 
 import {
 	Auckland,
+	AucklandSkyline,
 	Dune,
 	Cave,
 	CathedralCove,
@@ -49,6 +50,7 @@ export default class DisplayImage extends Component {
   }
 
 	componentDidMount() {
+		console.log('THIS PROPS: ', this.props);
 /*
 		if (this.props.file === 'Wakatipu' && this.props.aspect === 'portrait') {
 			const theWakatipu = document.getElementById('svgWakatipu');
@@ -81,6 +83,7 @@ export default class DisplayImage extends Component {
 			// theHue,
 			} = this.state;
     const {
+			divId,
 			file = 'montenegro',
 			aspect = 'portrait',
 			mode = 'preview',
@@ -171,6 +174,10 @@ export default class DisplayImage extends Component {
 		if (file === 'Hokonui') {
 			theSvg = Hokonui;
 		}
+		if (file === 'AucklandSkyline') {
+			theSvg = AucklandSkyline;
+		}
+
 		const tempStyle = {
 			// backgroundColor: `hsl(${theHue}, 82%, 37%)`
 			// backgroundColor: `hsl(${theHue}, 50%, 50%)`
@@ -276,7 +283,7 @@ export default class DisplayImage extends Component {
 				`}
 				style={{ display: `${isInline ? 'inline-block' : 'block'}` }}
 			>
-			<div className={`${styles.DisplayImage} ${variables.colorScope} ${styles[aspect]} ${styles[mode]} ${hasHighlight ? styles.hasHighlight : ''} ${isLoading ? styles.isLoading : ''} ${hasFrame ? styles.hasFrame : ''}  ${hasBackground ? styles.hasBackground : ''} ${isInline ? styles.isInline : ''} ${hasMargin ? styles.hasMargin : ''}`} id={`theImage${mode}`}>
+			<div className={`${styles.DisplayImage} ${variables.colorScope} ${styles[aspect]} ${styles[mode]} ${hasHighlight ? styles.hasHighlight : ''} ${isLoading ? styles.isLoading : ''} ${hasFrame ? styles.hasFrame : ''}  ${hasBackground ? styles.hasBackground : ''} ${isInline ? styles.isInline : ''} ${hasMargin ? styles.hasMargin : ''}`} id={divId || `theImage${mode}`}>
 				{hasFrame &&
 				<div className={styles.imgFrame} style={tempStyle} />
 				}

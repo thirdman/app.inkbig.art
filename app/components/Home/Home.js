@@ -11,6 +11,7 @@ import { DisplayImage } from '../../components';
 // const svgsArray = keys.map(key => svgs(key));
 const imageNames = [
 	'auckland',
+	'AucklandSkyline',
 	'sydney',
 	'teanau',
 	'fiordland_falls',

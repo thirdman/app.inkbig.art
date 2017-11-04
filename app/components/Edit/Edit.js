@@ -59,6 +59,7 @@ export default class Edit extends Component {
 		theScale: 1,
 		theTranslateX: 0,
 		theTranslateY: 0,
+		doRenders: true,
 	};
 
 	componentWillMount() {
@@ -132,6 +133,9 @@ export default class Edit extends Component {
 						}
 						{this.state.image &&
 							<button onClick={() => this.doRenderThumbnail()} >Render THumbnail only</button>
+						}
+						{this.state.image &&
+							<button onClick={() => this.doRenders()} >newRenders</button>
 						}
 						{imageSaved && 'Image saved!'}
 						{colorSaved && 'Color saved!'}
@@ -287,11 +291,16 @@ export default class Edit extends Component {
 					</div>
 					<div className={styles.titleBlock}>
 						<h4>New Rendered Images</h4>
-						<RenderImage
+						<button onClick={() => this.toggleNewRenders()} >{this.state.doRenders ? 'hide renders' : 'show renders'}</button>
+					</div>
+					{this.state.doRenders && imageSizes.map((size) => {
+						return (<RenderImage
 							doSave={doSave}
+							doRender
+							displayMode={'mini'}
 							file={image}
 							aspect={aspect}
-							mode={'preview'}
+							mode={size.toLowerCase()}
 							hasHighlight={hasHighlight}
 							hasFrame={hasFrame}
 							hasBackground={hasBackground}
@@ -303,8 +312,8 @@ export default class Edit extends Component {
 							translateX={theTranslateX}
 							translateY={theTranslateY}
 							imageColorArray={pairColorArray}
-						/>
-					</div>
+						/>);
+					})}
 				</div>
 				<div className={`${styles.column} `}>
 					<div className={styles.titleBlock}>
@@ -1165,6 +1174,17 @@ export default class Edit extends Component {
 			doSave: !this.state.doSave
 		});
 	}
+	doRenders = () => {
+		this.setState({
+			doRenders: true
+		});
+	}
+	toggleNewRenders = () => {
+		this.setState({
+			doRenders: !this.state.doRenders
+		});
+	}
+
 	setColorType = (type) => {
 		this.setState({
 			colorType: type

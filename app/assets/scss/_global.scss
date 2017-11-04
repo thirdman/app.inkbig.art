@@ -38,6 +38,7 @@ button{
   color: #333;
   cursor: pointer;
   outline: none;
+  transition: ease-out .3s box-shadow, ease-out .3s transform;
   &:hover{
 	  // background: rgba(0,0,0,.1);
 	  background: #fff;
@@ -82,4 +83,17 @@ button{
 		background: #89d828;
 		color: #fff;
 	}
+}
+
+
+// MISC
+@keyframes rotateMe {
+  0% {
+    // background-color: #001F3F;
+    transform: rotate(0deg);
+  }
+  100% {
+    // background-color: #FF4136;
+    transform: rotate(360deg);
+  }
 }

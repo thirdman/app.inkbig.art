@@ -23,7 +23,8 @@ export default class RenderImage extends Component {
 		hasSaved: false,
 		theHue: 10,
 		theId: this.makeId(),
-		showDetail: false,
+		showRendered: true,
+		showDetail: true,
 		size: this.props.mode,
 	};
 
@@ -153,18 +154,17 @@ export default class RenderImage extends Component {
 							{this.props.file &&
 								<button onClick={() => this.doSave()} >Save Image</button>
 							}
+							<button onClick={() => this.toggleViewRendered()} >{showRendered ? 'hide render' : 'Show render'}</button>
 					</div>
 				</div>
 				<div className={`${styles.row} ${showRendered ? styles.isvisible : ''} ${this.state.showDetail ? styles.visible : styles.invisible}`}>
 					<div className={styles.column}>
-						<span className={styles.cropSource}>
 							<DisplayImage
 								{...this.props}
 								// aspect={this.props.aspect}
-								// mode={'large'}
+								// mode={size}
 								divId={this.state.theId}
 							/>
-							</span>
 					</div>
 					<div className={styles.column}>
 						<div>
@@ -266,6 +266,11 @@ export default class RenderImage extends Component {
 	toggleLoading() {
 		this.setState({
 			isLoading: !this.state.isLoading
+		});
+	}
+	toggleViewRendered() {
+		this.setState({
+			showRendered: !this.state.showRendered
 		});
 	}
 	toggleDetail() {
