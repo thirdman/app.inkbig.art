@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import domtoimage from 'dom-to-image';
-import { Link } from 'react-router-dom';
+// import domtoimage from 'dom-to-image';
+// import { Link } from 'react-router-dom';
 import { ChromePicker, BlockPicker, SliderPicker, SketchPicker } from 'react-color';
 import Toggle from 'react-toggle';
 import Slider, { Range } from 'rc-slider';
@@ -11,8 +11,8 @@ import '../../assets/scss/rcSlider.css';
 import fbase from '../../firebase';
 
 // import Dispimport variables from '../../assets/scss/variables.scss';
-import Tick from '../../assets/icons/tick.svg';
-import Loading from '../../assets/icons/loading.svg';
+// import Tick from '../../assets/icons/tick.svg';
+// import Loading from '../../assets/icons/loading.svg';
 import {
 	DisplayImage,
 	RenderImage,
@@ -48,7 +48,6 @@ export default class Edit extends Component {
 		// isPreview: true,
 		isPortrait: true,
 		showSources: false,
-		showRendered: true,
 		showColorEdit: false,
 		Adjustments: false,
 		imageLevels: [10, 16, 37, 61, 79],
@@ -60,6 +59,8 @@ export default class Edit extends Component {
 		theTranslateX: 0,
 		theTranslateY: 0,
 		doRenders: true,
+		swatchName: null,
+		swatchArray: [],
 	};
 
 	componentWillMount() {
@@ -67,6 +68,7 @@ export default class Edit extends Component {
 
 	componentDidMount() {
 		this.getColors();
+		this.getSwatches();
 	}
 
 	componentWillUnmount() {
@@ -88,6 +90,7 @@ export default class Edit extends Component {
 			imageSaved,
 			colorObj = this.props.location.state && this.props.location.state.colorObj,
 			colorsArray,
+			swatchArray,
 			// isPreview,
 			hasHighlight = false,
 			hasFrame = false,
@@ -104,7 +107,6 @@ export default class Edit extends Component {
 				this.props.location.state.colorObj.hsl.s) || 0.5,
 			theLightness = (this.props.location.state &&
 				this.props.location.state.colorObj.hsl.l) || 0.5,
-			isRendering,
 			imageLevels,
 			} = this.state;
 
@@ -129,13 +131,7 @@ export default class Edit extends Component {
 							<button onClick={() => this.doSaveImage()} >Save Image</button>
 						}
 						{this.state.image &&
-							<button onClick={() => this.doSaveRenders()} >Save All renders async</button>
-						}
-						{this.state.image &&
-							<button onClick={() => this.doRenderThumbnail()} >Render THumbnail only</button>
-						}
-						{this.state.image &&
-							<button onClick={() => this.doRenders()} >newRenders</button>
+							<button onClick={() => this.doRenders()} >Renders</button>
 						}
 						{imageSaved && 'Image saved!'}
 						{colorSaved && 'Color saved!'}
@@ -240,61 +236,11 @@ export default class Edit extends Component {
 					</div>
 					<div className={styles.titleBlock}>
 						<h4>Rendered Images</h4>
-						<button onClick={() => this.toggleViewRendered()} >{this.state.showRendered ? 'hide renders' : 'show renders'}</button>
-					</div>
-					<div className={`${styles.renderImageWrap} ${this.state.showRendered ? styles.visible : ''} ${isRendering ? styles.loading : ''}`}>
-					{
-						imageSizes.map((size) => {
-							// const renderDoneState = `done${size}`;
-							// const renderSavedState = `saved${size}`;
-							return (
-								<div key={`renderWrap${size}`} className={`${styles.renderImage} ${styles[size]}`}>
-									<h4>{size}</h4>
-									<div
-										className={styles.theTick}
-										dangerouslySetInnerHTML={{ __html: Tick }}
-									/>
-									{this.state[`doing${size}`] &&
-										<div className={styles.placeholder}>
-											<div
-												className={styles.theLoading}
-												dangerouslySetInnerHTML={{ __html: Loading }}
-											/>
-											Rendering...
-										</div>
-									}
-									<div id={`newImg${size}`} />
-									{!this.state[`saved${size}`] && this.state[`saving${size}`] &&
-										<div className={styles.saving}>
-										<div
-											className={styles.theLoading}
-											dangerouslySetInnerHTML={{ __html: Loading }}
-										/>
-										saving....
-										</div>
-									}
-									{this.state[`renderUrl${size}`] &&
-										<div>
-											<Link
-												target="blank"
-												to={this.state[`renderUrl${size}`]}
-												className={styles.link}
-											>
-												Link
-											</Link>
-										</div>
-									}
-								</div>
-							);
-						})
-					}
-					</div>
-					<div className={styles.titleBlock}>
-						<h4>New Rendered Images</h4>
 						<button onClick={() => this.toggleNewRenders()} >{this.state.doRenders ? 'hide renders' : 'show renders'}</button>
 					</div>
 					{this.state.doRenders && imageSizes.map((size) => {
 						return (<RenderImage
+							key={`render${size}`}
 							doSave={doSave}
 							doRender
 							displayMode={'mini'}
@@ -424,27 +370,20 @@ export default class Edit extends Component {
 							/>
 						</div>
 					</div>
-					<div style={{ display: 'none' }}>
-						<button onClick={() => this.loadImage('montenegro', 'portrait')} >montenegro</button>
-						<button onClick={() => this.loadImage('auckland', 'landscape')} >auckland</button>
-						<button onClick={() => this.loadImage('sydney', 'portrait')} >sydney</button>
-						<button onClick={() => this.loadImage('fiordland_falls', 'portrait')} >fiordland_falls</button>
-						<button onClick={() => this.loadImage('teanau', 'portrait')} >te anau</button>
-						<button onClick={() => this.loadImage('dune')} >Dune</button>
-						<button onClick={() => this.loadImage('doubtful')} >doubtful</button>
-						<button onClick={() => this.loadImage('cottage_shore')} >cottage (shore)</button>
-						<button onClick={() => this.loadImage('cottage_mountains')} >cottage (mountains)</button>
-						<button onClick={() => this.loadImage('cave')} >cave</button>
-						<button onClick={() => this.loadImage('cathedral')} >cathedral cove</button>
-						<button onClick={() => this.loadImage('moeraki')} >Moeraki</button>
-						<button onClick={() => this.loadImage('hillsTriptych1')} >hillsTriptych1</button>
-						<button onClick={() => this.loadImage('hillsTriptych2')} >hillsTriptych2</button>
-						<button onClick={() => this.loadImage('hillsTriptych3')} >hillsTriptych3</button>
-						<button onClick={() => this.loadImage('Port')} >Port</button>
-					</div>
 					<div className={styles.titleBlock}>
 						<h3>Color</h3>
+						<button onClick={() => this.doSaveSwatch()} style={{ marginRight: '100px' }}>Save Swatch</button>
 						<button onClick={() => this.toggleColorEdit()} >{this.state.showColorEdit ? 'hide edit' : 'show edit'}</button>
+					</div>
+					<div className={`${styles.formItem}`}>
+						<h5>Swatch Name</h5>
+						<input
+						type="text"
+							ref={(c) => { this.swatchNameField = c; }}
+							value={this.state.swatchName || ''}
+							onChange={(evt) => { this.setSwatchName(evt); }}
+							// onChange={this.setSwatchName}
+						/>
 					</div>
 					<div className={`${styles.formItem}`}>
 						<h5>Color type</h5>
@@ -683,6 +622,34 @@ export default class Edit extends Component {
 							})
 						}
 					</div>
+					<div className={styles.formitem}>
+						<h3>Existing Swatches</h3>
+						{swatchArray && swatchArray.map((swatch) => {
+							return (
+								<div
+									key={`img${swatch.id}`}
+									className={styles.colorCard}
+									role="presentation"
+								>
+									<div className={styles.swatch} onClick={() => this.loadSwatch(swatch.id)} role="presentation">
+									{swatch.data && swatch.data.type && swatch.data.type === 'pair' &&
+										<div
+											className={styles.color}
+												style={{ backgroundColor: swatch.data.pairColor1 }}
+										/>
+									}
+									</div>
+									<button
+										onClick={() => this.loadSwatch(swatch.id)} // eslint-disable-line
+										// style={{ background: 'red' }}
+									>
+										use this swatch ({swatch.data && swatch.data.name})
+									</button>
+								</div>
+							);
+							})
+						}
+					</div>
 				</div>
 			</div>
 		);
@@ -728,6 +695,7 @@ export default class Edit extends Component {
 			console.log('Error getting color:', error);
 		});
 	}
+/*
 	doRenderImages = () => {
 		// NOTE: the 'mode' is passed through to display image and used for an id as theImage + 'mode'
 		// eg theImage + thumbnail
@@ -939,7 +907,9 @@ export default class Edit extends Component {
 			});
 		}
 	}
+*/
 
+/*
 	doRenderThumbnail = () => {
 		const theImageTh = document.getElementById('theImagethumbnail');
 		const { colorObj } = this.state;
@@ -963,7 +933,8 @@ export default class Edit extends Component {
 					savingThumbnail: true,
 					savedThumbnail: false,
 				});
-				const renderLocationThumbnail = `renders/${this.state.image}_${(colorObj && colorObj.hex) || ''}_thumbnail.jpg`;
+				const renderLocationThumbnail =
+				`renders/${this.state.image}_${(colorObj && colorObj.hex) || ''}_thumbnail.jpg`;
 				const storageRefThumbnail = fStorage.ref().child(renderLocationThumbnail);
 				storageRefThumbnail.putString(dataUrl, 'data_url').then((snapshot) => {
 					console.log('Uploaded a blob or file!');
@@ -982,7 +953,9 @@ export default class Edit extends Component {
 			});
 		}
 	}
+*/
 
+/*
 	doSaveRender = (snapshot, size, hex) => {
 		console.log('doSaveRender was called', snapshot, hex);
 		const currentDateTime = new Date();
@@ -1019,8 +992,7 @@ export default class Edit extends Component {
 			}));
 		}
 	}
-	doSaveRenders = async () => {
-	}
+*/
 
 	doSaveColor(colorId) {
 		if (colorId) {
@@ -1154,11 +1126,6 @@ export default class Edit extends Component {
 			showSources: !this.state.showSources
 		});
 	}
-	toggleViewRendered = () => {
-		this.setState({
-			showRendered: !this.state.showRendered
-		});
-	}
 	toggleViewAdjustments = () => {
 		this.setState({
 			showAdjustments: !this.state.showAdjustments
@@ -1197,6 +1164,7 @@ export default class Edit extends Component {
 			theHue: color.hsl.h,
 			theSaturation: color.hsl.s,
 			theLightness: color.hsl.l,
+			swatchName: '',
 		});
 	}
 	setColor1(color) {
@@ -1210,6 +1178,7 @@ export default class Edit extends Component {
 		this.setState({
 			pairColor1: color.hex,
 			pairColorArray: tempArray,
+			swatchName: '',
 		});
 	}
 	setColor2(color) {
@@ -1223,8 +1192,107 @@ export default class Edit extends Component {
 		this.setState({
 			pairColor2: color.hex,
 			pairColorArray: tempArray,
+			swatchName: '',
 		});
 	}
+	// SWATCH
+	getSwatches() {
+		const colorsRef = fbase.collection('swatches');
+		const swatchArray = [];
+		colorsRef.get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				// console.log(doc.id, ' => ', doc.data());
+				// imagesArray[doc.id] = doc.data();
+				const tempThing = {};
+				tempThing.id = doc.id;
+				tempThing.data = doc.data();
+				swatchArray.push(tempThing);
+			});
+			this.setState({
+				swatchArray
+			});
+		});
+	}
+
+	loadSwatch(swatchId) {
+		const { swatchArray } = this.state;
+		console.log('loading swatch data from: ', swatchId);
+		console.log('swatchArray is: ', swatchArray);
+		const docRef = fbase.collection('swatches').doc(swatchId);
+		docRef.get().then((doc) => {
+			if (doc.exists) {
+				console.log('swatch data:', doc.data());
+				this.setState({
+					swatch: doc.data(),
+					colorType: doc.data().type,
+					pairColor1: doc.data().pairColor1,
+					pairColor2: doc.data().pairColor2,
+					pairColorArray: doc.data().pairColorArray,
+					swatchName: doc.data().name,
+				});
+			} else {
+				console.log('No such swatch!');
+			}
+		}).catch((error) => {
+			console.log('Error getting swatch:', error);
+		});
+	}
+
+	doSaveSwatch() {
+		console.log('saving the swatch', this.state);
+		const currentDateTime = new Date();
+		const {
+			swatchName = 'testswatch',
+			colorType,
+			pairColorArray,
+			pairColor1,
+			pairColor2,
+			// theHue,
+			// imageLevels,
+		} = this.state;
+		// TODO:
+		// convert hue swatches into custom ones.
+		// and save as array
+		if (swatchName) {
+			fbase.collection('swatches').add({
+				name: swatchName,
+				type: colorType,
+				pairColorArray,
+				pairColor1,
+				pairColor2,
+				// theHue,
+				// imageLevels,
+				modifiedDate: currentDateTime
+		})
+		.then((ref) => {
+			console.log('swatch Added: ', ref);
+			this.setState({
+				swatchSaved: true,
+				isError: false
+			});
+			setTimeout(() => {
+				this.setState({
+					swatchSaved: false,
+				});
+			}, 2000);
+		})
+		.catch(((error) => {
+			console.error('Error writing swatch: ', error);
+			this.setState({
+				swatchSaved: false,
+				isError: true
+			});
+		}));
+		}
+	}
+	setSwatchName(evt) {
+		console.log('setting the swatchname', evt);
+		this.setState({
+			swatchName: evt.target.value
+		});
+	}
+
+	// ADJUSTMENTS ////////////////////////////////////////////////////////////
 	setScale(value) {
 		console.log('setting the scale value', value);
 		this.setState({

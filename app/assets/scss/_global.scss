@@ -50,6 +50,14 @@ button{
   }
 }
 
+input[type="text"]{
+    width: 100%;
+    padding: 4px;
+    font-size: 14px;
+    border-radius: 2px;
+    border: 0px solid #ccc;
+}
+
 // LOADING
 .loading{
 	min-height: 100px;

@@ -50,7 +50,6 @@ export default class DisplayImage extends Component {
   }
 
 	componentDidMount() {
-		console.log('THIS PROPS: ', this.props);
 /*
 		if (this.props.file === 'Wakatipu' && this.props.aspect === 'portrait') {
 			const theWakatipu = document.getElementById('svgWakatipu');
@@ -193,7 +192,7 @@ export default class DisplayImage extends Component {
 		let colorStop3 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%)`;
 		let colorStop4 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[3]}%)`;
 		let colorStop5 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[4]}%)`;
-		console.log('colorStop1 and imageColorArray', colorStop1, imageColorArray);
+		// console.log('colorStop1 and imageColorArray', colorStop1, imageColorArray);
 		if (imageColorArray) {
 			colorStop1 = imageColorArray[0];
 			colorStop2 = imageColorArray[1];
