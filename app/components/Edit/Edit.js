@@ -16,6 +16,7 @@ import fbase from '../../firebase';
 import {
 	DisplayImage,
 	RenderImage,
+	SwatchGroup,
 	} from '../../components';
 import styles from './Edit.scss';
 
@@ -58,7 +59,7 @@ export default class Edit extends Component {
 		theScale: 1,
 		theTranslateX: 0,
 		theTranslateY: 0,
-		doRenders: true,
+		doRenders: false,
 		swatchName: null,
 		swatchArray: [],
 	};
@@ -76,9 +77,7 @@ export default class Edit extends Component {
 	// Note: `user` comes from the URL, courtesy of our router
 	// { action, blogId }
 	render() {
-    const {
-			file,
-		} = this.props;
+    // const {		} = this.props;
 		const {
 			aspect,
 			colorSaved = false,
@@ -91,7 +90,7 @@ export default class Edit extends Component {
 			colorObj = this.props.location.state && this.props.location.state.colorObj,
 			colorsArray,
 			swatchArray,
-			// isPreview,
+			swatchName,
 			hasHighlight = false,
 			hasFrame = false,
 			hasBackground,
@@ -110,9 +109,6 @@ export default class Edit extends Component {
 			imageLevels,
 			} = this.state;
 
-		// console.log('state is', this.state);
-		// console.log('props is', this.props);
-		console.log('edit file (to be depricated)', file);
 		if (!firebase.apps.length) {
 			// firebase.initializeApp();
 		} else {
@@ -159,93 +155,19 @@ export default class Edit extends Component {
 					{this.state.previewImage}
 					</div>
 					<div className={styles.titleBlock}>
-						<h4>Sources</h4>
-						<button onClick={() => this.toggleViewSources()} >{this.state.showSources ? 'hide sources' : 'show sources'}</button>
-					</div>
-					<div className={`${styles.sourceImageWrap} ${this.state.showSources ? styles.visible : ''}`}>
-						<div className={`${styles.sourceImage} ${styles.th}`}>
-							<DisplayImage
-								file={image}
-								aspect={aspect}
-								mode={'thumbnail'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground={hasBackground}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								imageColorArray={pairColorArray}
-							/>
-						</div>
-						<div className={`${styles.sourceImage} ${styles.small}`}>
-							<DisplayImage
-								file={image}
-								aspect={aspect}
-								mode={'small'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground={hasBackground}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								imageColorArray={pairColorArray}
-							/>
-						</div>
-						<div className={`${styles.sourceImage} ${styles.medium}`}>
-							<DisplayImage
-								file={image}
-								aspect={aspect}
-								mode={'medium'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground={hasBackground}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								imageColorArray={pairColorArray}
-							/>
-						</div>
-						<div className={`${styles.sourceImage} ${styles.large}`}>
-							<DisplayImage
-								file={image}
-								aspect={aspect}
-								mode={'large'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground={hasBackground}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								imageColorArray={pairColorArray}
-							/>
-						</div>
-						<div className={`${styles.sourceImage} ${styles.print}`}>
-							<DisplayImage
-								file={image}
-								aspect={aspect}
-								mode={'print'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground={hasBackground}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								imageColorArray={pairColorArray}
-							/>
-						</div>
-					</div>
-					<div className={styles.titleBlock}>
 						<h4>Rendered Images</h4>
 						<button onClick={() => this.toggleNewRenders()} >{this.state.doRenders ? 'hide renders' : 'show renders'}</button>
 					</div>
 					{this.state.doRenders && imageSizes.map((size) => {
-						return (<RenderImage
-							key={`render${size}`}
+						return (<div>
+						<h4>{size}:</h4>
+						<RenderImage
+							key={`render${size}portrait`}
 							doSave={doSave}
 							doRender
 							displayMode={'mini'}
 							file={image}
-							aspect={aspect}
+							aspect={'portrait'}
 							mode={size.toLowerCase()}
 							hasHighlight={hasHighlight}
 							hasFrame={hasFrame}
@@ -258,8 +180,141 @@ export default class Edit extends Component {
 							translateX={theTranslateX}
 							translateY={theTranslateY}
 							imageColorArray={pairColorArray}
-						/>);
+							swatchName={swatchName}
+						/>
+						<RenderImage
+							key={`render${size}circle`}
+							doSave={doSave}
+							doRender
+							displayMode={'mini'}
+							file={image}
+							aspect={'circle'}
+							mode={size.toLowerCase()}
+							hasHighlight={hasHighlight}
+							hasFrame={hasFrame}
+							hasBackground={hasBackground}
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+							swatchName={swatchName}
+						/>
+						<RenderImage
+							key={`render${size}landscape`}
+							doSave={doSave}
+							doRender
+							displayMode={'mini'}
+							file={image}
+							aspect={'landscape'}
+							mode={size.toLowerCase()}
+							hasHighlight={hasHighlight}
+							hasFrame={hasFrame}
+							hasBackground={hasBackground}
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+							swatchName={swatchName}
+						/>
+						</div>);
 					})}
+					{this.state.doRenders &&
+						<div>
+						<h4>MISC:</h4>
+						<RenderImage
+							key={'renderMediumPortraitBackground'}
+							doSave={doSave}
+							doRender
+							displayMode={'mini'}
+							file={image}
+							aspect={'portrait'}
+							mode={'medium'}
+							hasHighlight={hasHighlight}
+							hasFrame={hasFrame}
+							hasBackground
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+							swatchName={swatchName}
+						/>
+						<RenderImage
+							key={'renderMediumCircleBackground'}
+							doSave={doSave}
+							doRender
+							displayMode={'mini'}
+							file={image}
+							aspect={'circle'}
+							mode={'medium'}
+							hasHighlight={hasHighlight}
+							hasFrame={hasFrame}
+							hasBackground
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+							swatchName={swatchName}
+						/>
+						<RenderImage
+							key={'renderMediumPortraitBackgroundFrame'}
+							doSave={doSave}
+							doRender
+							displayMode={'mini'}
+							file={image}
+							aspect={'portrait'}
+							mode={'medium'}
+							hasHighlight={hasHighlight}
+							hasFrame
+							hasBackground
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+							swatchName={swatchName}
+						/>
+						<RenderImage
+							key={'renderMediumCircleBackgroundFrame'}
+							doSave={doSave}
+							doRender
+							displayMode={'mini'}
+							file={image}
+							aspect={'circle'}
+							mode={'medium'}
+							hasHighlight={hasHighlight}
+							hasFrame
+							hasBackground
+							imageLevels={imageLevels}
+							hue={theHue}
+							saturation={theSaturation}
+							lightness={theLightness}
+							scale={theScale}
+							translateX={theTranslateX}
+							translateY={theTranslateY}
+							imageColorArray={pairColorArray}
+							swatchName={swatchName}
+						/>
+						</div>
+					}
 				</div>
 				<div className={`${styles.column} `}>
 					<div className={styles.titleBlock}>
@@ -590,6 +645,21 @@ export default class Edit extends Component {
 						</div>
 					</section>
 					<div className={styles.formitem}>
+						<h3>Existing Swatches</h3>
+						{swatchArray && swatchArray.map((swatch) => {
+							return (
+								<SwatchGroup
+									key={`img${swatch.id}`}
+									swatch={swatch.data}
+									isHorizontal
+									role="presentation"
+									onClickProps={() => this.loadSwatch(swatch.id)}
+								/>
+							);
+						})
+						}
+					</div>
+					<div className={styles.formitem}>
 					<h3>Existing Colors</h3>
 						{colorsArray && colorsArray.map((color) => {
 							return (
@@ -616,34 +686,6 @@ export default class Edit extends Component {
 										onClick={() => this.updateColor(color.id)} // eslint-disable-line
 									>
 										Overwrite
-									</button>
-								</div>
-							);
-							})
-						}
-					</div>
-					<div className={styles.formitem}>
-						<h3>Existing Swatches</h3>
-						{swatchArray && swatchArray.map((swatch) => {
-							return (
-								<div
-									key={`img${swatch.id}`}
-									className={styles.colorCard}
-									role="presentation"
-								>
-									<div className={styles.swatch} onClick={() => this.loadSwatch(swatch.id)} role="presentation">
-									{swatch.data && swatch.data.type && swatch.data.type === 'pair' &&
-										<div
-											className={styles.color}
-												style={{ backgroundColor: swatch.data.pairColor1 }}
-										/>
-									}
-									</div>
-									<button
-										onClick={() => this.loadSwatch(swatch.id)} // eslint-disable-line
-										// style={{ background: 'red' }}
-									>
-										use this swatch ({swatch.data && swatch.data.name})
 									</button>
 								</div>
 							);

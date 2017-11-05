@@ -65,23 +65,7 @@ export default class RenderImage extends Component {
 			doRender = false,
 			displayMode = 'max',
 			file = 'montenegro',
-/*
-			aspect = 'portrait',
-			mode = 'preview',
-			hasBackground = false,
-			hasFrame = true,
-			hasMargin = false,
-			hasHighlight = false,
-			isInline = false,
-			imageLevels = [10, 16, 37, 61, 79],
-			hue = 10,
-			saturation = 82,
-			lightness = 37,
-			scale = 1,
-			translateX = 0,
-			translateY = 0,
-			imageColorArray,
-*/
+			swatchName,
 		} = this.props;
 
 		return (
@@ -91,6 +75,10 @@ export default class RenderImage extends Component {
 					<div className={styles.column}>
 						<h4>Size</h4>
 						<span>{size}</span>
+					</div>
+					<div className={styles.column}>
+						<h4>Swatch</h4>
+						<span>{swatchName}</span>
 					</div>
 					<div className={styles.column}>
 						<h4>Rendered</h4>
@@ -244,11 +232,11 @@ export default class RenderImage extends Component {
 	}
 	doSave(dataUrl) {
 		console.log('this will save the image', this.state);
-		const { file, aspect } = this.props;
+		const { file, aspect, swatchName, hasFrame, hasBackground } = this.props;
 		const { size } = this.state;
 		console.log(fbase.collection('renders'));
 		const fStorage = firebase.storage();
-		const storageLocation = `renders/${file}_${aspect}_${size}.jpg`;
+		const storageLocation = `renders/${file}_${swatchName}_${aspect}_${size}${hasFrame ? '_Frame' : ''}${hasBackground ? '_Background' : ''}.jpg`;
 		const storageRef = fStorage.ref().child(storageLocation);
 		this.setState({
 			isSaving: true,
