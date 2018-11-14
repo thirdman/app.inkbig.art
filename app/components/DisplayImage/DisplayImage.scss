@@ -1605,6 +1605,10 @@ $printBgLess: 1200px;
 	&.isInline{
 		display: inline-block;
 	}
+	&.isCentered{
+		margin-left: auto;
+		margin-right: auto;
+	}
 	&.hasHighlight{
 		&.hasFrame{
 			.imgFrame{

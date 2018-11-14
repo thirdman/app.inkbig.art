@@ -12,11 +12,13 @@ import { DisplayImage } from '../../components';
 const imageNames = [
 	'auckland',
 	'AucklandSkyline',
+	'AucklandOneTreeHill',
 	'sydney',
 	'teanau',
 	'fiordland_falls',
 	'doubtful',
 	'cave',
+	'christchurch',
 	'cathedral',
 	'NorthEastValley',
 	'Kahurangi',
@@ -31,10 +33,13 @@ const imageNames = [
 	'dune',
 	'Rakiura',
 	'Port',
+	'Piha',
 	'montenegro',
 	'NelsonLakes',
 	'StClair',
 	'Wakatipu',
+	'Wellington',
+	'Wedding',
 ];
 const colorObj = {
 	hsl: {
@@ -130,7 +135,7 @@ export default class Home extends Component {
 				</div>
 				<div className={`${styles.column} `}>
 					<h2>Data base images</h2>
-					<div className={`${styles.row} ${isLoading ? styles.loading : ''}`}>
+					<div className={`${styles.dbImagesWrap} ${styles.row} ${isLoading ? styles.loading : ''}`}>
 						{imagesArray && imagesArray.map((img) => {
 							return (
 								<div
@@ -151,6 +156,9 @@ export default class Home extends Component {
 											hue={theHue}
 											saturation={theSaturation}
 											lightness={theLightness}
+											scale={img.data.theScale}
+											translateX={img.data.theTranslateX}
+											translateY={img.data.theTranslateY}
 										/>
 									}
 									<h5>
@@ -159,9 +167,16 @@ export default class Home extends Component {
 									<button
 										// onClick={() => this.showEdit(img.id)} // eslint-disable-line
 										// role="button"
+										className={styles.editButton}
 										onClick={() => this.doRouteImageEdit('/image/admin', img.id)} // eslint-disable-line
 									>edit
 									</button>
+									{img.renders && (img.renders.length >= 1) &&
+										<div className={styles.theCount}>{img.renders.length}</div>
+									}
+									{img.data.modifiedDate &&
+										<div>{img.data.modifiedDate.toDateString()}</div>
+									}
 								</div>
 							);
 							})
@@ -191,10 +206,22 @@ export default class Home extends Component {
 		imagesRef.get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
 				console.log(doc.id, ' => ', doc.data());
-				// imagesArray[doc.id] = doc.data();
 				const tempThing = {};
 				tempThing.id = doc.id;
 				tempThing.data = doc.data();
+
+				const imageRenders = imagesRef.doc(doc.id).collection('renders').get() // eslint-disable-line
+					.then((snapshot) => {
+						const tempArray = [];
+						snapshot.forEach((subdoc) => {
+							// console.log('Sub Document ID: ', subdoc.id);
+							tempArray.push(subdoc.id);
+						});
+						tempThing.renders = tempArray;
+					})
+					.catch((err) => {
+						console.log('Error getting sub-collection documents', err);
+					});
 				imagesArray.push(tempThing);
 			});
 			this.setState({

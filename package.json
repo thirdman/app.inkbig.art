@@ -1,7 +1,7 @@
 {
   "name": "artbient-admin",
   "version": "0.1.0",
-  "description": "Admin for artbient iamges",
+  "description": "Admin for vector iamges",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",

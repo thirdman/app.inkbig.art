@@ -38,9 +38,17 @@ export default class RenderImage extends Component {
 		}
 	}
 
-	makeId() {
+	componentDidUpdate() {
+		const { doRender, doSave } = this.props;
+		// this.toggleLoading();
+		if (doRender) {
+			console.log('did update. Do save? ', doSave);
+		// this.doRender(doSave);
+		}
+	}
+
+	makeId() { // eslint-disable-line
 		let text = '';
-		console.log('display image this:', this);
 		const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		for (let i = 0; i < 5; i++) {
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -70,7 +78,14 @@ export default class RenderImage extends Component {
 
 		return (
 
-			<div className={`${styles.RenderImage} ${styles[displayMode]} ${isLoading ? styles.isLoading : ''} ${isRendering ? styles.isRendering : ''} ${isSaving ? styles.isSaving : ''}`} id={`renderImage${theId}_${file}`}>
+			<div
+				className={`${styles.RenderImage} 
+					${styles[displayMode]} 
+					${isLoading ? styles.isLoading : ''} 
+					${isRendering ? styles.isRendering : ''} 
+					${isSaving ? styles.isSaving : ''}`}
+				id={`renderImage${theId}_${file}`}
+			>
 				<div className={`${styles.row} ${styles.infoRow}`}>
 					<div className={styles.column}>
 						<h4>Size</h4>
@@ -82,19 +97,30 @@ export default class RenderImage extends Component {
 					</div>
 					<div className={styles.column}>
 						<h4>Rendered</h4>
-						<div>{isRendering ? 'Rendering...' : ''}{hasRendered ? 'Yes' : ''}
-						{hasRendered &&
+						<div>{isRendering ?
 							<div
-								className={styles.theTick}
-								dangerouslySetInnerHTML={{ __html: Tick }}
+								className={styles.theLoading}
+								dangerouslySetInnerHTML={{ __html: Loading }}
 							/>
-						}
+							: ''}
+							<div>{!isRendering && hasRendered &&
+								<div
+									className={styles.theTick}
+									dangerouslySetInnerHTML={{ __html: Tick }}
+								/>
+							}
+							</div>
 						</div>
 					</div>
 					<div className={styles.column}>
 						<h4>Saved</h4>
-						<div>{isSaving ? 'Saving...' : ''}{hasSaved ? 'Yes' : ''}
-						{hasSaved &&
+						<div>{isSaving ?
+							<div
+								className={styles.theLoading}
+								dangerouslySetInnerHTML={{ __html: Loading }}
+							/>
+							: ''}
+						{!isSaving && hasSaved &&
 							<div
 								className={styles.theTick}
 								dangerouslySetInnerHTML={{ __html: Tick }}
@@ -109,27 +135,22 @@ export default class RenderImage extends Component {
 						}
 					</div>
 				</div>
-				<div className={`${styles.row} ${this.state.showDetail ? styles.visible : styles.invisible}`}>
+				<div className={`${styles.detailRow} ${styles.row} ${this.state.showDetail ? styles.visible : styles.invisible}`}>
 					<div className={styles.column}>
-						<div>
-							Mode: {this.props.mode}
-						</div>
-						<div>
-							Size: {size}
-						</div>
+						<p>Mode: {this.props.mode}</p>
 						<p>Do Render: {doRender ? 'Yes' : 'No'}</p>
 						<p>Do Save: {doSave ? 'Yes' : 'No'}</p>
-						<h4>Rendering: {isRendering ? 'Yes' : ''}</h4>
-						<h4>Has Rendered: {hasRendered ? 'Yes' : ''}</h4>
-						<h4>Saving: {isSaving ? 'Yes' : ''}</h4>
-						<h4>Has Saved: {hasSaved ? 'Yes' : ''}
+						<p>Rendering: {isRendering ? 'Yes' : ''}</p>
+						<p>Has Rendered: {hasRendered ? 'Yes' : ''}</p>
+						<p>Saving: {isSaving ? 'Yes' : ''}</p>
+						<p>Has Saved: {hasSaved ? 'Yes' : ''}
 							{hasSaved &&
 								<div
 									className={styles.theTick}
 									dangerouslySetInnerHTML={{ __html: Tick }}
 								/>
 							}
-						</h4>
+						</p>
 					</div>
 					<div className={styles.column}>
 							{this.props.file &&
@@ -143,7 +164,7 @@ export default class RenderImage extends Component {
 							}
 					</div>
 				</div>
-				<div className={`${styles.row} ${showRendered ? styles.isvisible : ''} ${this.state.showDetail ? styles.visible : styles.invisible}`}>
+				<div className={`${styles.detailRow} ${styles.row} ${showRendered ? styles.isvisible : ''} ${this.state.showDetail ? styles.visible : styles.invisible}`}>
 					<div className={styles.column}>
 						<span className={styles.cropSource}>
 							<DisplayImage
@@ -199,10 +220,8 @@ export default class RenderImage extends Component {
 	// FUCNTIONS
 	doRender(doSave) {
 		const { theId } = this.state;
-		console.log('this will render the image');
 		const theSource = document.getElementById(theId);
 		const theTarget = document.getElementById(`target${theId}`);
-		console.log('into div: ', theId, theSource);
 		this.setState({
 			isRendering: true,
 			hasRendered: true, // for completeness
@@ -249,6 +268,8 @@ export default class RenderImage extends Component {
 				isSaving: false,
 				hasSaved: true,
 			});
+			console.log('about to doSaveRender(snapshot, size, null)', snapshot, size, null);
+			this.doSaveRender(snapshot, size, null);
 		});
 	}
 	toggleLoading() {
@@ -261,7 +282,56 @@ export default class RenderImage extends Component {
 			showDetail: !this.state.showDetail
 		});
 	}
+
+	doSaveRender(snapshot, size, hex) {
+		console.log('saving the render details:', snapshot, size, hex);
+		const currentDateTime = new Date();
+			const {
+				aspect,
+				file,
+				mode,
+				swatchName,
+				hasFrame,
+				hasBackground,
+				imageColorArray
+			} = this.props;
+		const renderObj = {};
+		renderObj.aspect = aspect;
+		renderObj.mode = mode;
+		renderObj.imageId = file;
+		renderObj.slug = file;
+		renderObj.hasFrame = hasFrame;
+		renderObj.imageColorArray = imageColorArray;
+		renderObj.swatchName = swatchName;
+		renderObj.hasBackground = hasBackground;
+		renderObj.downloadURL = snapshot.downloadURL;
+		renderObj.fullPath = snapshot.metadata && snapshot.metadata.fullPath;
+		renderObj.modifiedDate = currentDateTime;
+		console.log('renderObj is', renderObj, 'file is', file);
+			if (file) {
+				fbase.collection('renders').add({
+					hex: hex || 'none',
+					slug: file,
+					modifiedDate: currentDateTime,
+					[mode]: renderObj
+				})
+			.then((renderRef) => {
+				console.log('render successfully added to db, with reference of: ', renderRef);
+				this.setState({
+					isError: false
+				});
+			})
+			.catch(((error) => {
+				console.error('Error writing render: ', error);
+				this.setState({
+					isError: true
+				});
+			}));
+		}
+	}
 }
+
+
 /*
 				const renderLocationSmall = `renders/${this.state.image}_small.jpg`;
 				const storageRefSmall = fStorage.ref().child(renderLocationSmall);

@@ -5,6 +5,8 @@
 	width: 100%;
 	background: #f9f9f9;
 	padding: 8px;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 2px;
 	&.isLoading{
 	}
 	&.isSaving{
@@ -192,5 +194,11 @@
 	    }
 		}
 	}
-
+	.detailRow.visible{
+		border-top: 1px dashed #ccc;
+		min-height: 64px;
+		p{
+			font-size: 12px;
+		}
+	}
 }

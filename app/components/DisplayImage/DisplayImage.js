@@ -8,8 +8,10 @@ import '../../assets/scss/variables.css';
 import {
 	Auckland,
 	AucklandSkyline,
+	AucklandOneTreeHill,
 	Dune,
 	Cave,
+	Christchurch,
 	CathedralCove,
 	CottageShore,
 	CottageMountains,
@@ -25,12 +27,15 @@ import {
 	NorthEastValley,
 	NelsonLakes,
 	Port,
+	Piha,
 	Rakiura,
 	StClair,
 	Sydney,
 	Teanau,
 	FiordlandFalls,
 	Wakatipu,
+	Wellington,
+	Wedding,
 	} from '../../assets/svg';
 
 export default class DisplayImage extends Component {
@@ -66,9 +71,8 @@ export default class DisplayImage extends Component {
 
 	componentWillUnmount() {
 	}
-	makeId() {
+	makeId() { // eslint-disable-line
 		let text = '';
-		console.log('display image this:', this);
 		const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		for (let i = 0; i < 5; i++) {
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -91,6 +95,7 @@ export default class DisplayImage extends Component {
 			hasMargin = false,
 			hasHighlight = false,
 			isInline = false,
+			isCentered = false,
 			imageLevels = [10, 16, 37, 61, 79],
 			hue = 10,
 			saturation = 82,
@@ -128,6 +133,9 @@ export default class DisplayImage extends Component {
 		if (file === 'cottage_mountains') {
 			theSvg = CottageMountains;
 		}
+		if (file === 'christchurch') {
+			theSvg = Christchurch;
+		}
 		if (file === 'cave') {
 			theSvg = Cave;
 		}
@@ -148,6 +156,9 @@ export default class DisplayImage extends Component {
 		}
 		if (file === 'Port') {
 			theSvg = Port;
+		}
+		if (file === 'Piha') {
+			theSvg = Piha;
 		}
 		if (file === 'MilfordSound') {
 			theSvg = MilfordSound;
@@ -175,6 +186,15 @@ export default class DisplayImage extends Component {
 		}
 		if (file === 'AucklandSkyline') {
 			theSvg = AucklandSkyline;
+		}
+		if (file === 'AucklandOneTreeHill') {
+			theSvg = AucklandOneTreeHill;
+		}
+		if (file === 'Wellington') {
+			theSvg = Wellington;
+		}
+		if (file === 'Wedding') {
+			theSvg = Wedding;
 		}
 
 		const tempStyle = {
@@ -277,12 +297,26 @@ export default class DisplayImage extends Component {
 				transform: ${theTransform};
 			}
 			#svg${file}${this.state.theId}{
-				background: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
+// 				background: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
 			}
 				`}
 				style={{ display: `${isInline ? 'inline-block' : 'block'}` }}
 			>
-			<div className={`${styles.DisplayImage} ${variables.colorScope} ${styles[aspect]} ${styles[mode]} ${hasHighlight ? styles.hasHighlight : ''} ${isLoading ? styles.isLoading : ''} ${hasFrame ? styles.hasFrame : ''}  ${hasBackground ? styles.hasBackground : ''} ${isInline ? styles.isInline : ''} ${hasMargin ? styles.hasMargin : ''}`} id={divId || `theImage${mode}`}>
+			<div
+				className={`
+				${styles.DisplayImage} 
+				${variables.colorScope} ${styles[aspect]} 
+				${styles[mode]}
+				${hasHighlight ? styles.hasHighlight : ''} 
+				${isCentered ? styles.isCentered : ''} 
+				${isLoading ? styles.isLoading : ''} 
+				${isInline ? styles.isInline : ''} 
+				${hasFrame ? styles.hasFrame : ''} 
+				${hasMargin ? styles.hasMargin : ''} 
+				${hasBackground ? styles.hasBackground : ''} 
+				`}
+				id={divId || `theImage${mode}`}
+			>
 				{hasFrame &&
 				<div className={styles.imgFrame} style={tempStyle} />
 				}

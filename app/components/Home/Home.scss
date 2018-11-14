@@ -43,14 +43,19 @@
 		}
 	}
 
+	.dbImagesWrap{
+		display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+	}
 	// IMAGE cards
 	.imageCard{
-		width: 150px;
+		width: 120px;
 		height: 200px;
 		background: #f9f9f9;
 		box-shadow: 0 1px 4px rgba(0,0,0,.1);
 		display: inline-block; 
-		margin: 0 16px;
+		margin: 10px 10px;
 		font-size: 11px;
 		// overflow: hidden;
 		position: relative;
@@ -68,11 +73,33 @@
 			h5{
 			display: block;
 			}
+			button.editButton{
+				background: pink;
+				opacity: 1;
+				z-index: 20;
+			}
 		}
 		button{
 			position: relative;
 			background: transparent;
 			box-shadow: none;
+			&.editButton{
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				opacity: 0;
+			}
+		}
+		.theCount{
+			width: 18px;
+			height: 18px;
+			background: #222;
+			text-align: center;
+			line-height: 18px;
+			font-size: 12px;
+			color: #eee;
+			border-radius: 50%;
+			display: inline-block;
 		}
 	}
 }

@@ -91,6 +91,10 @@
 			// border: 1px solid pink;
 		}
 	}
+	.renderGroup{
+		background: #fff;
+		padding: 10px;
+	}
 	.renderImage{
 		width: 20%;
 		display: inline-block;
@@ -221,7 +225,7 @@
 		}
 
 		&.isActive{
-			background: rgba(0,0,0,.03);
+			// background: rgba(0,0,0,.03);
 			h5{
 				span{
 					color: lime;

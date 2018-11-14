@@ -60,6 +60,7 @@ export default class Edit extends Component {
 		theTranslateX: 0,
 		theTranslateY: 0,
 		doRenders: false,
+		showRenders: false,
 		swatchName: null,
 		swatchArray: [],
 	};
@@ -72,10 +73,6 @@ export default class Edit extends Component {
 		this.getSwatches();
 	}
 
-	componentWillUnmount() {
-	}
-	// Note: `user` comes from the URL, courtesy of our router
-	// { action, blogId }
 	render() {
     // const {		} = this.props;
 		const {
@@ -83,6 +80,7 @@ export default class Edit extends Component {
 			colorSaved = false,
 			colorType,
 			doSave = false,
+			doRenders = false,
 			hasMenu,
 			isPortrait,
 			image,
@@ -121,13 +119,7 @@ export default class Edit extends Component {
 				<div className={`${styles.column} `}>
 					<div className={styles.row}>
 						{this.state.image &&
-							<button onClick={() => this.doRenderImages()} >Generate Images</button>
-						}
-						{this.state.image &&
 							<button onClick={() => this.doSaveImage()} >Save Image</button>
-						}
-						{this.state.image &&
-							<button onClick={() => this.doRenders()} >Renders</button>
 						}
 						{imageSaved && 'Image saved!'}
 						{colorSaved && 'Color saved!'}
@@ -144,6 +136,8 @@ export default class Edit extends Component {
 							hasFrame={hasFrame}
 							hasBackground={hasBackground}
 							imageLevels={imageLevels}
+							isCentered
+							hasMargin
 							hue={theHue}
 							saturation={theSaturation}
 							lightness={theLightness}
@@ -156,15 +150,15 @@ export default class Edit extends Component {
 					</div>
 					<div className={styles.titleBlock}>
 						<h4>Rendered Images</h4>
-						<button onClick={() => this.toggleNewRenders()} >{this.state.doRenders ? 'hide renders' : 'show renders'}</button>
+						<button onClick={() => this.toggleShowRenders()} >{this.state.showRenders ? 'hide renders' : 'show renders'}</button>
 					</div>
-					{this.state.doRenders && imageSizes.map((size) => {
-						return (<div>
+					{this.state.showRenders && imageSizes.map((size) => {
+						return (<div key={`size${size}`} className={styles.renderGroup}>
 						<h4>{size}:</h4>
 						<RenderImage
 							key={`render${size}portrait`}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'portrait'}
@@ -185,7 +179,7 @@ export default class Edit extends Component {
 						<RenderImage
 							key={`render${size}circle`}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'circle'}
@@ -206,7 +200,7 @@ export default class Edit extends Component {
 						<RenderImage
 							key={`render${size}landscape`}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'landscape'}
@@ -226,13 +220,13 @@ export default class Edit extends Component {
 						/>
 						</div>);
 					})}
-					{this.state.doRenders &&
+					{this.state.showRenders &&
 						<div>
 						<h4>MISC:</h4>
 						<RenderImage
 							key={'renderMediumPortraitBackground'}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'portrait'}
@@ -253,7 +247,7 @@ export default class Edit extends Component {
 						<RenderImage
 							key={'renderMediumCircleBackground'}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'circle'}
@@ -274,7 +268,7 @@ export default class Edit extends Component {
 						<RenderImage
 							key={'renderMediumPortraitBackgroundFrame'}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'portrait'}
@@ -295,7 +289,7 @@ export default class Edit extends Component {
 						<RenderImage
 							key={'renderMediumCircleBackgroundFrame'}
 							doSave={doSave}
-							doRender
+							doRender={doRenders}
 							displayMode={'mini'}
 							file={image}
 							aspect={'circle'}
@@ -319,6 +313,18 @@ export default class Edit extends Component {
 				<div className={`${styles.column} `}>
 					<div className={styles.titleBlock}>
 						<h3>Settings</h3>
+					</div>
+					<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
+						<h5>Render Mode</h5>
+						<div className={styles.switchWrap}>
+							<Toggle
+								className={styles.theToggle}
+								id="doRenderToggle"
+								defaultChecked={this.state.doRenders}
+								onChange={this.toggleDoRenders}
+							/>
+							<label htmlFor="doRenderToggle">Render on Change</label>
+						</div>
 					</div>
 					<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
 						<h5>Save Mode</h5>
@@ -1183,14 +1189,19 @@ export default class Edit extends Component {
 			doSave: !this.state.doSave
 		});
 	}
+	toggleDoRenders = () => {
+		this.setState({
+			doRenders: !this.state.doRenders
+		});
+	}
 	doRenders = () => {
 		this.setState({
 			doRenders: true
 		});
 	}
-	toggleNewRenders = () => {
+	toggleShowRenders = () => {
 		this.setState({
-			doRenders: !this.state.doRenders
+			showRenders: !this.state.showRenders
 		});
 	}
 
@@ -1388,6 +1399,14 @@ export default class Edit extends Component {
 	}
 }
 /*
+							{this.state.image &&
+							<button onClick={() => this.doRenders()} >Renders</button>
+						}
+
+							{this.state.image &&
+							<button onClick={() => this.doRenderImages()} >Generate Images</button>
+						}
+
 			// console.log(previousValue, currentValue);
 			tempArray.push(previousValue);
 			tempArray.push(previousValue
