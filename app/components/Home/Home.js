@@ -4,6 +4,8 @@ import fbase from '../../firebase';
 
 import styles from './Home.scss';
 import { DisplayImage } from '../../components';
+import Loading from '../../assets/icons/loading.svg';
+
 // import * as theImages from '../../assets/svg';
 
 // const svgs = require.context('../../assets/svg', true, /\.svg$/);
@@ -77,6 +79,7 @@ export default class Home extends Component {
 		theLightness: 0.45,
 		theSaturation: 0.50,
 		isLoading: true,
+		isLoadingSvg: true,
 	};
 
 	componentWillMount() {
@@ -84,6 +87,7 @@ export default class Home extends Component {
 
 	componentDidMount() {
 		this.getImages();
+		this.getSources();
 	}
 
 	componentWillUnmount() {
@@ -99,88 +103,124 @@ export default class Home extends Component {
 			theLightness,
 			theSaturation,
 			imagesArray,
+			svgArray,
 			isLoading,
+			isLoadingSvg,
 			} = this.state;
 		console.log('fbase: ', fbase);
 		console.log('history: ', history);
-		// console.log('the iamges: ', theImages);
-		// console.log('theiamges.keys(): ', theImages.keys());
-		// console.log('the theImages.Auckland: ', theImages.Auckland);
 		return (
 			<div className={`${styles.Home} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
 				<div className={`${styles.column} `}>
-					<h2>Home: svg</h2>
-				{imageNames.map((name) => {
-					return (
-						<a
-							key={`image${name}`}
-							onClick={() => this.doRoute('edit', name)} // eslint-disable-line
-							role="presentation"
-						>
-						<DisplayImage
-							file={name}
-							aspect={'portrait'}
-							mode={'thumbnail'}
-							hasHighlight
-							hasFrame
-							isInline
-							hasMargin
-							hue={theHue}
-							saturation={theSaturation}
-							lightness={theLightness}
-						/>
-						</a>
-					);
-				})}
+					<h2>Home: Remote SVG</h2>
+						{isLoadingSvg &&
+							<div>
+							{(isLoadingSvg) &&
+								<div
+									className={styles.theLoading}
+									dangerouslySetInnerHTML={{ __html: Loading }} // eslint-disable-line
+								/>
+							}
+								<span>Loading SVG list</span>
+							</div>
+						}
+						{!isLoadingSvg && svgArray && svgArray.map((svg, name) => {
+							console.log('svg: ', svg);
+							return (
+								<a
+									key={`image${name}`}
+									onClick={() => this.doRoute('edit/remote', svg.data.slug)} // eslint-disable-line
+									role="presentation"
+									className={styles.svgItem}
+								>
+									<div>
+										{svg.data.filename} | {svg.data.slug} | {svg.data.size}
+									</div>
+								</a>
+							);
+						})}
+					<h2>Home: Local SVG</h2>
+					{imageNames.map((name) => {
+						return (
+							<a
+								key={`image${name}`}
+								onClick={() => this.doRoute('edit', name)} // eslint-disable-line
+								role="presentation"
+							>
+							<DisplayImage
+								file={name}
+								aspect={'portrait'}
+								mode={'thumbnail'}
+								hasHighlight
+								hasFrame
+								isInline
+								hasMargin
+								hue={theHue}
+								saturation={theSaturation}
+								lightness={theLightness}
+							/>
+							</a>
+						);
+					})}
 				</div>
 				<div className={`${styles.column} `}>
-					<h2>Data base images</h2>
+					<h2>Editions</h2>
 					<div className={`${styles.dbImagesWrap} ${styles.row} ${isLoading ? styles.loading : ''}`}>
-						{imagesArray && imagesArray.map((img) => {
-							return (
-								<div
-									key={`img${img.id}`}
-									className={styles.imageCard}
-									role="presentation"
-									onClick={() => this.doRouteImageEdit('/image/admin', img.id)} // eslint-disable-line
-								>
-										{img.data && img.data.image &&
-										<DisplayImage
-											file={img.data.image}
-											aspect={'square'}
-											mode={'thumbnail'}
-											hasHighlight
-											hasFrame={false}
-											isInline
-											hasMargin={false}
-											hue={theHue}
-											saturation={theSaturation}
-											lightness={theLightness}
-											scale={img.data.theScale}
-											translateX={img.data.theTranslateX}
-											translateY={img.data.theTranslateY}
-										/>
-									}
-									<h5>
-										{img.data.name}
-									</h5>
-									<button
-										// onClick={() => this.showEdit(img.id)} // eslint-disable-line
-										// role="button"
-										className={styles.editButton}
+						<div className={styles.imageList}>
+							{!isLoading && imagesArray && imagesArray.map((img) => {
+								// console.log('img: ', img);
+								// console.log('img.renders: ', img.renders);
+								return (
+									<div
+										key={`img${img.id}`}
+										className={`${styles.imageCard} ${styles.listItem}`}
+										role="presentation"
 										onClick={() => this.doRouteImageEdit('/image/admin', img.id)} // eslint-disable-line
-									>edit
-									</button>
-									{img.renders && (img.renders.length >= 1) &&
-										<div className={styles.theCount}>{img.renders.length}</div>
-									}
-									{img.data.modifiedDate &&
-										<div>{img.data.modifiedDate.toDateString()}</div>
-									}
-								</div>
-							);
-							})
-						}
+									>
+										<div className={styles.preview}>
+											{img.data && img.data.image &&
+												<DisplayImage
+													file={img.data.image}
+													aspect={'square'}
+													mode={'thumbnail'}
+													hasHighlight
+													hasFrame={false}
+													isInline
+													hasMargin={false}
+													hue={theHue}
+													saturation={theSaturation}
+													lightness={theLightness}
+													scale={img.data.theScale}
+													translateX={img.data.theTranslateX}
+													translateY={img.data.theTranslateY}
+												/>
+											}
+										</div>
+										<div className={styles.content}>
+											<h5>
+												{img.data.name || img.data.image || '-' }
+											</h5>
+											<h6>
+												{img.data.modifiedDate &&
+												<div>{img.data.modifiedDate.toDateString()}</div>
+												}
+											</h6>
+										</div>
+										<div className={styles.meta}>
+											{img.renders &&// (img.renders.length >= 0) &&
+												<div className={styles.theCount}>{img.renders.length}</div>
+											}
+											<button
+												className={styles.editButton}
+												onClick={() => this.doRouteImageEdit('/image/admin', img.id)} // eslint-disable-line
+											>edit
+											</button>
+										</div>
+									</div>
+								);
+								})
+							}
+						</div>
 					</div>
 					<div className={styles.row}>
 					<a
@@ -200,12 +240,32 @@ export default class Home extends Component {
 		);
 	}
 	// FUCNTIONS
+	getSources() {
+		const svgRef = fbase.collection('svg');
+		const svgArray = [];
+		this.setState({ isLoadingSvg: true });
+		svgRef.get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+			//	console.log(doc.id, ' => ', doc.data());
+				const tempThing = {};
+				tempThing.id = doc.id;
+				tempThing.data = doc.data();
+				svgArray.push(tempThing);
+			});
+			this.setState({
+				svgArray,
+				isLoadingSvg: false,
+			});
+		});
+	}
+
 	getImages() {
 		const imagesRef = fbase.collection('images');
 		const imagesArray = [];
+		this.setState({ isLoading: true });
 		imagesRef.get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
-				console.log(doc.id, ' => ', doc.data());
+//				console.log(doc.id, ' => ', doc.data());
 				const tempThing = {};
 				tempThing.id = doc.id;
 				tempThing.data = doc.data();

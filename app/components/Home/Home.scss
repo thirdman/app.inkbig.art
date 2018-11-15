@@ -19,6 +19,15 @@
 	.newImg{
 		overflow: scroll;
 	}
+	// SVG List
+	
+	.svgItem{
+		width: 100%;
+		padding: 2px;
+		background: #fff;
+		margin-top: 1px;
+		display: block;
+	}
 	//ITEMS
 	.formItem{
 		border-bottom: 1px dashed #ddd;
@@ -49,57 +58,188 @@
     flex-wrap: wrap;
 	}
 	// IMAGE cards
-	.imageCard{
-		width: 120px;
-		height: 200px;
-		background: #f9f9f9;
-		box-shadow: 0 1px 4px rgba(0,0,0,.1);
-		display: inline-block; 
-		margin: 10px 10px;
-		font-size: 11px;
-		// overflow: hidden;
-		position: relative;
-		h5{
-			// display: none;
-			// position: absolute;
-			// left: 0;
-			// bottom: 0;
-			// background: #eee;
-			padding: 2px;
-		}
-		&:hover{
-			background: #fff;
-			box-shadow: 0 1px 8px rgba(0,0,0,.3);
-			h5{
-			display: block;
+	.imageList{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		width: 100%;
+		.listItem{
+			display: flex;
+			flex-direction: row;
+			align-items: flex-start;
+			justify-content: flex-start;
+			.preview{
+				flex-basis: 3rem;
+				height: 3rem;
+				flex-shrink: 1;
+				flex-grow: 0;
+				overflow: hidden;
+				> div > div { // the dosplay image wrap
+					width: 3rem !important;
+			    height: 3rem !important;
+			    > div { // the display image
+						width: 3rem !important;
+				    height: 3rem !important;				    
+			    }
+				}
 			}
-			button.editButton{
-				background: pink;
-				opacity: 1;
-				z-index: 20;
+			.content{
+				flex-basis: 100%;
+				height: 40px;
+				flex-shrink: 1;
+				flex-grow: 1;	
+				padding: 2px;
+				h5{
+					padding: 0;
+					margin: 0;				
+				}	
+				h6{
+					font-size: 11px;
+					padding: 2px 0;
+					margin: 0;
+					font-weight: normal;
+					color: #777;
+				}		
+			}
+			.meta{
+				flex-basis: 50%;
+				flex-shrink: 1;
+				flex-grow: 1;
+				height: 3rem;
+				line-height: 3rem;
 			}
 		}
-		button{
+		.imageCard{
+			width: 100%;
+			height: 3rem;
+			background: #f9f9f9;
+			// box-shadow: 0 1px 4px rgba(0,0,0,.1);
+			// display: inline-block; 
+			margin: 1px 0;
+			font-size: 11px;
 			position: relative;
-			background: transparent;
-			box-shadow: none;
-			&.editButton{
-				position: absolute;
-				top: 4px;
-				right: 4px;
-				opacity: 0;
+			button{
+				position: relative;
+				background: transparent;
+				box-shadow: none;
+				&.editButton{
+					position: absolute;
+					top: 4px;
+					right: 4px;
+					opacity: 1;
+				}
+			}
+			.theCount{
+				width: 18px;
+				height: 18px;
+				background: #222;
+				text-align: center;
+				line-height: 18px;
+				font-size: 12px;
+				color: #eee;
+				border-radius: 50%;
+				display: inline-block;
+				vertical-align: middle;
 			}
 		}
-		.theCount{
-			width: 18px;
-			height: 18px;
-			background: #222;
-			text-align: center;
-			line-height: 18px;
-			font-size: 12px;
-			color: #eee;
-			border-radius: 50%;
-			display: inline-block;
+	}
+	.theLoading{
+		width: 20px !important;
+		height: 20px;
+		position: relative;
+    display: inline-block;
+    line-height: 2em;
+    vertical-align: middle;
+    margin-right: 6px;
+		animation-duration: 1s;
+		animation-name: rotateMe;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		svg{
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100%;
+	    g{
+		    path{
+			    fill: rgba(0,0,0,.5);
+		    }
+	    }
+		}
+		>span{
+			color: #777;
+			font-style: italic;
 		}
 	}
 }
+
+
+@keyframes rotateMe {
+  0% {
+    // background-color: #001F3F;
+    transform: rotate(0deg);
+  }
+  100% {
+    // background-color: #FF4136;
+    transform: rotate(360deg);
+  }
+}
+
+/*
+
+		.imageCard{
+			width: 120px;
+			height: 200px;
+			background: #f9f9f9;
+			box-shadow: 0 1px 4px rgba(0,0,0,.1);
+			display: inline-block; 
+			margin: 10px 10px;
+			font-size: 11px;
+			// overflow: hidden;
+			position: relative;
+			h5{
+				// display: none;
+				// position: absolute;
+				// left: 0;
+				// bottom: 0;
+				// background: #eee;
+				padding: 2px;
+			}
+			&:hover{
+				background: #fff;
+				box-shadow: 0 1px 8px rgba(0,0,0,.3);
+				h5{
+				display: block;
+				}
+				button.editButton{
+					background: pink;
+					opacity: 1;
+					z-index: 20;
+				}
+			}
+			button{
+				position: relative;
+				background: transparent;
+				box-shadow: none;
+				&.editButton{
+					position: absolute;
+					top: 4px;
+					right: 4px;
+					opacity: 0;
+				}
+			}
+			.theCount{
+				width: 18px;
+				height: 18px;
+				background: #222;
+				text-align: center;
+				line-height: 18px;
+				font-size: 12px;
+				color: #eee;
+				border-radius: 50%;
+				display: inline-block;
+			}
+		}
+*/

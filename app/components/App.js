@@ -3,7 +3,8 @@ import { Route, Link } from 'react-router-dom';
 import {
 	Edit,
 	Home,
-	ImageAdmin
+	ImageAdmin,
+	Upload,
 	} from '../components';
 import styles from './App.scss';
 import fbase from '../firebase';
@@ -14,7 +15,7 @@ export default class App extends Component {
 		imagesRef.get().then((querySnapshot) => {
 			const newArray = [];
 			querySnapshot.forEach((doc) => {
-				console.log(doc.id, ' => ', doc.data());
+				// console.log(doc.id, ' => ', doc.data());
 				newArray[doc.id] = doc.data();
 			});
 			this.setState({
@@ -34,6 +35,7 @@ export default class App extends Component {
 					<Link to={'/'} className={styles.headerItem}>Home</Link>
 					<Link to={'/edit'} className={styles.headerItem}>Edit</Link>
 					<Link to={'/image/admin'} className={styles.headerItem}>Img Admin</Link>
+					<Link to={'/upload'} className={styles.headerItem}>Upload Source Svg</Link>
 				</div>
 				<Route
 					exact
@@ -48,6 +50,11 @@ export default class App extends Component {
 					exact
 					path={'/image/admin'}
 					component={ImageAdmin}
+				/>
+				<Route
+					exact
+					path={'/upload'}
+					component={Upload}
 				/>
 			</div>
 		);

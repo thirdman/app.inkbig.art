@@ -1,8 +1,12 @@
 .App{
-	padding: 24px;
+	width: 100%;
   min-height: 100vh;
 	background: #ddd;
+	padding-left: 24px;
 	padding-top: 48px;
+	padding-right: 0;
+	padding-bottom: 0;
+
 	.header{
 		position: absolute;
 		width: 100%;
@@ -20,6 +24,10 @@
 			color: #888;
 			text-decoration: none;
 			letter-spacing: .2ch;
+			border-left: 1px solid rgba(0,0,0,.1);
+			&:last-child{
+				border-right: 1px solid rgba(0,0,0,.1);				
+			}
 		}
 	}
 }

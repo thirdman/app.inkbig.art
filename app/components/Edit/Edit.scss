@@ -9,6 +9,10 @@
 			width: 50%;
 			height: 100%;
 			padding: 24px;
+			&.controls{
+				background: #d2d2d2;
+				min-height: 100vh;
+			}
 		}
 	}
 	.previewImageWrap, .renderImageWrap, .sourceImageWrap{
@@ -65,8 +69,8 @@
 
 	.titleBlock{
 		position: relative;
-		border-top: 1px solid #f3f3f3;
-    box-shadow: 0px -1px 0px #ccc;
+		border-top: 1px solid rgba(0,0,0,.05);
+    // box-shadow: 0px -1px 0px #ccc;
 		margin-top: 4px;
 		button{
 			position: absolute;
@@ -338,6 +342,19 @@
 			&.landscape{}
 			&.square{}
 			&.circle{}
+		}
+		&.tabs{
+			.btn{
+		    background-color: transparent;
+		    color: #777;
+		    font-weight: bold;
+		    border-bottom: 2px solid #c3c3c3;
+		    border-radius: 0 !important;
+		    &.selected{
+			    border-bottom: 2px solid #333;			    
+			    color: #333;
+		    }
+			}
 		}
 	}
 	// COLORS

@@ -40,6 +40,7 @@ export default class Edit extends Component {
 		loggedIn: false,
 		isAdding: false,
 		isEditing: false,
+		activeControl: 'settings',
 		image: (this.props.location.state && this.props.location.state.image) || 'montenegro',
 		imageSaved: false,
 		aspect: 'portrait',
@@ -310,394 +311,426 @@ export default class Edit extends Component {
 						</div>
 					}
 				</div>
-				<div className={`${styles.column} `}>
-					<div className={styles.titleBlock}>
-						<h3>Settings</h3>
-					</div>
-					<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
-						<h5>Render Mode</h5>
-						<div className={styles.switchWrap}>
-							<Toggle
-								className={styles.theToggle}
-								id="doRenderToggle"
-								defaultChecked={this.state.doRenders}
-								onChange={this.toggleDoRenders}
-							/>
-							<label htmlFor="doRenderToggle">Render on Change</label>
+				<div className={`${styles.column} ${styles.controls}`}>
+					<div className={`${styles.buttonGroup} ${styles.tabs}`}>
+						<div
+							className={`${styles.btn} ${this.state.activeControl === 'settings' ? styles.selected : ''}`}
+							onClick={() => this.setState({ activeControl: 'settings' })}
+							role="presentation"
+						>
+							Settings
+						</div>
+						<div
+							className={`${styles.btn} ${this.state.activeControl === 'adjustments' ? styles.selected : ''}`}
+							onClick={() => this.setState({ activeControl: 'adjustments' })}
+							role="presentation"
+						>
+							Adjustments
+						</div>
+						<div
+							className={`${styles.btn} ${this.state.activeControl === 'color' ? styles.selected : ''}`}
+							onClick={() => this.setState({ activeControl: 'color' })}
+							role="presentation"
+						>
+							colour
 						</div>
 					</div>
-					<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
-						<h5>Save Mode</h5>
-						<div className={styles.switchWrap}>
-							<Toggle
-								className={styles.theToggle}
-								id="doSaveToggle"
-								defaultChecked={this.state.doSave}
-								onChange={this.toggleDoSave}
-							/>
-							<label htmlFor="doSaveToggle">Save on render</label>
-						</div>
-					</div>
-					<div className={`${styles.formItem} ${this.state.hasBackground ? styles.isActive : ''}`}>
-						<h5>hasBackground: <span>{this.state.hasBackground ? 'yes' : 'no'}</span></h5>
-						<div className={styles.switchWrap}>
-							<Toggle
-								className={styles.theToggle}
-								id="hasBckgroundToggle"
-								defaultChecked={this.state.hasBackground}
-								onChange={this.toggleBackground}
-							/>
-							<label htmlFor="hasBckgroundToggle">Add a background</label>
-						</div>
-					</div>
-					<div className={`${styles.formItem} ${this.state.hasFrame ? styles.isActive : ''}`}>
-						<h5>Has Frame: <span>{this.state.hasFrame ? 'yes' : 'no'}</span></h5>
-						<div className={styles.switchWrap}>
-							<Toggle
-								className={styles.theToggle}
-								id="hasFrameToggle"
-								defaultChecked={this.state.hasFrame}
-								onChange={this.toggleFrame}
-							/>
-							<label htmlFor="hasFrameToggle">Add a frame</label>
-						</div>
-					</div>
-					<div className={`${styles.formItem} ${isPortrait ? styles.isActive : ''}`}>
-						<h5>Aspect: {this.state.isPortrait ? 'Portrait' : 'Landscape'}</h5>
-						<div className={styles.buttonGroup}>
-							<div
-								className={`${styles.btn} ${styles.portrait} ${aspect === 'portrait' ? styles.selected : ''}`}
-								onClick={() => this.setAspect('portrait')}
-								role="presentation"
-							>
-								portrait
+					{this.state.activeControl === 'settings' &&
+						<section>
+							<div className={styles.titleBlock}>
+								<h3>Settings</h3>
 							</div>
-							<div
-								className={`${styles.btn} ${styles.landscape} ${aspect === 'landscape' ? styles.selected : ''}`}
-								onClick={() => this.setAspect('landscape')}
-								role="presentation"
-							>
-								Landscape
+							<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
+								<h5>Render Mode</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="doRenderToggle"
+										defaultChecked={this.state.doRenders}
+										onChange={this.toggleDoRenders}
+									/>
+									<label htmlFor="doRenderToggle">Render on Change</label>
+								</div>
 							</div>
-							<div
-								className={`${styles.btn} ${styles.square} ${aspect === 'square' ? styles.selected : ''}`}
-								onClick={() => this.setAspect('square')}
-								role="presentation"
-							>
-								Square
+							<div className={`${styles.formItem} ${this.state.doSave ? styles.isActive : ''}`}>
+								<h5>Save Mode</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="doSaveToggle"
+										defaultChecked={this.state.doSave}
+										onChange={this.toggleDoSave}
+									/>
+									<label htmlFor="doSaveToggle">Save on render</label>
+								</div>
 							</div>
-							<div
-								className={`${styles.btn} ${styles.circle} ${aspect === 'circle' ? styles.selected : ''}`}
-								onClick={() => this.setAspect('circle')}
-								role="presentation"
-							>
-								Circle
+							<div className={`${styles.formItem} ${this.state.hasBackground ? styles.isActive : ''}`}>
+								<h5>hasBackground: <span>{this.state.hasBackground ? 'yes' : 'no'}</span></h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="hasBckgroundToggle"
+										defaultChecked={this.state.hasBackground}
+										onChange={this.toggleBackground}
+									/>
+									<label htmlFor="hasBckgroundToggle">Add a background</label>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div className={styles.titleBlock}>
-						<h3>Adjustments</h3>
-						<button onClick={() => this.toggleViewAdjustments()} >{this.state.showAdjustments ? 'hide adjustments' : 'show adjustments'}</button>
-					</div>
-					<div className={`${styles.adjustmentsWrap} ${this.state.showAdjustments ? styles.visible : ''}`}>
-						<div className={`${styles.formItem}`}>
-							<h5>Scale: {theScale}</h5>
-							<Slider
-								step={0.1}
-								min={0}
-								max={2}
-								defaultValue={theScale}
-								onChange={this.onSliderChange}
-							/>
-						</div>
-						<div className={`${styles.formItem}`}>
-							<h5>TranslateX: {theTranslateX}</h5>
-							<Slider
-								step={1}
-								min={-50}
-								max={50}
-								defaultValue={theTranslateX}
-								onChange={this.onTranslateXChange}
-							/>
-						</div>
-						<div className={`${styles.formItem}`}>
-							<h5>TranslateY: {theTranslateY}</h5>
-							<Slider
-								step={1}
-								min={-50}
-								max={50}
-								defaultValue={theTranslateY}
-								onChange={this.onTranslateYChange}
-							/>
-						</div>
-					</div>
-					<div className={styles.titleBlock}>
-						<h3>Color</h3>
-						<button onClick={() => this.doSaveSwatch()} style={{ marginRight: '100px' }}>Save Swatch</button>
-						<button onClick={() => this.toggleColorEdit()} >{this.state.showColorEdit ? 'hide edit' : 'show edit'}</button>
-					</div>
-					<div className={`${styles.formItem}`}>
-						<h5>Swatch Name</h5>
-						<input
-						type="text"
-							ref={(c) => { this.swatchNameField = c; }}
-							value={this.state.swatchName || ''}
-							onChange={(evt) => { this.setSwatchName(evt); }}
-							// onChange={this.setSwatchName}
-						/>
-					</div>
-					<div className={`${styles.formItem}`}>
-						<h5>Color type</h5>
-						<div className={styles.buttonGroup}>
-							<div
-								className={`${styles.btn} ${colorType === 'hue' ? styles.selected : ''}`}
-								onClick={() => this.setColorType('hue')}
-								role="presentation"
-							>
-								Hue
+							<div className={`${styles.formItem} ${this.state.hasFrame ? styles.isActive : ''}`}>
+								<h5>Has Frame: <span>{this.state.hasFrame ? 'yes' : 'no'}</span></h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="hasFrameToggle"
+										defaultChecked={this.state.hasFrame}
+										onChange={this.toggleFrame}
+									/>
+									<label htmlFor="hasFrameToggle">Add a frame</label>
+								</div>
 							</div>
-							<div
-								className={`${styles.btn} ${colorType === 'pair' ? styles.selected : ''}`}
-								onClick={() => this.setColorType('pair')}
-								role="presentation"
-							>
-								Pair
-							</div>
-							<div
-								className={`${styles.btn} ${colorType === 'custom' ? styles.selected : ''}`}
-								onClick={() => this.setColorType('custom')}
-								role="presentation"
-							>
-								Custom
-							</div>
-						</div>
-					</div>
-					<div className={`${styles.formItem}`} style={{ display: `${colorType === 'pair' ? 'block' : 'none'}` }}>
-						<h5>Pair</h5>
-						<div className={styles.row}>
-							<div className={styles.column}>
-								<h5>Color 1.</h5>
-								<div className={styles.swatch}>
+							<div className={`${styles.formItem} ${isPortrait ? styles.isActive : ''}`}>
+								<h5>Aspect: {this.state.isPortrait ? 'Portrait' : 'Landscape'}</h5>
+								<div className={styles.buttonGroup}>
 									<div
-										className={styles.color}
-											style={{ backgroundColor: pairColor1 }}
-									/>
-								</div>
-									<ChromePicker
-										color={pairColor1}
-										onChange={(color) => { this.setColor1(color); }}
-									/>
-							</div>
-							<div className={styles.column}>
-								<h5>Color 2.</h5>
-								<div className={styles.swatch}>
+										className={`${styles.btn} ${styles.portrait} ${aspect === 'portrait' ? styles.selected : ''}`}
+										onClick={() => this.setAspect('portrait')}
+										role="presentation"
+									>
+										portrait
+									</div>
 									<div
-										className={styles.color}
-											style={{ backgroundColor: pairColor2 }}
-									/>
-								</div>
-									<ChromePicker
-										color={pairColor2}
-										onChange={(color) => { this.setColor2(color); }}
-									/>
-							</div>
-						</div>
-						<div className={styles.formItem}>
-							<h4>pair color array</h4>
-								{pairColorArray &&
-							<div className={styles.row}>
-								<div className={styles.swatchWrap}>
-									<h5>Darkest <span>{imageLevels[0]}</span></h5>
-									<div className={styles.swatch}>
-										<div
-											className={styles.color}
-												style={{ backgroundColor: `${pairColorArray[0]}` }}
-										/>
+										className={`${styles.btn} ${styles.landscape} ${aspect === 'landscape' ? styles.selected : ''}`}
+										onClick={() => this.setAspect('landscape')}
+										role="presentation"
+									>
+										Landscape
 									</div>
-								</div>
-								<div className={styles.swatchWrap}>
-									<h5>Darker <span>{imageLevels[1]}</span></h5>
-									<div className={styles.swatch}>
-										<div
-											className={styles.color}
-												style={{ backgroundColor: `${pairColorArray[1]}` }}
-										/>
+									<div
+										className={`${styles.btn} ${styles.square} ${aspect === 'square' ? styles.selected : ''}`}
+										onClick={() => this.setAspect('square')}
+										role="presentation"
+									>
+										Square
 									</div>
-								</div>
-								<div className={styles.swatchWrap}>
-									<h5>Primary <span>{imageLevels[2]}</span></h5>
-									<div className={styles.swatch}>
-										<div
-											className={styles.color}
-												style={{ backgroundColor: `${pairColorArray[2]}` }}
-										/>
-									</div>
-								</div>
-								<div className={styles.swatchWrap}>
-									<h5>Lighter <span>{imageLevels[3]}</span></h5>
-									<div className={styles.swatch}>
-										<div
-											className={styles.color}
-												style={{ backgroundColor: `${pairColorArray[3]}` }}
-										/>
-									</div>
-								</div>
-								<div className={styles.swatchWrap}>
-									<h5>Lightest <span>{imageLevels[4]}</span></h5>
-									<div className={styles.swatch}>
-										<div
-											className={styles.color}
-												style={{ backgroundColor: `${pairColorArray[4]}` }}
-										/>
+									<div
+										className={`${styles.btn} ${styles.circle} ${aspect === 'circle' ? styles.selected : ''}`}
+										onClick={() => this.setAspect('circle')}
+										role="presentation"
+									>
+										Circle
 									</div>
 								</div>
 							</div>
-							}
-						</div>
-					</div>
-					<section className={styles.alt}>
-						<div className={styles.formItem}>
-							<div className={styles.row}>
-							<div className={styles.swatchWrap}>
-								<h5>Darkest <span>{imageLevels[0]}</span></h5>
-								<div className={styles.swatch}>
-									<div
-										className={styles.color}
-											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[0]}%, 1)` }}
-									/>
-								</div>
+						</section>
+					}
+					{this.state.activeControl === 'adjustments' &&
+						<section>
+							<div className={styles.titleBlock}>
+								<h3>Adjustments</h3>
 							</div>
-							<div className={styles.swatchWrap}>
-								<h5>Darker <span>{imageLevels[1]}</span></h5>
-								<div className={styles.swatch}>
-									<div
-										className={styles.color}
-											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[1]}%, 1)` }}
-									/>
-								</div>
-							</div>
-							<div className={styles.swatchWrap}>
-								<h5>Primary <span>{imageLevels[2]}</span></h5>
-								<div className={styles.swatch}>
-									<div
-										className={styles.color}
-											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[2]}%, 1)` }}
-									/>
-								</div>
-							</div>
-							<div className={styles.swatchWrap}>
-								<h5>Lighter <span>{imageLevels[3]}</span></h5>
-								<div className={styles.swatch}>
-									<div
-										className={styles.color}
-											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[3]}%, 1)` }}
-									/>
-								</div>
-							</div>
-							<div className={styles.swatchWrap}>
-								<h5>Lightest <span>{imageLevels[4]}</span></h5>
-								<div className={styles.swatch}>
-									<div
-										className={styles.color}
-											style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[4]}%, 1)` }}
-									/>
-								</div>
-							</div>
-							</div>
-						</div>
-						<div className={styles.formItem}>
-							<h5>Levels</h5>
-							<Range
-								value={this.state.imageLevels}
-								min={0}
-								max={100}
-								pushable={2}
-								onChange={(values) => { this.onChangeHues(values); }}
-							/>
-						</div>
-						<div className={`${styles.colorEditWrap} ${this.state.showColorEdit ? styles.visible : ''}`}>
-							<div className={styles.formItem}>
-								<SliderPicker
-									color={colorObj && colorObj.hsl}
-									onChange={(color) => { this.setColor(color); }}
+							<div className={`${styles.formItem}`}>
+								<h5>Scale: {theScale}</h5>
+								<Slider
+									step={0.1}
+									min={0}
+									max={2}
+									defaultValue={theScale}
+									onChange={this.onSliderChange}
 								/>
 							</div>
-							<div className={styles.row}>
-								<div className={styles.column}>
-									<SketchPicker
-										color={colorObj && colorObj.hsl}
-										onChange={(color) => { this.setColor(color); }}
-									/>
-								</div>
-								<div className={styles.column}>
-									<ChromePicker
-										color={colorObj && colorObj.hsl}
-										onChange={(color) => { this.setColor(color); }}
-									/>
-								</div>
-								<div className={styles.column}>
-									<BlockPicker
-										color={colorObj && colorObj.hsl}
-										onChange={(color) => { this.setColor(color); }}
-									/>
+							<div className={`${styles.formItem}`}>
+								<h5>TranslateX: {theTranslateX}</h5>
+								<Slider
+									step={1}
+									min={-50}
+									max={50}
+									defaultValue={theTranslateX}
+									onChange={this.onTranslateXChange}
+								/>
+							</div>
+							<div className={`${styles.formItem}`}>
+								<h5>TranslateY: {theTranslateY}</h5>
+								<Slider
+									step={1}
+									min={-50}
+									max={50}
+									defaultValue={theTranslateY}
+									onChange={this.onTranslateYChange}
+								/>
+							</div>
+						</section>
+					}
+					{this.state.activeControl === 'color' &&
+						<section>
+							<div className={styles.titleBlock}>
+								<h3>Color</h3>
+								<button onClick={() => this.doSaveSwatch()} style={{ marginRight: '100px' }}>Save Swatch</button>
+								<button onClick={() => this.toggleColorEdit()} >{this.state.showColorEdit ? 'hide edit' : 'show edit'}</button>
+							</div>
+							<div className={`${styles.formItem}`}>
+								<h5>Swatch Name</h5>
+								<input
+								type="text"
+									ref={(c) => { this.swatchNameField = c; }}
+									value={this.state.swatchName || ''}
+									onChange={(evt) => { this.setSwatchName(evt); }}
+									// onChange={this.setSwatchName}
+								/>
+							</div>
+							<div className={`${styles.formItem}`}>
+								<h5>Color type</h5>
+								<div className={styles.buttonGroup}>
+									<div
+										className={`${styles.btn} ${colorType === 'hue' ? styles.selected : ''}`}
+										onClick={() => this.setColorType('hue')}
+										role="presentation"
+									>
+										Hue
+									</div>
+									<div
+										className={`${styles.btn} ${colorType === 'pair' ? styles.selected : ''}`}
+										onClick={() => this.setColorType('pair')}
+										role="presentation"
+									>
+										Pair
+									</div>
+									<div
+										className={`${styles.btn} ${colorType === 'custom' ? styles.selected : ''}`}
+										onClick={() => this.setColorType('custom')}
+										role="presentation"
+									>
+										Custom
+									</div>
 								</div>
 							</div>
-							<button
-								className={styles.button}
-								onClick={() => this.doSaveColor()}
-							>
-								save color
-							</button>
-						</div>
-					</section>
-					<div className={styles.formitem}>
-						<h3>Existing Swatches</h3>
-						{swatchArray && swatchArray.map((swatch) => {
-							return (
-								<SwatchGroup
-									key={`img${swatch.id}`}
-									swatch={swatch.data}
-									isHorizontal
-									role="presentation"
-									onClickProps={() => this.loadSwatch(swatch.id)}
-								/>
-							);
-						})
-						}
-					</div>
-					<div className={styles.formitem}>
-					<h3>Existing Colors</h3>
-						{colorsArray && colorsArray.map((color) => {
-							return (
-								<div
-									key={`img${color.id}`}
-									className={styles.colorCard}
-									role="presentation"
-									// onClick={() => this.doRouteImageEdit('/image/admin', img.id)}
-									// eslint-disable-line
-								>
-									<div className={styles.swatch} onClick={() => this.loadColor(color.id)} role="presentation">
-										<div
-											className={styles.color}
-												style={{ backgroundColor: `hsla(${color.data.colorObj.hsl.h}, ${color.data.colorObj.hsl.s * 100}%, ${color.data.colorObj.hsl.l * 100}%, 1)` }}
+							<div className={`${styles.formItem}`} style={{ display: `${colorType === 'pair' ? 'block' : 'none'}` }}>
+								<h5>Pair</h5>
+								<div className={styles.row}>
+									<div className={styles.column}>
+										<h5>Color 1.</h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: pairColor1 }}
+											/>
+										</div>
+											<ChromePicker
+												color={pairColor1}
+												onChange={(color) => { this.setColor1(color); }}
+											/>
+									</div>
+									<div className={styles.column}>
+										<h5>Color 2.</h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: pairColor2 }}
+											/>
+										</div>
+											<ChromePicker
+												color={pairColor2}
+												onChange={(color) => { this.setColor2(color); }}
+											/>
+									</div>
+								</div>
+								<div className={styles.formItem}>
+									<h4>pair color array</h4>
+										{pairColorArray &&
+									<div className={styles.row}>
+										<div className={styles.swatchWrap}>
+											<h5>Darkest <span>{imageLevels[0]}</span></h5>
+											<div className={styles.swatch}>
+												<div
+													className={styles.color}
+														style={{ backgroundColor: `${pairColorArray[0]}` }}
+												/>
+											</div>
+										</div>
+										<div className={styles.swatchWrap}>
+											<h5>Darker <span>{imageLevels[1]}</span></h5>
+											<div className={styles.swatch}>
+												<div
+													className={styles.color}
+														style={{ backgroundColor: `${pairColorArray[1]}` }}
+												/>
+											</div>
+										</div>
+										<div className={styles.swatchWrap}>
+											<h5>Primary <span>{imageLevels[2]}</span></h5>
+											<div className={styles.swatch}>
+												<div
+													className={styles.color}
+														style={{ backgroundColor: `${pairColorArray[2]}` }}
+												/>
+											</div>
+										</div>
+										<div className={styles.swatchWrap}>
+											<h5>Lighter <span>{imageLevels[3]}</span></h5>
+											<div className={styles.swatch}>
+												<div
+													className={styles.color}
+														style={{ backgroundColor: `${pairColorArray[3]}` }}
+												/>
+											</div>
+										</div>
+										<div className={styles.swatchWrap}>
+											<h5>Lightest <span>{imageLevels[4]}</span></h5>
+											<div className={styles.swatch}>
+												<div
+													className={styles.color}
+														style={{ backgroundColor: `${pairColorArray[4]}` }}
+												/>
+											</div>
+										</div>
+									</div>
+									}
+								</div>
+							</div>
+							<section className={styles.alt}>
+								<div className={styles.formItem}>
+									<div className={styles.row}>
+									<div className={styles.swatchWrap}>
+										<h5>Darkest <span>{imageLevels[0]}</span></h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[0]}%, 1)` }}
+											/>
+										</div>
+									</div>
+									<div className={styles.swatchWrap}>
+										<h5>Darker <span>{imageLevels[1]}</span></h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[1]}%, 1)` }}
+											/>
+										</div>
+									</div>
+									<div className={styles.swatchWrap}>
+										<h5>Primary <span>{imageLevels[2]}</span></h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[2]}%, 1)` }}
+											/>
+										</div>
+									</div>
+									<div className={styles.swatchWrap}>
+										<h5>Lighter <span>{imageLevels[3]}</span></h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[3]}%, 1)` }}
+											/>
+										</div>
+									</div>
+									<div className={styles.swatchWrap}>
+										<h5>Lightest <span>{imageLevels[4]}</span></h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+													style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[4]}%, 1)` }}
+											/>
+										</div>
+									</div>
+									</div>
+								</div>
+								<div className={styles.formItem}>
+									<h5>Levels</h5>
+									<Range
+										value={this.state.imageLevels}
+										min={0}
+										max={100}
+										pushable={2}
+										onChange={(values) => { this.onChangeHues(values); }}
+									/>
+								</div>
+								<div className={`${styles.colorEditWrap} ${this.state.showColorEdit ? styles.visible : ''}`}>
+									<div className={styles.formItem}>
+										<SliderPicker
+											color={colorObj && colorObj.hsl}
+											onChange={(color) => { this.setColor(color); }}
 										/>
 									</div>
+									<div className={styles.row}>
+										<div className={styles.column}>
+											<SketchPicker
+												color={colorObj && colorObj.hsl}
+												onChange={(color) => { this.setColor(color); }}
+											/>
+										</div>
+										<div className={styles.column}>
+											<ChromePicker
+												color={colorObj && colorObj.hsl}
+												onChange={(color) => { this.setColor(color); }}
+											/>
+										</div>
+										<div className={styles.column}>
+											<BlockPicker
+												color={colorObj && colorObj.hsl}
+												onChange={(color) => { this.setColor(color); }}
+											/>
+										</div>
+									</div>
 									<button
-										onClick={() => this.loadColor(color.id)} // eslint-disable-line
-										// style={{ background: 'red' }}
+										className={styles.button}
+										onClick={() => this.doSaveColor()}
 									>
-										use this color
-									</button>
-									<button
-										onClick={() => this.updateColor(color.id)} // eslint-disable-line
-									>
-										Overwrite
+										save color
 									</button>
 								</div>
-							);
-							})
-						}
-					</div>
+							</section>
+							<div className={styles.formitem}>
+								<h3>Existing Swatches</h3>
+								{swatchArray && swatchArray.map((swatch) => {
+									return (
+										<SwatchGroup
+											key={`img${swatch.id}`}
+											swatch={swatch.data}
+											isHorizontal
+											role="presentation"
+											onClickProps={() => this.loadSwatch(swatch.id)}
+										/>
+									);
+								})
+								}
+							</div>
+							<div className={styles.formitem}>
+								<h3>Existing Colors</h3>
+								{colorsArray && colorsArray.map((color) => {
+									return (
+										<div
+											key={`img${color.id}`}
+											className={styles.colorCard}
+											role="presentation"
+											// onClick={() => this.doRouteImageEdit('/image/admin', img.id)}
+											// eslint-disable-line
+										>
+											<div className={styles.swatch} onClick={() => this.loadColor(color.id)} role="presentation">
+												<div
+													className={styles.color}
+														style={{ backgroundColor: `hsla(${color.data.colorObj.hsl.h}, ${color.data.colorObj.hsl.s * 100}%, ${color.data.colorObj.hsl.l * 100}%, 1)` }}
+												/>
+											</div>
+											<button
+												onClick={() => this.loadColor(color.id)} // eslint-disable-line
+												// style={{ background: 'red' }}
+											>
+												use this color
+											</button>
+											<button
+												onClick={() => this.updateColor(color.id)} // eslint-disable-line
+											>
+												Overwrite
+											</button>
+										</div>
+									);
+									})
+								}
+							</div>
+						</section>
+					}
 				</div>
 			</div>
 		);
