@@ -1,3 +1,12 @@
+@import "../../styles/includes/_include-media.scss";
+
+* {
+	box-sizing: border-box;
+}
+html, body{
+	
+}
+
 h2{
 	//font-size: 24px;
 	font-weight: 100;	
@@ -12,7 +21,10 @@ h5{
 	color: #555;
 	font-weight: normal;
 	text-transform: uppercase;
-  margin: .5em;
+  margin: .5em 0;
+	padding-left: 0;
+	padding-right: 0;
+
 }
 
 
@@ -104,6 +116,13 @@ input[type="text"]{
 	&.success{
 		background: #89d828;
 		color: #fff;
+	}
+}
+
+///////// TABLET /////
+@include media("<=large") { //">tablet", 
+	html, body {
+		font-size: 12px;
 	}
 }
 

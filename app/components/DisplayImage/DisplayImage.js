@@ -230,26 +230,16 @@ export default class DisplayImage extends Component {
 		
 		if (sourceSvg) {
 			const theSvgPreviewId = document.getElementById(`theImage${mode}`);
-			
-				console.log('theSvgPreviewId', theSvgPreviewId);
+			// console.log('theSvgPreviewId', theSvgPreviewId);
 			if (theSvgPreviewId) {
 				const theSvgPreviewIdText = document.getElementById(`svg${file}${this.state.theId}`);
-				console.log('theSvgPreviewIdText', theSvgPreviewIdText);
+				// console.log('theSvgPreviewIdText', theSvgPreviewIdText);
 				const theSvgId = theSvgPreviewId.getElementsByTagName('svg')[0];
-				console.log('theSvgId', theSvgId);
+				// console.log('theSvgId', theSvgId);
 				if (theSvgPreviewIdText && theSvgId) {
-					
 					svgArributes && Object.entries(svgArributes).map(([key, value]) => {
-					   console.log('key value: ', key, value);
 					   theSvgId.setAttribute(key, value);
 					});
-/*
-					svgArributes && svgArributes.map((attr) => {
-						console.log('attr', attr);
-						console.log('attr.name', attr.name);
-						theSvgId.setAttribute(attr.name, attr);
-					})
-*/
 /*
 					theSvgId.setAttribute([svgArributes.version].name, svgArributes.version);
 					theSvgId.setAttribute([svgArributes.xmlns].name, svgArributes.xmlns);

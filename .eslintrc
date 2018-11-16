@@ -35,5 +35,12 @@
     "semi": "warn",
     "arrow-body-style": "off",
     "no-plusplus": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "max-len": ["error", {
+    	"code": 170,
+    	"ignoreTrailingComments": true,
+    	"ignoreStrings": true ,
+    	"ignoreComments": true,
+    	}],
   }
 }

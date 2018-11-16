@@ -1553,9 +1553,7 @@ $printBgLess: 1200px;
 
 	// display tweaks
 	&.hasMargin{
-		margin: 16px;
-		// display: inline-block;
-		// vertical-align: middle;
+		margin: 1rem;
 	}
 	&.isInline{
 		display: inline-block;

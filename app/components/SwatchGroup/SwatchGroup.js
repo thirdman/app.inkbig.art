@@ -20,12 +20,12 @@ export default class SwatchGroup extends Component {
 			swatch,
 		} = this.props;
 		let {
-			colorArray = this.props.swatch.colorArray || []
+			colorArray = this.props.swatch && this.props.swatch.colorArray || []
 		} = this.props;
-		if (swatch.type === 'pair') {
+		if (swatch && swatch.type === 'pair') {
 			colorArray = swatch.pairColorArray;
 		}
-		return (
+		return swatch ? (
 			<div className={`${styles.SwatchGroup} ${isHorizontal ? styles.horizontal : styles.vertical}`} onClick={this.props.onClickProps} role="presentation">
 				<div className={`${styles.segment} ${styles.info}`}>
 					<h4>{swatch && swatch.name}</h4>
@@ -40,6 +40,10 @@ export default class SwatchGroup extends Component {
 				})
 				}
 			</div>
+		)
+		:
+		(
+		<div>no swatch defined</div>
 		);
 	}
 	// FUCNTIONS

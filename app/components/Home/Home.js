@@ -95,9 +95,7 @@ export default class Home extends Component {
 	}
 
 	render() {
-    const {
-			history
-		} = this.props;
+//    const {history} = this.props;
 		const {
 			hasMenu = false,
 			theHue,
@@ -109,8 +107,8 @@ export default class Home extends Component {
 			isLoadingSvg,
 			isLoadingEditions,
 			} = this.state;
-		console.log('fbase: ', fbase);
-		console.log('history: ', history);
+		// console.log('fbase: ', fbase);
+		// console.log('history: ', history);
 		return (
 			<div className={`${styles.Home} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
 				<div className={`${styles.column} `}>
