@@ -26,7 +26,25 @@
 		padding: 2px;
 		background: #fff;
 		margin-top: 1px;
-		display: block;
+		display: flex;
+		min-height: 2rem;
+		align-items: center;
+		justify-content: space-between;
+		.svgIcon{
+			width: 1.25rem;
+			height: 100%;
+			background: #f3f3f3;
+			border-radius: 3px;
+			margin: 1px;
+			margin-right: 1ch;
+			height: 1.5rem;
+			display: inline-block;
+			vertical-align: middle;
+			color: #ccc;
+			text-align: center;
+			line-height: 1.5rem;
+			font-size: 11px;
+		}
 	}
 	//ITEMS
 	.formItem{
@@ -144,6 +162,13 @@
 			}
 		}
 	}
+	.loadingWrap{
+		width: 100%;
+		min-height: 4rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	.theLoading{
 		width: 20px !important;
 		height: 20px;
@@ -168,7 +193,7 @@
 		    }
 	    }
 		}
-		>span{
+		+ span{
 			color: #777;
 			font-style: italic;
 		}

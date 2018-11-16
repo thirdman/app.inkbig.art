@@ -2,7 +2,8 @@
 	width: 100%;
   min-height: 100vh;
 	background: #ddd;
-	padding-left: 24px;
+	// padding-left: 24px;
+	padding-left: 0;
 	padding-top: 48px;
 	padding-right: 0;
 	padding-bottom: 0;
@@ -14,6 +15,16 @@
 		left: 0;
 		top: 0;
 		background: #fff;
+
+    width: 100%;
+    height: 48px;
+    left: 0;
+    top: 0;
+    background: rgba(41, 41, 41, 1);
+    box-shadow: 0 2px 28px -6px rgb(0, 0, 0);
+    position: fixed;
+    z-index: 9999;
+    
 		.headerItem{
 			display: inline-block;
 			height: 48px;
@@ -24,9 +35,10 @@
 			color: #888;
 			text-decoration: none;
 			letter-spacing: .2ch;
-			border-left: 1px solid rgba(0,0,0,.1);
+			font-size: .835rem;
+			border-left: 1px solid rgba(255,255,255,.1);
 			&:last-child{
-				border-right: 1px solid rgba(0,0,0,.1);				
+				border-right: 1px solid rgba(255,255,255,.1);				
 			}
 		}
 	}

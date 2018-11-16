@@ -80,6 +80,7 @@ export default class Home extends Component {
 		theSaturation: 0.50,
 		isLoading: true,
 		isLoadingSvg: true,
+		isLoadingEditions: true,
 	};
 
 	componentWillMount() {
@@ -104,8 +105,9 @@ export default class Home extends Component {
 			theSaturation,
 			imagesArray,
 			svgArray,
-			isLoading,
+			// isLoading,
 			isLoadingSvg,
+			isLoadingEditions,
 			} = this.state;
 		console.log('fbase: ', fbase);
 		console.log('history: ', history);
@@ -114,7 +116,7 @@ export default class Home extends Component {
 				<div className={`${styles.column} `}>
 					<h2>Home: Remote SVG</h2>
 						{isLoadingSvg &&
-							<div>
+							<div className={styles.loadingWrap}>
 							{(isLoadingSvg) &&
 								<div
 									className={styles.theLoading}
@@ -124,18 +126,28 @@ export default class Home extends Component {
 								<span>Loading SVG list</span>
 							</div>
 						}
-						{!isLoadingSvg && svgArray && svgArray.map((svg, name) => {
+						{!isLoadingSvg && svgArray && svgArray.map((svg) => {
 							console.log('svg: ', svg);
 							return (
 								<a
-									key={`image${name}`}
-									onClick={() => this.doRoute('edit/remote', svg.data.slug)} // eslint-disable-line
+									key={`image${svg.id}`}
+									onClick={() => this.doRoute('edit/remote', svg.data.slug, svg.data.filename)} // eslint-disable-line
 									role="presentation"
 									className={styles.svgItem}
 								>
-									<div>
-										{svg.data.filename} | {svg.data.slug} | {svg.data.size}
-									</div>
+										<div>
+											<div className={styles.svgIcon} >svg</div>
+											{svg.data.filename}
+										</div>
+										<div>
+											{svg.data.size}b
+										</div>
+										<button
+												className={styles.editButton}
+												onClick={() => this.doRoute('edit/remote', svg.data.slug, svg.data.filename)} // eslint-disable-line
+										>
+											edit
+										</button>
 								</a>
 							);
 						})}
@@ -165,9 +177,20 @@ export default class Home extends Component {
 				</div>
 				<div className={`${styles.column} `}>
 					<h2>Editions</h2>
-					<div className={`${styles.dbImagesWrap} ${styles.row} ${isLoading ? styles.loading : ''}`}>
+						{isLoadingEditions &&
+							<div className={styles.loadingWrap}>
+							{(isLoadingEditions) &&
+								<div
+									className={styles.theLoading}
+									dangerouslySetInnerHTML={{ __html: Loading }} // eslint-disable-line
+								/>
+							}
+								<span>Loading Editions</span>
+							</div>
+						}
+					<div className={`${styles.dbImagesWrap} ${styles.row}`}>
 						<div className={styles.imageList}>
-							{!isLoading && imagesArray && imagesArray.map((img) => {
+							{!isLoadingEditions && imagesArray && imagesArray.map((img) => {
 								// console.log('img: ', img);
 								// console.log('img.renders: ', img.renders);
 								return (
@@ -262,7 +285,9 @@ export default class Home extends Component {
 	getImages() {
 		const imagesRef = fbase.collection('images');
 		const imagesArray = [];
-		this.setState({ isLoading: true });
+		this.setState({
+			// isLoadingEditions: true
+			});
 		imagesRef.get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
 //				console.log(doc.id, ' => ', doc.data());
@@ -286,7 +311,7 @@ export default class Home extends Component {
 			});
 			this.setState({
 				imagesArray,
-				isLoading: false,
+				isLoadingEditions: false,
 			});
 		});
 	}
@@ -314,14 +339,19 @@ export default class Home extends Component {
 		});
 	}
 
-	doRoute(route, name) {
+	doRoute(route, name, filename) {
 		console.log('route, name', route, name, colorObj);
+		const theRoute = (route === 'edit/remote') ? '/edit/remote' : '/edit';
+		console.log(theRoute);
 		const { history } = this.props;
 		history.push({
-			pathname: '/edit',
+			pathname: theRoute || '/edit',
 			// search: '?query=abc',
-			state: { image: name,
-				colorObj
+			state: {
+				image: name,
+				filename,
+				colorObj,
+				mode: route === 'edit/remote' ? 'remote' : 'local',
 				}
 		});
 	}

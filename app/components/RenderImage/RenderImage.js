@@ -25,6 +25,18 @@ export default class RenderImage extends Component {
 		theId: this.makeId(),
 		showDetail: false,
 		size: this.props.mode,
+		svgArributes: {
+			version: '1.1',
+			xmlns: 'http://www.w3.org/2000/svg',
+			'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+			x: '0',
+			y: '0',
+			viewBox: '0, 0, 3000, 3000',
+			width: '100%',
+			height: '100%',
+			preserveAspectRatio: 'xMidYMid slice',
+		}
+
 	};
 
 	componentWillMount() {
@@ -73,6 +85,7 @@ export default class RenderImage extends Component {
 			doRender = false,
 			displayMode = 'max',
 			file = 'montenegro',
+			aspect = 'portrait',
 			swatchName,
 		} = this.props;
 
@@ -90,6 +103,10 @@ export default class RenderImage extends Component {
 					<div className={styles.column}>
 						<h4>Size</h4>
 						<span>{size}</span>
+					</div>
+					<div className={styles.column}>
+						<h4>Aspect</h4>
+						<span>{aspect}</span>
 					</div>
 					<div className={styles.column}>
 						<h4>Swatch</h4>
@@ -131,7 +148,7 @@ export default class RenderImage extends Component {
 					<div className={styles.column}>
 						<h4>Detail</h4>
 						{this.props.file &&
-							<button onClick={() => this.toggleDetail()} >Toggle</button>
+							<button onClick={() => this.toggleDetail()} >{this.state.showDetail ? 'Hide' : 'Show'}</button>
 						}
 					</div>
 				</div>
@@ -169,6 +186,7 @@ export default class RenderImage extends Component {
 						<span className={styles.cropSource}>
 							<DisplayImage
 								{...this.props}
+								svgAttributes={this.state.svgAttributes}
 								// aspect={this.props.aspect}
 								// mode={'large'}
 								divId={this.state.theId}

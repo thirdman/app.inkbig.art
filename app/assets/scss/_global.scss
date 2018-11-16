@@ -1,4 +1,8 @@
-
+h2{
+	//font-size: 24px;
+	font-weight: 100;	
+	margin: 0.25rem;
+}
 h3{
 	font-size: 24px;
 	font-weight: 100;
@@ -27,14 +31,24 @@ h5{
 	}
 }
 
+hr{
+	background: transparent;
+	border: none;
+	border-top: 1px solid rgba(0,0,0,.2);
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 button{
   background: #f9f9f9;
+  background: #eee;
 	// background-image: linear-gradient(to bottom, #ddd 0%, #c5c5c5 100%);
   padding: 8px;
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
   font-weight: bold;
-  box-shadow: 0 1px 8px rgba(0,0,0,.1);
+  // box-shadow: 0 1px 8px rgba(0,0,0,.1);
+  box-shadow: 0 1px 16px -4px rgba(0, 0, 0, 0.2);
   color: #333;
   cursor: pointer;
   outline: none;

@@ -48,10 +48,22 @@ export default class DisplayImage extends Component {
 		isLoading: true,
 		hasLoaded: false,
 		theHue: 10,
-		theId: this.makeId()
+		theId: this.makeId(),
+		svgArributes: {
+			version: '1.1',
+			xmlns: 'http://www.w3.org/2000/svg',
+			'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+			x: '0',
+			y: '0',
+			viewBox: '0, 0, 3000, 3000',
+			width: '100%',
+			height: '100%',
+			preserveAspectRatio: 'xMidYMid slice',
+		}
 	};
 
 	componentWillMount() {
+		
   }
 
 	componentDidMount() {
@@ -62,10 +74,27 @@ export default class DisplayImage extends Component {
 			// theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 			theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMin meet');
 		}
-*/
+*/	
+		const {sourceSvg} = this.props;
+	
 		if (this.props.file === 'Wakatipu' && this.props.aspect === 'landscape') {
 			const theWakatipu = document.getElementById('svgWakatipu');
 			theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+		}
+		if (sourceSvg) {
+			const theSvgPreviewId = document.getElementById(`theImage${mode}`);
+				console.log('theSvgPreviewId', theSvgPreviewId);
+			if (theSvgPreviewId) {
+				const theSvgPreviewIdText = document.getElementById(`svg${file}${this.state.theId}`);
+				console.log('theSvgPreviewIdText', theSvgPreviewIdText);
+				const theSvgId = theSvgPreviewId.getElementsByTagName('svg')[0];
+				console.log('theSvgId', theSvgId);
+				if (theSvgPreviewIdText && theSvgId) {
+					svgArributes && Object.entries(svgArributes).map(([key, value]) => {
+					   theSvgId.setAttribute(key, value);
+					});
+				}
+			}
 		}
 	}
 
@@ -83,13 +112,15 @@ export default class DisplayImage extends Component {
 	render() {
 		const {
 			isLoading,
-			// theHue,
+			svgArributes,
 			} = this.state;
     const {
 			divId,
+			sourceSvg,
 			file = 'montenegro',
 			aspect = 'portrait',
 			mode = 'preview',
+			svgBackgroundColor,
 			hasBackground = false,
 			hasFrame = true,
 			hasMargin = false,
@@ -105,7 +136,7 @@ export default class DisplayImage extends Component {
 			translateY = 0,
 			imageColorArray,
 		} = this.props;
-		let theSvg = file;
+		let theSvg = sourceSvg || file;
 		if (file === 'montenegro') {
 			theSvg = Montenegro;
 		}
@@ -195,6 +226,44 @@ export default class DisplayImage extends Component {
 		}
 		if (file === 'Wedding') {
 			theSvg = Wedding;
+		}
+		
+		if (sourceSvg) {
+			const theSvgPreviewId = document.getElementById(`theImage${mode}`);
+			
+				console.log('theSvgPreviewId', theSvgPreviewId);
+			if (theSvgPreviewId) {
+				const theSvgPreviewIdText = document.getElementById(`svg${file}${this.state.theId}`);
+				console.log('theSvgPreviewIdText', theSvgPreviewIdText);
+				const theSvgId = theSvgPreviewId.getElementsByTagName('svg')[0];
+				console.log('theSvgId', theSvgId);
+				if (theSvgPreviewIdText && theSvgId) {
+					
+					svgArributes && Object.entries(svgArributes).map(([key, value]) => {
+					   console.log('key value: ', key, value);
+					   theSvgId.setAttribute(key, value);
+					});
+/*
+					svgArributes && svgArributes.map((attr) => {
+						console.log('attr', attr);
+						console.log('attr.name', attr.name);
+						theSvgId.setAttribute(attr.name, attr);
+					})
+*/
+/*
+					theSvgId.setAttribute([svgArributes.version].name, svgArributes.version);
+					theSvgId.setAttribute([svgArributes.xmlns].name, svgArributes.xmlns);
+					// theSvgId.setAttribute([svgArributes.xmlns:xlink].name, svgArributes.'xmlns:xlink');
+					// theSvgId.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+					theSvgId.setAttribute('x', '0');
+					theSvgId.setAttribute('y', '0');
+					theSvgId.setAttribute('viewBox', '0, 0, 3000, 3000');
+					theSvgId.setAttribute('width', '100%');
+					theSvgId.setAttribute('height', '100%');
+					theSvgId.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+*/
+				}
+			}
 		}
 
 		const tempStyle = {
@@ -297,7 +366,8 @@ export default class DisplayImage extends Component {
 				transform: ${theTransform};
 			}
 			#svg${file}${this.state.theId}{
-// 				background: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
+				// background: hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%);
+				background: ${svgBackgroundColor};
 			}
 				`}
 				style={{ display: `${isInline ? 'inline-block' : 'block'}` }}

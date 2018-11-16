@@ -3,15 +3,21 @@
 .Edit{
 	display: flex;
 	flex-direction: row;
+	height: calc(100vh - 48px);
 	&.wrap{
 		.column{
 			flex-basis: 1;
 			width: 50%;
 			height: 100%;
 			padding: 24px;
+			&.preview{
+				height: 100%;
+				overflow: scroll; 
+			}
 			&.controls{
 				background: #d2d2d2;
-				min-height: 100vh;
+				height: 100%;
+				overflow: scroll; 
 			}
 		}
 	}
@@ -24,6 +30,7 @@
 	.previewImageWrap{
 		padding: 0;
 		background: none;
+		border: 1px solid rgba(0,0,0,.05);
 	}
 	.renderImageWrap{
 		visibility: hidden;
@@ -66,10 +73,21 @@
 			overflow: hidden;
 		}
 	}
-
+	.huePickerWrap{
+		width: 100%;
+		padding: 8px;
+		background: #fff;
+		border-radius: 4px;
+		display: flex;
+		align-items: center;
+		justify-content: stretch;
+		> div {
+			width: 100% !important;
+		}
+	}
 	.titleBlock{
 		position: relative;
-		border-top: 1px solid rgba(0,0,0,.05);
+		// border-top: 1px solid rgba(0,0,0,.05);
     // box-shadow: 0px -1px 0px #ccc;
 		margin-top: 4px;
 		button{
@@ -96,7 +114,7 @@
 		}
 	}
 	.renderGroup{
-		background: #fff;
+		// background: #fff;
 		padding: 10px;
 	}
 	.renderImage{
@@ -217,9 +235,17 @@
 	    }
 		}
 	}
+	.loadingWrap{
+		display: block;
+		min-height: 3rem;
+		height: 90%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	//ITEMS
 	.formItem{
-		border-bottom: 1px dashed #ddd;
+		// border-bottom: 1px dashed rgba(0,0,0,.2);
 		padding: 8px;
 		position: relative;
 		button{
@@ -297,6 +323,16 @@
 			float: left;
 		}
 	}
+	
+	.colorCard{
+		box-shadow: 0px 1px 8px -2px rgba(0,0,0,.2);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		background: #fff;
+		margin-bottom: 2px;
+	}
 	.buttonGroup{
 		margin: 8px;
 		width: 100%;
@@ -350,6 +386,7 @@
 		    font-weight: bold;
 		    border-bottom: 2px solid #c3c3c3;
 		    border-radius: 0 !important;
+		    font-size: 14px;
 		    &.selected{
 			    border-bottom: 2px solid #333;			    
 			    color: #333;
@@ -361,6 +398,16 @@
 	section.alt{
 		background: #f9f9f9;
 		padding: 16px;
+	}
+	.colorSave{
+		background: #f9f9f9;
+		padding: 16px;
+		input{
+			border: 1px solid #ccc;
+		}
+		button{
+			white-space: nowrap;
+		}
 	}
 	.color{
 	  width: 48px;
