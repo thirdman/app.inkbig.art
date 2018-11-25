@@ -73,10 +73,10 @@ export default class ImageAdmin extends Component {
 					<h1>
 						{imageData && imageData.name}
 					</h1>
-					<h4>ID: {imageId}</h4>
+					<h5>ID: {imageId}</h5>
 					<section>
 						<div className={styles.contentItem}>
-							<h4>Name</h4>
+							<h5>Name</h5>
 							<input
 								type="text"
 								name="name"
@@ -86,7 +86,7 @@ export default class ImageAdmin extends Component {
 							/>
 						</div>
 						<div className={styles.contentItem}>
-							<h4>Slug</h4>
+							<h5>Slug</h5>
 							<input
 								type="text"
 								name="slug"
@@ -96,40 +96,85 @@ export default class ImageAdmin extends Component {
 							/>
 						</div>
 						<div className={styles.contentItem}>
-							<h4>Updated</h4>
+							<h5>Updated</h5>
 							<span>
 								{imageData && imageData.modifiedDate.toString()}
 							</span>
 						</div>
 					</section>
 					<section>
+					<h3>Image Text</h3>
+						<div className={styles.imageTextPreview}>
+								{imageData && imageData.theTitle &&
+									<h2>{imageData.theTitle}</h2>
+								}
+							<h3>
+								{imageData && imageData.theSubtitle1}
+								{imageData && imageData.theSubtitle2 &&
+									<span className={styles.divider} />
+								}
+								{imageData && imageData.theSubtitle2}
+							</h3>
+						</div>
+						<div className={styles.contentItem}>
+							<h5>Title</h5>
+							<input
+								type="text"
+								name="theTitle"
+								value={imageData && imageData.theTitle}
+								ref={(theTitle) => { this.textInput = theTitle; }}
+								onChange={this.handleInputChange}
+							/>
+						</div>
+						<div className={styles.contentItem}>
+							<h5>Subtitle1</h5>
+							<input
+								type="text"
+								name="theSubtitle1"
+								value={imageData && imageData.theSubtitle1}
+								ref={(iSubtitle1) => { this.textInput = iSubtitle1; }}
+								onChange={this.handleInputChange}
+							/>
+						</div>
+						<div className={styles.contentItem}>
+							<h5>Subtitle2</h5>
+							<input
+								type="text"
+								name="theSubtitle2"
+								value={imageData && imageData.theSubtitle2}
+								ref={(iSubtitle2) => { this.textInput = iSubtitle2; }}
+								onChange={this.handleInputChange}
+							/>
+						</div>
+					</section>
+					<section>
 					<h3>Adjustments</h3>
 						<div className={styles.contentItem}>
-							<h4>TranslateX</h4>
+							<h5>TranslateX</h5>
 							<span>
 								{imageData && imageData.theTranslateX}
 							</span>
 						</div>
 						<div className={styles.contentItem}>
-							<h4>TranslateY</h4>
+							<h5>TranslateY</h5>
 							<span>
 								{imageData && imageData.theTranslateY}
 							</span>
 						</div>
 						<div className={styles.contentItem}>
-							<h4>Scale</h4>
+							<h5>Scale</h5>
 							<span>
 								{imageData && imageData.theScale}
 							</span>
 						</div>
 						<div className={styles.contentItem}>
-							<h4>Aspect</h4>
+							<h5>Aspect</h5>
 							<span>
 								{imageData && imageData.aspect}
 							</span>
 						</div>
 						<div className={styles.contentItem}>
-							<h4>hasBackground</h4>
+							<h5>hasBackground</h5>
 							<span>
 								{imageData && imageData.hasBackground}
 							</span>
