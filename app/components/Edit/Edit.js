@@ -63,7 +63,7 @@ export default class Edit extends Component {
 		showColorEdit: true,
 		Adjustments: false,
 		// imageLevels: [10, 16, 37, 61, 79],
-		imageLevels: [15, 30, 50, 70, 85],
+		imageLevels: [15, 35, 50, 65, 85],
 		colorsArray: [],
 		pairColor1: '#444444',
 		pairColor2: '#dddddd',
@@ -71,6 +71,9 @@ export default class Edit extends Component {
 		theScale: 1,
 		theTranslateX: 0,
 		theTranslateY: 0,
+		theSaturation: (this.props.location && this.props.location.state.colorObj.hsl.s) || 0.5,
+		theLightness: (this.props.location && this.props.location.state.colorObj.hsl.l) || 0.5,
+		theHue: (this.props.location && this.props.location.state.colorObj.hsl.h) || 100,
 		doRenders: false,
 		// showRenders: true,
 		swatchName: null,
@@ -387,7 +390,7 @@ export default class Edit extends Component {
 								<div>
 								<h5>Active Swatch Group</h5>
 									<SwatchGroup
-										key={`img${this.state.swatch && this.state.swatch.name || 'unnamed'}`}
+										key={`img${(this.state.swatch && this.state.swatch.name) || 'unnamed'}`}
 										swatch={this.state.swatch}
 										isHorizontal
 										role="presentation"
@@ -541,7 +544,10 @@ export default class Edit extends Component {
 														<div className={styles.swatch}>
 															<div
 																className={styles.color}
-																	style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[0]}%, 1)` }} // eslint-disbable-line
+																	style={{
+																		// backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[0]}%, 1)`
+																		backgroundColor: `hsla(${theHue}, ${theSaturation * 100}%, ${imageLevels[0]}%, 1)`
+																		}} // eslint-disbable-line
 															/>
 														</div>
 													</div>
@@ -550,7 +556,9 @@ export default class Edit extends Component {
 														<div className={styles.swatch}>
 															<div
 																className={styles.color}
-																	style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[1]}%, 1)` }} // eslint-disbable-line
+																	style={{
+																		backgroundColor: `hsla(${theHue}, ${theSaturation * 100}%, ${imageLevels[1]}%, 1)`
+																	}} // eslint-disbable-line
 															/>
 														</div>
 													</div>
@@ -559,7 +567,9 @@ export default class Edit extends Component {
 														<div className={styles.swatch}>
 															<div
 																className={styles.color}
-																	style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[2]}%, 1)` }} // eslint-disbable-line
+																	style={{
+																		backgroundColor: `hsla(${theHue}, ${theSaturation * 100}%, ${imageLevels[2]}%, 1)`
+																		}} // eslint-disbable-line
 															/>
 														</div>
 													</div>
@@ -568,7 +578,9 @@ export default class Edit extends Component {
 														<div className={styles.swatch}>
 															<div
 																className={styles.color}
-																	style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[3]}%, 1)` }} // eslint-disbable-line
+																	style={{
+																		backgroundColor: `hsla(${theHue}, ${theSaturation * 100}%, ${imageLevels[3]}%, 1)`
+																		}} // eslint-disbable-line
 															/>
 														</div>
 													</div>
@@ -577,7 +589,9 @@ export default class Edit extends Component {
 														<div className={styles.swatch}>
 															<div
 																className={styles.color}
-																	style={{ backgroundColor: `hsla(${colorObj.hsl.h}, ${colorObj.hsl.s * 100}%, ${imageLevels[4]}%, 1)` }} // eslint-disbable-line
+																	style={{
+																		backgroundColor: `hsla(${theHue}, ${theSaturation * 100}%, ${imageLevels[4]}%, 1)`
+																		}} // eslint-disbable-line
 															/>
 														</div>
 													</div>
@@ -612,18 +626,90 @@ export default class Edit extends Component {
 										<h5>Hue</h5>
 										<div className={styles.formItem}>
 											<div className={styles.huePickerWrap}>
-											<HuePicker
-												color={colorObj && colorObj.hsl}
+												<HuePicker
+													color={colorObj && colorObj.hsl}
+													color={{h: theHue, s: theSaturation, l: theLightness, a: 1}}
+													// onChange={(color) => { this.setColor(color); }}
+													onChange={(color) => { this.onHueChange(color); }}
+												/>
+											</div>
+										</div>
+										<h5>Saturation</h5>
+										<div className={styles.formItem}>
+											<div className={styles.huePickerWrap}>
+												<Slider
+													step={0.01}
+													min={0}
+													max={1}
+													// trackStyle={{ backgroundColor: `rgb(${theHue}, ${theSaturation * 100}%, ${theLightness * 100})`, height: 16, borderRadius: 0, }}
+													trackStyle={{
+									          marginTop: -4,
+														// backgroundColor: `hsl(${theHue}, 50%, 56%)`,
+														backgroundColor: 'transparent',
+														height: 16, borderRadius: 0,
+													}}
+									        handleStyle={{
+									          height: 16,
+									          width: 16,
+									          marginLeft: -8,
+									          marginTop: -4,
+									          border: 'none'
+									        }}
+													railStyle={{
+														background:`linear-gradient(to right, hsl(${theHue}, 0%, ${theLightness * 100}%) 0%, hsl(${theHue}, 100%, ${theLightness * 100}%) 100%)`,
+														height: 16,
+														borderRadius: 0,
+									          marginTop: -4,
+													}}
+													defaultValue={theSaturation}
+													onChange={this.onSaturationChange}
+												/>
+											</div>
+										</div>
+										<h5>Lightness</h5>
+										<div className={styles.formItem}>
+											<div className={styles.huePickerWrap}>
+												<Slider
+													step={0.01}
+													min={0}
+													max={1}
+													trackStyle={{
+									          marginTop: -4,
+														// backgroundColor: `hsl(${theHue}, 50%, 56%)`,
+														backgroundColor: 'transparent',
+														height: 16, borderRadius: 0,
+													}}
+									        handleStyle={{
+									          height: 16,
+									          width: 16,
+									          marginLeft: -8,
+									          marginTop: -4,
+									          border: 'none'
+									        }}
+													railStyle={{
+														background:`linear-gradient(to right, hsl(${theHue}, ${theSaturation * 100}%, 0%) 0%, hsl(${theHue}, ${theSaturation * 100}%, 100%) 100%)`,
+														height: 16,
+														borderRadius: 0,
+									          marginTop: -4,
+													}}
+													defaultValue={theLightness}
+													onChange={this.onLightnessChange}
+												/>
+											</div>
+										</div>											
+										<div className={styles.formItem}>
+											<ChromePicker
+												// color={colorObj && colorObj.hsl}
+												color={{h: theHue, s: theSaturation, l: theLightness, a: 1}}
 												onChange={(color) => { this.setColor(color); }}
 											/>
-											</div>
+										</div>											
 											{/*
 											<SliderPicker
 												color={colorObj && colorObj.hsl}
 												onChange={(color) => { this.setColor(color); }}
 											/>
 											*/}
-										</div>
 										{/*
 										<div className={styles.row}>
 											<div className={styles.column}>
@@ -698,7 +784,7 @@ export default class Edit extends Component {
 									}
 								</div>
 							}
-							{colorType === "custom" && 
+							{colorType === 'custom' && 
 								<section className={styles.alt}>
 								<div className={styles.formItem}>
 									<div className={styles.row}>
@@ -707,7 +793,7 @@ export default class Edit extends Component {
 											<div className={styles.swatch} onClick={() => this.setState({editCustomColor: 0})}>
 												<div
 													className={styles.color}
-														style={{ backgroundColor: `${customSwatchArray && customSwatchArray[0] || '#444'}` }}
+														style={{ backgroundColor: `${(customSwatchArray && customSwatchArray[0]) || '#444'}` }}
 												/>
 											</div>
 										</div>
@@ -716,7 +802,7 @@ export default class Edit extends Component {
 											<div className={styles.swatch} onClick={() => this.setState({editCustomColor: 1})}>
 												<div
 													className={styles.color}
-														style={{ backgroundColor: `${customSwatchArray && customSwatchArray[1] || '#777'}` }}
+														style={{ backgroundColor: `${(customSwatchArray && customSwatchArray[1]) || '#777'}` }}
 												/>
 											</div>
 										</div>
@@ -725,7 +811,7 @@ export default class Edit extends Component {
 											<div className={styles.swatch} onClick={() => this.setState({editCustomColor: 2})}>
 												<div
 													className={styles.color}
-														style={{ backgroundColor: `${customSwatchArray && customSwatchArray[2] || '#aaa'}` }}
+														style={{ backgroundColor: `${(customSwatchArray && customSwatchArray[2]) || '#aaa'}` }}
 												/>
 											</div>
 										</div>
@@ -734,7 +820,7 @@ export default class Edit extends Component {
 											<div className={styles.swatch} onClick={() => this.setState({editCustomColor: 3})}>
 												<div
 													className={styles.color}
-														style={{ backgroundColor: `${customSwatchArray && customSwatchArray[3] || '#ccc'}` }}
+														style={{ backgroundColor: `${(customSwatchArray && customSwatchArray[3]) || '#ccc'}` }}
 												/>
 											</div>
 										</div>
@@ -743,7 +829,7 @@ export default class Edit extends Component {
 											<div className={styles.swatch} onClick={() => this.setState({editCustomColor: 4})}>
 												<div
 													className={styles.color}
-														style={{ backgroundColor: `${customSwatchArray && customSwatchArray[4] || '#eee'}` }}
+														style={{ backgroundColor: `${(customSwatchArray && customSwatchArray[4]) || '#eee'}` }}
 												/>
 											</div>
 										</div>
@@ -754,11 +840,11 @@ export default class Edit extends Component {
 												<div className={styles.swatch}>
 													<div
 														className={styles.color}
-															style={{ backgroundColor: customSwatchArray && customSwatchArray[editCustomColor] || '#fff'}}
+															style={{ backgroundColor: (customSwatchArray && customSwatchArray[editCustomColor]) || '#fff'}}
 													/>
 												</div>
 													<ChromePicker
-														color={customSwatchArray && customSwatchArray[editCustomColor] || '#fff'}
+														color={(customSwatchArray && customSwatchArray[editCustomColor]) || '#fff'}
 														// onChange={(color) => this.setCustomColor(0, color)}
 														onChange={(color) => { this.setCustomColor(editCustomColor, color); }}
 													/>
@@ -1251,6 +1337,37 @@ export default class Edit extends Component {
 		});
 	}
 
+	onHueChange = (color) => {
+		const {theSaturation, theLightness} = this.state;
+		console.log('HUE: setting the color', color.hsl);
+		this.setState({
+			theHue: color.hsl.h
+		}, () => {
+			this.setColor({h: color.hsl.h, s: theSaturation, l: theLightness, a: 1}, 'manual')
+		});
+  }
+
+	onSaturationChange = (value) => {
+		const {theHue, theLightness} = this.state;
+		console.log('changing saturation', value);
+		this.setState({
+			theSaturation: value,
+		}, () => {
+			this.setColor({h: theHue, s: value, l: theLightness, a: 1}, 'manual')
+		});
+  }
+  
+	onLightnessChange = (value) => {
+		const {theHue, theSaturation} = this.state;
+		console.log('changing saturation', value);
+		this.setState({
+			theLightness: value,
+		}, () => {
+			this.setColor({h: theHue, s: theSaturation, l: value, a: 1}, 'manual')
+		});
+  }
+
+
 	onChangeHues = (values) => {
 		console.log('on change hues was called with', values);
 		this.setState({
@@ -1259,28 +1376,35 @@ export default class Edit extends Component {
 			this.setColor(this.state.colorObj);
 		}));
 	}
-	setColor(color) {
-		const {imageLevels} = this.state;
+	
+	setColor(color, mode = 'auto') {
+		const {
+			imageLevels,
+			} = this.state;
+		const theHue = (mode === 'auto' ? color.hsl.h : color.h);
+		const theSaturation = (mode === 'auto' ? color.hsl.s : color.s);
+		const theLightness = (mode === 'auto' ? color.hsl.l : color.l);
+		console.log('color: ', color);
 		console.log('HUE: setting the color', color.hsl);
 		console.log('colour stops are: ', imageLevels);
 		console.log('therefore the color points are: ');
-		const colorStop1 = `hsl(${color.hsl.h}, ${color.hsl.s * 100}%, ${imageLevels[0]}%)`;
-		const colorStop2 = `hsl(${color.hsl.h}, ${color.hsl.s * 100}%, ${imageLevels[1]}%)`;
-		const colorStop3 = `hsl(${color.hsl.h}, ${color.hsl.s * 100}%, ${imageLevels[2]}%)`;
-		const colorStop4 = `hsl(${color.hsl.h}, ${color.hsl.s * 100}%, ${imageLevels[3]}%)`;
-		const colorStop5 = `hsl(${color.hsl.h}, ${color.hsl.s * 100}%, ${imageLevels[4]}%)`;
+		const colorStop1 = `hsl(${theHue}, ${theSaturation * 100}%, ${imageLevels[0]}%)`; // color.hsl.s
+		const colorStop2 = `hsl(${theHue}, ${theSaturation * 100}%, ${imageLevels[1]}%)`;
+		const colorStop3 = `hsl(${theHue}, ${theSaturation * 100}%, ${imageLevels[2]}%)`;
+		const colorStop4 = `hsl(${theHue}, ${theSaturation * 100}%, ${imageLevels[3]}%)`;
+		const colorStop5 = `hsl(${theHue}, ${theSaturation * 100}%, ${imageLevels[4]}%)`;
 		const tempColorArray = [colorStop1, colorStop2, colorStop3, colorStop4, colorStop5];
 		console.log('tempColorArray:', tempColorArray);
 		const tempSwatch = {
 			name: 'unsaved swatch',
 			type: 'hue',
 			swatchColorArray: tempColorArray,
-		}
+		};
 		this.setState({
 			colorObj: color,
-			theHue: color.hsl.h,
-			theSaturation: color.hsl.s,
-			theLightness: color.hsl.l,
+			theHue,
+			theSaturation,
+			theLightness,
 			tempSwatchName: 'unsaved swatch',
 			swatchName: '',
 			swatch: tempSwatch,
@@ -1319,8 +1443,8 @@ export default class Edit extends Component {
 			tempSwatchName: 'unnamed swatch',
 		});
 	}
-	setCustomColor = (index, color) => {
-		console.log(index, color)
+	setCustomColor = (index, color) => { // eslint-disable-line
+		console.log(index, color);
 		if (index < 0 || !color) {
 			console.log('Bailing out, no index or color');
 			return false;
@@ -1338,13 +1462,14 @@ export default class Edit extends Component {
 			name: 'unsaved swatch',
 			type: 'custom',
 			swatchColorArray: tempArray,
-		}
+		};
+		console.log('tempSwatch, ', tempSwatch);
 		this.setState({
 			customSwatchArray: tempArray,
 			swatchColorArray: tempArray, 
 			swatchName: '',
 			tempSwatchName: 'unnamed swatch',
-		})
+		});
 	}
 	// SWATCH
 	getSwatches() {

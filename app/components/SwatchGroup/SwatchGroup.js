@@ -20,7 +20,7 @@ export default class SwatchGroup extends Component {
 			swatch,
 		} = this.props;
 		let {
-			colorArray = this.props.swatch && this.props.swatch.colorArray || []
+			colorArray = (this.props.swatch && this.props.swatch.colorArray) || [],
 		} = this.props;
 		if (swatch && swatch.type === 'pair') {
 			colorArray = swatch.pairColorArray;

@@ -75,7 +75,8 @@ export default class DisplayImage extends Component {
 			theWakatipu.setAttribute('preserveAspectRatio', 'xMidYMin meet');
 		}
 */	
-		const {sourceSvg} = this.props;
+		const {sourceSvg, mode, file} = this.props;
+		const {svgArributes} = this.state;
 	
 		if (this.props.file === 'Wakatipu' && this.props.aspect === 'landscape') {
 			const theWakatipu = document.getElementById('svgWakatipu');
@@ -90,8 +91,8 @@ export default class DisplayImage extends Component {
 				const theSvgId = theSvgPreviewId.getElementsByTagName('svg')[0];
 				console.log('theSvgId', theSvgId);
 				if (theSvgPreviewIdText && theSvgId) {
-					svgArributes && Object.entries(svgArributes).map(([key, value]) => {
-					   theSvgId.setAttribute(key, value);
+					svgArributes && Object.entries(svgArributes).map(([key, value]) => { // eslint-disable-line
+						theSvgId.setAttribute(key, value);
 					});
 				}
 			}
@@ -237,8 +238,8 @@ export default class DisplayImage extends Component {
 				const theSvgId = theSvgPreviewId.getElementsByTagName('svg')[0];
 				// console.log('theSvgId', theSvgId);
 				if (theSvgPreviewIdText && theSvgId) {
-					svgArributes && Object.entries(svgArributes).map(([key, value]) => {
-					   theSvgId.setAttribute(key, value);
+					svgArributes && Object.entries(svgArributes).map(([key, value]) => { // eslint-disable-line
+						theSvgId.setAttribute(key, value);
 					});
 /*
 					theSvgId.setAttribute([svgArributes.version].name, svgArributes.version);

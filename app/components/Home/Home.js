@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 // import { BrowserRouter as Router } from 'react-router-dom'
+// import * as firebase from 'firebase';
 import fbase from '../../firebase';
 
 import styles from './Home.scss';
 import { DisplayImage } from '../../components';
 import Loading from '../../assets/icons/loading.svg';
+
+require('firebase/firestore');
 
 // import * as theImages from '../../assets/svg';
 
@@ -81,6 +84,7 @@ export default class Home extends Component {
 		isLoading: true,
 		isLoadingSvg: true,
 		isLoadingEditions: true,
+		toDelete: null,
 	};
 
 	componentWillMount() {
@@ -106,6 +110,7 @@ export default class Home extends Component {
 			// isLoading,
 			isLoadingSvg,
 			isLoadingEditions,
+			toDelete,
 			} = this.state;
 		// console.log('fbase: ', fbase);
 		// console.log('history: ', history);
@@ -127,26 +132,46 @@ export default class Home extends Component {
 						{!isLoadingSvg && svgArray && svgArray.map((svg) => {
 							console.log('svg: ', svg);
 							return (
-								<a
+								<div
 									key={`image${svg.id}`}
-									onClick={() => this.doRoute('edit/remote', svg.data.slug, svg.data.filename)} // eslint-disable-line
 									role="presentation"
-									className={styles.svgItem}
+									className={`${styles.svgItem} ${toDelete === svg.data.filename ? styles.toDelete : ''}`}
 								>
-										<div>
-											<div className={styles.svgIcon} >svg</div>
-											{svg.data.filename}
-										</div>
-										<div>
-											{svg.data.size}b
-										</div>
+									<div
+										onClick={() => this.doRoute('edit/remote', svg.data.slug, svg.data.filename)} // eslint-disable-line
+									>
+										<div className={styles.svgIcon} >svg</div>
+										{svg.data.filename}
+									</div>
+									<div>
+										{svg.data.size && `${svg.data.size}b`}
+									</div>
+									<div className={styles.buttonWrap}>
 										<button
-												className={styles.editButton}
-												onClick={() => this.doRoute('edit/remote', svg.data.slug, svg.data.filename)} // eslint-disable-line
+											className={styles.edit}
+											onClick={() => this.doRoute('edit/remote', svg.data.slug, svg.data.filename)} // eslint-disable-line
 										>
 											edit
 										</button>
-								</a>
+										<button
+											className={styles.delete}
+											onClick={() => this.doDeleteSvg(svg.id, svg.data.slug, svg.data.filename)} // eslint-disable-line
+										>
+											delete
+										</button>
+									</div>
+									{toDelete === svg.data.filename &&
+										<div className={styles.deleteWarning}>
+											<strong>Are you sure? This cannot be undone.</strong>
+											<div>
+												<button className={styles.confirm} onClick={() => this.onConfirmDelete(svg.id, svg.data.slug, svg.data.filename)}>
+													Confirm
+												</button>
+												<button className={styles.edit}onClick={() => this.onCancelDelete()}>Cancel</button>
+											</div>
+										</div>
+									}
+								</div>
 							);
 						})}
 					<h2>Home: Local SVG</h2>
@@ -362,6 +387,30 @@ export default class Home extends Component {
 				imageId
 				}
 		});
+	}
+	doDeleteSvg = (id, slug, filename) => {
+		this.setState({
+			toDelete: filename
+		});
+	}
+	onConfirmDelete = (id, slug, filename) => {
+		console.log('this shoudl attempt to delete svg: ', id, slug, filename);
+		console.log(fbase.collection('svg'));
+		console.log(fbase.collection('svg').doc(id));
+		
+	fbase.collection('svg').doc(id).delete()
+		.then((snapshot) => {
+			console.log('Document successfully deleted!', snapshot);
+		})
+		.catch((error) => {
+			console.error('Error removing document: ', error);
+		});
+	}
+	
+	onCancelDelete = () => {
+		this.setState({
+			toDelete: null
+		});		
 	}
 }
 /*

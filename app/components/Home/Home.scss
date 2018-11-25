@@ -30,6 +30,16 @@
 		min-height: 2rem;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap:wrap;
+		&.toDelete{
+	    // background: rgb(255, 218, 222);
+	    background: #fff;
+	    // border-top: 1px solid red;
+	    .buttonWrap{
+		    opacity: 0;
+		    visibility: 0;
+	    }
+		}
 		.svgIcon{
 			width: 1.25rem;
 			height: 100%;
@@ -44,6 +54,23 @@
 			text-align: center;
 			line-height: 1.5rem;
 			font-size: 11px;
+		}
+		.buttonWrap{
+			
+		}
+		.deleteWarning{
+	    background: rgba(255, 25, 52, 1);
+	    color: #fff;
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between;
+	    // border: 2px solid red;
+	    border-radius: 4px;
+	    flex-basis: 98%;
+	    flex-shrink: 0;
+	    line-height: 2rem;
+	    padding: 1rem;
+	    margin: .5rem;
 		}
 	}
 	//ITEMS
