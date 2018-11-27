@@ -9,6 +9,9 @@ import Loading from '../../assets/icons/loading.svg';
 
 require('firebase/firestore');
 
+const ase = require("ase-util");
+
+
 // import * as theImages from '../../assets/svg';
 
 // const svgs = require.context('../../assets/svg', true, /\.svg$/);
@@ -99,6 +102,14 @@ export default class Home extends Component {
 	}
 
 	render() {
+		
+	// var fs = require("fs");
+	// const file = require("../../assets/ReseneTotalColourMaster2016.ase");
+	// console.log(this.readTextFile(file));
+// 	console.log('fulesunc: ', fs.readFileSync("../../assets/Resene%20Total%20Colour%20Master%202016.ase"));
+	// var result = ase.read(file);
+
+
 //    const {history} = this.props;
 		const {
 			hasMenu = false,
@@ -130,7 +141,6 @@ export default class Home extends Component {
 							</div>
 						}
 						{!isLoadingSvg && svgArray && svgArray.map((svg) => {
-							console.log('svg: ', svg);
 							return (
 								<div
 									key={`image${svg.id}`}
@@ -412,6 +422,23 @@ export default class Home extends Component {
 			toDelete: null
 		});		
 	}
+	
+ readTextFile = file => {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = () => {
+        if (rawFile.readyState === 4) {
+            if (rawFile.status === 200 || rawFile.status == 0) {
+                var allText = rawFile.responseText;
+                console.log("allText: ", allText);
+                this.setState({
+                    fundData: allText
+                });
+            }
+        }
+    };
+    rawFile.send(null);
+};
 }
 /*
 				{ keys.map((img) => {

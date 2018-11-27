@@ -103,7 +103,7 @@ export default class ImageAdmin extends Component {
 						</div>
 					</section>
 					<section>
-					<h3>Image Text</h3>
+						<h3>Image Text</h3>
 						<div className={styles.imageTextPreview}>
 								{imageData && imageData.theTitle &&
 									<h2>{imageData.theTitle}</h2>

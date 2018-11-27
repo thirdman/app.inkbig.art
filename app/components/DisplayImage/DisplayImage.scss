@@ -56,7 +56,55 @@ $printBgLess: 1200px;
 		bottom: 0;
 		right: 0;
 	}
-	
+	.titleBlock{
+    position: absolute;
+    background: transparent;
+    z-index: 999;
+    // transform: scale(.6);
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    transform-origin: top left;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+		h2{
+			text-transform: uppercase;
+			font-size: 36px;
+			font-weight: 500;
+	    letter-spacing: .1ch;			
+		}
+		h3{
+			text-transform: uppercase;
+	    font-size: 20px;
+	    font-weight: 600;
+	    margin: 0;
+	    letter-spacing: .2ch;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+		}
+		.divider{
+			border-radius: 1em;
+			// width: .5rem;
+			// height: .5rem;
+			// margin:  0 1rem;
+	    width: .25em;
+	    height: .25em;
+	    margin: 0 .5em;
+			background: #fff;
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+	&.hasTitles{
+		// used below	
+	}
+	&.circle{
+		.titleBlock{
+			color: #aaa;
+		}
+	}
 	// MODES
 
 	&.thumbnail{
@@ -340,6 +388,29 @@ $printBgLess: 1200px;
 				}
 			}
 		}
+		&.hasTitles{
+			.titleBlock{
+				width: $thumbnailShort;
+				transform: none;
+				left: 0;
+				bottom: 5%;
+				h2{
+					font-size: calc(#{$thumbnailShort} * 0.075);
+				}
+				h3{
+					font-size: calc(#{$thumbnailShort} * 0.035);
+				}		
+			}
+			&.circle{
+				.theSvg{
+					width: calc(#{$thumbnailShort} * 0.7);
+					height: calc(#{$thumbnailShort} * 0.7);
+					left: calc(#{$thumbnailShort} * 0.3 / 2); // 10% of the length, divided by 2
+					top: calc(((#{$thumbnailLong} / 3) - ((#{$thumbnailShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					border-radius: $thumbnailShort; // make the circle
+				}	
+			}
+		}
 	}
 	&.preview, &.small{
 		&.hasFrame{
@@ -620,6 +691,29 @@ $printBgLess: 1200px;
 				    z-index: 11;
 					}
 				}
+			}
+		}
+		&.hasTitles{
+			.titleBlock{
+				width: $smallShort;
+				transform: none;
+				left: 0;
+				bottom: 5%;
+				h2{
+					font-size: calc(#{$smallShort} * 0.075);
+				}
+				h3{
+					font-size: calc(#{$smallShort} * 0.035);
+				}		
+			}
+			&.circle{
+				.theSvg{
+					width: calc(#{$smallShort} * 0.7);
+					height: calc(#{$smallShort} * 0.7);
+					left: calc(#{$smallShort} * 0.3 / 2); // 10% of the length, divided by 2
+					top: calc(((#{$smallLong} / 3) - ((#{$smallShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					border-radius: $smallShort; // make the circle
+				}	
 			}
 		}
 	}
@@ -941,6 +1035,29 @@ $printBgLess: 1200px;
 				}
 			}
 		}
+		&.hasTitles{
+			.titleBlock{
+				width: $mediumShort;
+				transform: none;
+				left: 0;
+				bottom: 5%;
+				h2{
+					font-size: calc(#{$mediumShort} * 0.075);
+				}
+				h3{
+					font-size: calc(#{$smallShort} * 0.035);
+				}		
+			}
+			&.circle{
+				.theSvg{
+					width: calc(#{$mediumShort} * 0.7);
+					height: calc(#{$mediumShort} * 0.7);
+					left: calc(#{$mediumShort} * 0.3 / 2); // 10% of the length, divided by 2
+					top: calc(((#{$mediumLong} / 3) - ((#{$mediumShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					border-radius: $mediumShort; // make the circle
+				}	
+			}
+		}
 	}
 /*
 	&.large{
@@ -1245,6 +1362,29 @@ $printBgLess: 1200px;
 				}
 			}
 		}
+		&.hasTitles{
+			.titleBlock{
+				width: $largeShort;
+				transform: none;
+				left: 0;
+				bottom: 5%;
+				h2{
+					font-size: calc(#{$largeShort} * 0.075);
+				}
+				h3{
+					font-size: calc(#{$largeShort} * 0.035);
+				}		
+			}
+			&.circle{
+				.theSvg{
+					width: calc(#{$largeShort} * 0.7);
+					height: calc(#{$largeShort} * 0.7);
+					left: calc(#{$largeShort} * 0.3 / 2); // 10% of the length, divided by 2
+					top: calc(((#{$largeLong} / 3) - ((#{$largeShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					border-radius: $largeShort; // make the circle
+				}	
+			}
+		}
 	}
 /*
 	&.print{
@@ -1547,6 +1687,29 @@ $printBgLess: 1200px;
 				    z-index: 11;
 					}
 				}
+			}
+		}
+		&.hasTitles{
+			.titleBlock{
+				width: $printShort;
+				transform: none;
+				left: 0;
+				bottom: 5%;
+				h2{
+					font-size: calc(#{$printShort} * 0.075);
+				}
+				h3{
+					font-size: calc(#{$printShort} * 0.035);
+				}		
+			}
+			&.circle{
+				.theSvg{
+					width: calc(#{$printShort} * 0.7);
+					height: calc(#{$printShort} * 0.7);
+					left: calc(#{$printShort} * 0.3 / 2); // 10% of the length, divided by 2
+					top: calc(((#{$printLong} / 3) - ((#{$printShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					border-radius: $printShort; // make the circle
+				}	
 			}
 		}
 	}

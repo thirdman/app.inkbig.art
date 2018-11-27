@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+// import * as colorPallettes from 'matrioshka.colors';
+
 // import domtoimage from 'dom-to-image';
 // import { Link } from 'react-router-dom';
 import {
@@ -25,6 +27,7 @@ import {
 	DisplayImage,
 	RenderImage,
 	SwatchGroup,
+	NamedColor,
 	} from '../../components';
 import styles from './Edit.scss';
 
@@ -59,6 +62,7 @@ export default class Edit extends Component {
 		hasFrame: false,
 		hasHighlight: false,
 		hasBackground: false,
+		hasTitles: false,
 		showSources: false,
 		showColorEdit: true,
 		Adjustments: false,
@@ -82,6 +86,10 @@ export default class Edit extends Component {
 		pairColorArray: [],
 		swatchColorArray: [],
 		customSwatchArray: ['#444444', '#777777', '#aaaaaa', '#cccccc', '#eeeeee'],
+		selectedColorName: '',
+		theTitle: '',
+		theSubtitle1: '',
+		theSubtitle2: '',
 	};
 
 	componentWillMount() {
@@ -127,6 +135,7 @@ export default class Edit extends Component {
 			hasHighlight = false,
 			hasFrame = false,
 			hasBackground,
+			hasTitles,
 			pairColor1,
 			pairColor2,
 			pairColorArray,
@@ -142,15 +151,11 @@ export default class Edit extends Component {
 			theLightness = (this.props.location.state &&
 				this.props.location.state.colorObj.hsl.l) || 0.5,
 			imageLevels,
+			selectedColorName,
+			theTitle,
+			theSubtitle1,
+			theSubtitle2,
 			} = this.state;
-
-		if (!firebase.apps.length) {
-			// firebase.initializeApp();
-		} else {
-			// console.log('FOREBASE:', firebase.apps);
-			// const fStorage = firebase.storage();
-			// console.log(fStorage);
-		}
 		return (
 			<div className={`${styles.Edit} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
 				<div className={`${styles.column} ${styles.preview}`}>
@@ -194,12 +199,16 @@ export default class Edit extends Component {
 							imageLevels={imageLevels}
 							isCentered
 							hasMargin
+							hasTitles={hasTitles}
 							hue={theHue}
 							saturation={theSaturation}
 							lightness={theLightness}
 							scale={theScale}
 							translateX={theTranslateX}
 							translateY={theTranslateY}
+							theTitle={theTitle}
+							theSubtitle1={theSubtitle1}
+							theSubtitle2={theSubtitle2}
 							imageColorArray={swatchColorArray || pairColorArray}
 						/>
 					</div>
@@ -269,6 +278,13 @@ export default class Edit extends Component {
 						>
 							renders
 						</div>
+						<div
+							className={`${styles.btn} ${this.state.activeControl === 'titles' ? styles.selected : ''}`}
+							onClick={() => this.setState({ activeControl: 'titles' })}
+							role="presentation"
+						>
+							titles
+						</div>
 					</div>
 					{this.state.activeControl === 'settings' &&
 						<section>
@@ -321,6 +337,18 @@ export default class Edit extends Component {
 										onChange={this.toggleFrame}
 									/>
 									<label htmlFor="hasFrameToggle">Add a frame</label>
+								</div>
+							</div>
+							<div className={`${styles.formItem} ${this.state.hasTitles ? styles.isActive : ''}`}>
+								<h5>Has Frame: <span>{this.state.hasTitles ? 'yes' : 'no'}</span></h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="hasTitlesToggle"
+										defaultChecked={this.state.hasTitles}
+										onChange={this.toggleTitles}
+									/>
+									<label htmlFor="hasTitlesToggle">Show Titles</label>
 								</div>
 							</div>
 						</section>
@@ -403,7 +431,7 @@ export default class Edit extends Component {
 								<h5>Unsaved Swatch</h5>
 								<div className={`${styles.row}`}>								
 									<input
-									type="text"
+										type="text"
 										ref={(c) => { this.tempSwatchName = c; }}
 										value={this.state.tempSwatchName || ''}
 										onChange={(evt) => { this.setSwatchName(evt); }}
@@ -627,7 +655,7 @@ export default class Edit extends Component {
 										<div className={styles.formItem}>
 											<div className={styles.huePickerWrap}>
 												<HuePicker
-													color={colorObj && colorObj.hsl}
+													// color={colorObj && colorObj.hsl}
 													color={{h: theHue, s: theSaturation, l: theLightness, a: 1}}
 													// onChange={(color) => { this.setColor(color); }}
 													onChange={(color) => { this.onHueChange(color); }}
@@ -643,23 +671,23 @@ export default class Edit extends Component {
 													max={1}
 													// trackStyle={{ backgroundColor: `rgb(${theHue}, ${theSaturation * 100}%, ${theLightness * 100})`, height: 16, borderRadius: 0, }}
 													trackStyle={{
-									          marginTop: -4,
+														marginTop: -4,
 														// backgroundColor: `hsl(${theHue}, 50%, 56%)`,
 														backgroundColor: 'transparent',
 														height: 16, borderRadius: 0,
 													}}
-									        handleStyle={{
-									          height: 16,
-									          width: 16,
-									          marginLeft: -8,
-									          marginTop: -4,
-									          border: 'none'
-									        }}
+													handleStyle={{
+														height: 16,
+														width: 16,
+														marginLeft: -8,
+														marginTop: -4,
+														border: 'none'
+													}}
 													railStyle={{
-														background:`linear-gradient(to right, hsl(${theHue}, 0%, ${theLightness * 100}%) 0%, hsl(${theHue}, 100%, ${theLightness * 100}%) 100%)`,
+														background: `linear-gradient(to right, hsl(${theHue}, 0%, ${theLightness * 100}%) 0%, hsl(${theHue}, 100%, ${theLightness * 100}%) 100%)`,
 														height: 16,
 														borderRadius: 0,
-									          marginTop: -4,
+														marginTop: -4,
 													}}
 													defaultValue={theSaturation}
 													onChange={this.onSaturationChange}
@@ -674,29 +702,34 @@ export default class Edit extends Component {
 													min={0}
 													max={1}
 													trackStyle={{
-									          marginTop: -4,
+													marginTop: -4,
 														// backgroundColor: `hsl(${theHue}, 50%, 56%)`,
 														backgroundColor: 'transparent',
-														height: 16, borderRadius: 0,
-													}}
-									        handleStyle={{
-									          height: 16,
-									          width: 16,
-									          marginLeft: -8,
-									          marginTop: -4,
-									          border: 'none'
-									        }}
-													railStyle={{
-														background:`linear-gradient(to right, hsl(${theHue}, ${theSaturation * 100}%, 0%) 0%, hsl(${theHue}, ${theSaturation * 100}%, 100%) 100%)`,
 														height: 16,
 														borderRadius: 0,
-									          marginTop: -4,
+													}}
+													handleStyle={{
+														height: 16,
+														width: 16,
+														marginLeft: -8,
+														marginTop: -4,
+														border: 'none'
+													}}
+													railStyle={{
+														background: `linear-gradient(to right, hsl(${theHue}, ${theSaturation * 100}%, 0%) 0%, hsl(${theHue}, ${theSaturation * 100}%, 100%) 100%)`,
+														height: 16,
+														borderRadius: 0,
+														marginTop: -4,
 													}}
 													defaultValue={theLightness}
 													onChange={this.onLightnessChange}
 												/>
 											</div>
 										</div>											
+										<div className={styles.formitem}>
+										<h4>named color</h4>
+										<NamedColor onSelect={(color) => this.setColor(color, 'named')}/>
+										</div>
 										<div className={styles.formItem}>
 											<ChromePicker
 												// color={colorObj && colorObj.hsl}
@@ -720,12 +753,20 @@ export default class Edit extends Component {
 											</div>
 										</div>
 										*/}
-										<button
-											className={styles.button}
-											onClick={() => this.doSaveColor()}
-										>
-											save color
-										</button>
+										<div>
+											<input
+												type="text"
+												ref={(c) => { this.selectedColorName = c; }}
+												value={this.state.selectedColorName || ''}
+												onChange={(evt) => { this.setColorName(evt); }}
+											/>
+											<button
+												className={styles.button}
+												onClick={() => this.doSaveColor()}
+											>
+												save color
+											</button>
+										</div>
 									</div>
 								</div>
 							</section>
@@ -747,6 +788,11 @@ export default class Edit extends Component {
 							{colorType === 'hue' &&
 								<div className={styles.formitem}>
 									<h3>Saved Colors</h3>
+									<div className={styles.colorCard} style={{background: 'transparent'}}>
+											<h5>Swatch</h5>
+											<h5>Name</h5>
+											<h5>Action</h5>
+									</div>
 									{colorsArray && colorsArray.map((color) => {
 										return (
 											<div
@@ -757,6 +803,7 @@ export default class Edit extends Component {
 												// eslint-disable-line
 											>
 												<div className={styles.swatch} onClick={() => this.loadColor(color.id)} role="presentation">
+													{color.data.colorObj.hsl &&
 													<div
 														className={styles.color}
 															style={{
@@ -766,6 +813,10 @@ export default class Edit extends Component {
 																 ${color.data.colorObj.hsl.l * 100}%, 1)`
 																}}
 													/>
+													}
+												</div>
+												<div>
+													{color.data.name}
 												</div>
 												<button
 													onClick={() => this.loadColor(color.id)} // eslint-disable-line
@@ -1033,6 +1084,53 @@ export default class Edit extends Component {
 						
 						</section>
 					}
+					{this.state.activeControl === 'titles' &&
+						<section>
+							<h3>Image Text</h3>
+							<div className={styles.imageTextPreview}>
+									{theTitle &&
+										<h2>{theTitle}</h2>
+									}
+								<h3>
+									{theSubtitle1}
+									{theSubtitle2 &&
+										<span className={styles.divider} />
+									}
+									{theSubtitle2}
+								</h3>
+							</div>
+							<div className={styles.contentItem}>
+								<h5>Title</h5>
+								<input
+									type="text"
+									name="theTitle"
+									value={theTitle}
+									ref={(theTitle) => { this.textInput = theTitle; }}
+									onChange={this.handleInputChange}
+								/>
+							</div>
+							<div className={styles.contentItem}>
+								<h5>Subtitle1</h5>
+								<input
+									type="text"
+									name="theSubtitle1"
+									value={theSubtitle1}
+									ref={(iSubtitle1) => { this.textInput = iSubtitle1; }}
+									onChange={this.handleInputChange}
+								/>
+							</div>
+							<div className={styles.contentItem}>
+								<h5>Subtitle2</h5>
+								<input
+									type="text"
+									name="theSubtitle2"
+									value={theSubtitle2}
+									ref={(iSubtitle2) => { this.textInput = iSubtitle2; }}
+									onChange={this.handleInputChange}
+								/>
+							</div>
+						</section>
+					}
 				</div>
 			</div>
 		);
@@ -1139,6 +1237,7 @@ export default class Edit extends Component {
 				console.log('color data:', doc.data());
 				this.setState({
 					colorObj: doc.data().colorObj,
+					selectedColorName: doc.data().name,
 					imageLevels: doc.data().imageLevels,
 					theHue: doc.data().colorObj.hsl.h,
 					theSaturation: doc.data().colorObj.hsl.s,
@@ -1157,10 +1256,11 @@ export default class Edit extends Component {
 	}
 
 	doSaveColor(colorId) {
+		const {selectedColorName} = this.state;
 		if (colorId) {
 			console.log('Saving the color wid id: ', colorId);
 		} else {
-			console.log('Saving a new colour since there is no id');
+			console.log('should save a new colour since there is no id');
 		}
 		const {
 			colorObj,
@@ -1170,6 +1270,7 @@ export default class Edit extends Component {
 		if (!colorId) {
 			fbase.collection('colors').add({
 				colorObj,
+				name: selectedColorName,
 				imageLevels,
 				modifiedDate: currentDateTime
 			})
@@ -1209,6 +1310,9 @@ export default class Edit extends Component {
 			theScale,
 			theTranslateX,
 			theTranslateY,
+			theTitle,
+			theSubTitle1,
+			theSubTitle2,
 			} = this.state;
 		const { file } = this.props;
 		console.log('do save iamge: ', image, file);
@@ -1236,6 +1340,9 @@ export default class Edit extends Component {
 				theScale,
 				theTranslateX,
 				theTranslateY,
+				theTitle,
+				theSubTitle1,
+				theSubTitle2,
 				modifiedDate: currentDateTime
 			})
 			.then((imageRef) => {
@@ -1278,6 +1385,11 @@ export default class Edit extends Component {
 	toggleFrame = () => {
 		this.setState({
 			hasFrame: !this.state.hasFrame
+		});
+	}
+	toggleTitles = () => {
+		this.setState({
+			hasTitles: !this.state.hasTitles
 		});
 	}
 	toggleBackground = () => {
@@ -1325,6 +1437,22 @@ export default class Edit extends Component {
 	}
 */
 
+	//////////////////////////////
+	// TITLES
+	//////////////////////////////
+	handleInputChange = (event) => {
+		const target = event.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		const name = target.name;
+		this.setState({
+			[name]: value
+		});
+		// setTimeout(() => {
+			// this.saveImage();
+		// }, 1000);
+	}
+
+
 
 	//////////////////////////////
 	// COLORS
@@ -1343,7 +1471,7 @@ export default class Edit extends Component {
 		this.setState({
 			theHue: color.hsl.h
 		}, () => {
-			this.setColor({h: color.hsl.h, s: theSaturation, l: theLightness, a: 1}, 'manual')
+			this.setColor({h: color.hsl.h, s: theSaturation, l: theLightness, a: 1}, 'manual');
 		});
   }
 
@@ -1353,7 +1481,7 @@ export default class Edit extends Component {
 		this.setState({
 			theSaturation: value,
 		}, () => {
-			this.setColor({h: theHue, s: value, l: theLightness, a: 1}, 'manual')
+			this.setColor({h: theHue, s: value, l: theLightness, a: 1}, 'manual');
 		});
   }
   
@@ -1363,7 +1491,7 @@ export default class Edit extends Component {
 		this.setState({
 			theLightness: value,
 		}, () => {
-			this.setColor({h: theHue, s: theSaturation, l: value, a: 1}, 'manual')
+			this.setColor({h: theHue, s: theSaturation, l: value, a: 1}, 'manual');
 		});
   }
 
@@ -1385,6 +1513,7 @@ export default class Edit extends Component {
 		const theSaturation = (mode === 'auto' ? color.hsl.s : color.s);
 		const theLightness = (mode === 'auto' ? color.hsl.l : color.l);
 		console.log('color: ', color);
+		console.log('therefor the color is: ', theHue, theSaturation, theLightness);
 		console.log('HUE: setting the color', color.hsl);
 		console.log('colour stops are: ', imageLevels);
 		console.log('therefore the color points are: ');
@@ -1579,7 +1708,12 @@ export default class Edit extends Component {
 			tempSwatchName: evt.target.value
 		});
 	}
-
+	setColorName(evt) {
+		console.log('setting the colorName', evt);
+		this.setState({
+			selectedColorName: evt.target.value
+		});
+	}
 	// ADJUSTMENTS ////////////////////////////////////////////////////////////
 	setScale(value) {
 		console.log('setting the scale value', value);

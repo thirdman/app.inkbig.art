@@ -1,0 +1,43 @@
+@import '../../assets/scss/_global.scss';
+
+.NamedColor{
+	border: 1px solid #ccc;
+	padding: 4px;
+	border-radius: 4px;
+	background: #fff;
+	box-shadow: 0 1px 8px -2px rgba(0,0,0,.2);
+	.swatchResults{
+		padding: 8px;
+	}
+	.swatchitem{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		.swatchColor{
+			border-radius: 3px;
+			width: 3rem;
+			height: 2rem;
+			display: block;
+		}
+		.swatchTitle{
+			font-weight: bold;
+			font-size: .75rem;
+		}
+		.swatchAction{
+		}
+	}
+	
+	// INPUT
+	.inputWrap{
+		background: #f9f9f9;
+		border-radius: 2px;
+		padding: 8px;
+		margin: 8px;
+		display: flex;
+		align-items: center;
+		input{
+			border: 1px solid #ddd;
+		}
+	}
+}

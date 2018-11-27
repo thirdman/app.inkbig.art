@@ -126,6 +126,7 @@ export default class DisplayImage extends Component {
 			hasFrame = true,
 			hasMargin = false,
 			hasHighlight = false,
+			hasTitles = false,
 			isInline = false,
 			isCentered = false,
 			imageLevels = [10, 16, 37, 61, 79],
@@ -136,6 +137,9 @@ export default class DisplayImage extends Component {
 			translateX = 0,
 			translateY = 0,
 			imageColorArray,
+			theTitle,
+			theSubtitle1,
+			theSubtitle2,
 		} = this.props;
 		let theSvg = sourceSvg || file;
 		if (file === 'montenegro') {
@@ -372,6 +376,7 @@ export default class DisplayImage extends Component {
 				${isCentered ? styles.isCentered : ''} 
 				${isLoading ? styles.isLoading : ''} 
 				${isInline ? styles.isInline : ''} 
+				${hasTitles ? styles.hasTitles : ''} 
 				${hasFrame ? styles.hasFrame : ''} 
 				${hasMargin ? styles.hasMargin : ''} 
 				${hasBackground ? styles.hasBackground : ''} 
@@ -386,6 +391,20 @@ export default class DisplayImage extends Component {
 					id={`svg${file}${this.state.theId}`}
 					dangerouslySetInnerHTML={{ __html: theSvg }}
 				/>
+				{hasTitles &&
+					<div className={styles.titleBlock}>
+								{theTitle &&
+									<h2>{theTitle}</h2>
+								}
+							<h3>
+								{theSubtitle1}
+								{theSubtitle2 &&
+									<span className={styles.divider} />
+								}
+								{theSubtitle2}
+							</h3>
+					</div>
+				}
 			</div>
 			</InlineCss>
 		);
