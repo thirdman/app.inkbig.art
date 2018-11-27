@@ -4,6 +4,8 @@ import { AppContainer } from 'react-hot-loader';
 
 import Root from './config/Root';
 
+require('typeface-montserrat')
+
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>

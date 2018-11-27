@@ -154,19 +154,20 @@ export default class RenderImage extends Component {
 				</div>
 				<div className={`${styles.detailRow} ${styles.row} ${this.state.showDetail ? styles.visible : styles.invisible}`}>
 					<div className={styles.column}>
-						<p>Mode: {this.props.mode}</p>
-						<p>Do Render: {doRender ? 'Yes' : 'No'}</p>
-						<p>Do Save: {doSave ? 'Yes' : 'No'}</p>
-						<p>Rendering: {isRendering ? 'Yes' : ''}</p>
-						<p>Has Rendered: {hasRendered ? 'Yes' : ''}</p>
-						<p>Saving: {isSaving ? 'Yes' : ''}</p>
-						<p>Has Saved: {hasSaved ? 'Yes' : ''}
+						<p><span>Mode: </span><span>{this.props.mode}</span></p>
+						{this.props.hasFrame && <p><span>hasFrame: </span><span>Yes</span></p>}
+						<p><span>Do Render: </span><span>{doRender ? 'Yes' : 'No'}</span></p>
+						<p><span>Do Save: </span><span>{doSave ? 'Yes' : 'No'}</span></p>
+						{isRendering && <p><span>Rendering: </span><span>{isRendering ? 'Yes' : ''}</span></p>}
+						<p><span>Has Rendered: </span><span>{hasRendered ? 'Yes' : ''}</span></p>
+						{isSaving && <p><span>Saving: </span><span>{isSaving ? 'Yes' : ''}</span></p>}
+						<p><span>Has Saved: </span><span>{hasSaved ? 'Yes' : ''}
 							{hasSaved &&
 								<div
 									className={styles.theTick}
 									dangerouslySetInnerHTML={{ __html: Tick }}
 								/>
-							}
+							}</span>
 						</p>
 					</div>
 					<div className={styles.column}>

@@ -9,8 +9,6 @@ import Loading from '../../assets/icons/loading.svg';
 
 require('firebase/firestore');
 
-const ase = require("ase-util");
-
 
 // import * as theImages from '../../assets/svg';
 
@@ -103,12 +101,6 @@ export default class Home extends Component {
 
 	render() {
 		
-	// var fs = require("fs");
-	// const file = require("../../assets/ReseneTotalColourMaster2016.ase");
-	// console.log(this.readTextFile(file));
-// 	console.log('fulesunc: ', fs.readFileSync("../../assets/Resene%20Total%20Colour%20Master%202016.ase"));
-	// var result = ase.read(file);
-
 
 //    const {history} = this.props;
 		const {
@@ -440,11 +432,3 @@ export default class Home extends Component {
     rawFile.send(null);
 };
 }
-/*
-				{ keys.map((img) => {
-					return (
-						<span>{img}</span>
-						);
-					})
-				}
-*/

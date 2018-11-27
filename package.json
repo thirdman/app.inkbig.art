@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "adobe-swatch-exchange": "0.0.0",
-    "ase-util": "^1.0.1",
     "babel-polyfill": "^6.26.0",
     "cross-env": "5.0.1",
     "dom-to-image": "^2.5.2",
@@ -43,8 +42,11 @@
     "react-hot-loader": "3.0.0-beta.6",
     "react-inline-css": "^2.3.1",
     "react-router-dom": "4.2.0",
+    "react-select": "^2.1.2",
     "react-toggle": "^4.0.2",
-    "svg-react-loader": "^0.4.5"
+    "react-window": "^1.2.4",
+    "svg-react-loader": "^0.4.5",
+    "typeface-montserrat": "0.0.54"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -70,7 +72,7 @@
     "html-webpack-plugin": "2.30.0",
     "husky": "0.14.3",
     "jest": "21.1.0",
-    "node-sass": "4.5.3",
+    "node-sass": "^4.10.0",
     "open-browser-webpack-plugin": "0.0.5",
     "react-addons-test-utils": "15.6.0",
     "react-test-renderer": "^15.6.1",

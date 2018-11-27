@@ -8,6 +8,19 @@
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
   margin-top: 1px;
   border-radius: 8px;
+  .column p{
+	  margin: .25rem 0;
+	  display: flex;
+	  align-items: center;
+	  justify-content: flex-start;
+		span {
+			font-weight: bold;	
+		}
+	  span:first-child{
+		  font-weight: normal;
+		  flex-basis: 100px;
+	  }
+  }
 	&.isLoading{
 	}
 	&.isSaving{

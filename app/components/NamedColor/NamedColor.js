@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import reseneColors from '../../../node_modules/matrioshka.colors/dist/data/resene.json';
+import reseneColors2 from '../../assets/resene.json';
+import Select, { components } from 'react-select'
 
 import styles from './NamedColor.scss';
+
+// Then import the virtualized Select HOC
+// import VirtualizedSelect from 'react-virtualized-select'
+import { FixedSizeList as List } from "react-window";
+
 
 export default class NamedColor extends Component {
 	state = {
@@ -33,24 +40,96 @@ export default class NamedColor extends Component {
 			name,
 			// onSelect
 		} = this.props;
-		
-		console.log('reseneColors', reseneColors);
-		console.log('type', type);
+		const height = 35;
+		// console.log('reseneColors', reseneColors);
+		// console.log('resene colors2: ', reseneColors2);
+		// console.log('resene colors2: ', reseneColors2.colorGroups[0].shades);
+		const reseneColorsArray = reseneColors2 && this.convertObjToArray(reseneColors2.colorGroups[0].shades);
 
+		// console.log('type', type);
+		
+/*
+		const RenderColorList = ({array, size = 10}) => {
+			return (
+				<div>
+					{array && array.map((color) => {
+						return (
+							<div key={color.label}>{color.label} : {color.value}</div>
+						);
+					})}
+				</div>
+			);
+		}
+*/
+/*
+		const Option = (props) => {
+			console.log('option props: ', props);
+		  return (
+		    <div className={styles.optionItem}>
+		    	<div classname={styles.swatchColor} style={{background: props.value}}/>
+		      <components.Option {...props}/>
+		    </div>
+		  );
+		};
+*/
+		class MenuList extends Component {
+		  render() {
+		    const { options, children, maxHeight, getValue } = this.props;
+		    const [value] = getValue();
+		    const initialOffset = options.indexOf(value) * height;
+				console.log('children[0]: ', children[0]);
+		    return (
+		      <List
+		        height={maxHeight}
+		        itemCount={children.length}
+		        itemSize={height}
+		        initialScrollOffset={initialOffset}
+		      >
+		        {({ index, style }) => (
+		        	<div className={styles.swatchitem} style={style}>
+		        		<div className={styles.swatchColor} style={{background: children[index].props.value}} />
+		        		<div className={styles.swatchTitle}>{children[index]}</div>
+		        	</div>
+		        	)}
+		      </List>
+		    );
+		  }
+		}
+		
+		const Option = ({
+		  style,
+		  option,
+		  selectValue,
+		}) => {
+		  return (
+		    <a
+		    	className={styles.optionItem}
+		      style={style}
+		      onClick={() => selectValue(option)}
+		    >
+		    	<div classname={styles.swatchColor} style={{background: option.value}}/>
+		      {option.label}
+		    </a>
+		  );
+		}
 		return (
 			<div className={`${styles.NamedColor} ${isLoading ? styles.isLoading : ''}`} onClick={this.props.onClickProps} role="presentation">
 				<div className={`${styles.segment} ${styles.info}`}>
-					<h4>Select {type} Color: {selectedColorName}</h4>
-					<div className={styles.inputWrap}>
-							<input
-								type="text"
-								name="searchColor"
-								value={searchColor}
-								ref={(searchColor) => { this.textInput = searchColor; }}
-								onChange={this.handleInputChange}
-							/>
-						<button onClick={() => this.getColor()}>Search</button>
+					<h4>Select {type} Color</h4>
+					<div>
+						{reseneColorsArray &&
+							<Select
+								options={reseneColorsArray}
+								// components={{ Option }}
+								components={{ MenuList }}
+								isSearchable
+								onInputChange={this.onSelectChange}
+								onChange={this.onSelectChange}
+								/>
+						}
 					</div>
+					
+					
 					<div className={styles.swatchResults}>
 					{selectedColor && 
 						<div className={styles.swatchitem}>
@@ -69,6 +148,7 @@ export default class NamedColor extends Component {
 	}
 	// FUCNTIONS
 	getColor = (name) => {
+/*
 		const {searchColor} = this.state;
 		const {
 			type = 'resene'
@@ -88,6 +168,7 @@ export default class NamedColor extends Component {
 				selectedColorName: selectedColor.key
 			});
 		}
+*/
 		
 	}
 	filterSwatches = (swatches, swatchName) => {
@@ -108,6 +189,15 @@ export default class NamedColor extends Component {
 			return selected[0].obj; 
 		}
   }
+  
+	convertObjToArray = (object) => {
+		// console.log('converting obj', object);
+		const theTempArray = Object.entries(object);
+		// console.log('theTempArray: ', theTempArray);
+		const theArray = theTempArray.map((color) => ({ value: color[1], label: color[0] }));
+		// console.log('theArray', theArray);
+		return theArray;
+  }
 
 	handleInputChange = (event) => {
 		const target = event.target;
@@ -118,6 +208,19 @@ export default class NamedColor extends Component {
 		});
 	}
 
+	onSelectChange = (selectedObject) => {
+		console.log('onSelectChange: ', selectedObject);
+		const hsl = this.hexToHSL(selectedObject.value);
+		const hslObject = this.hexToHSLObject(selectedObject.value);
+
+		this.setState({
+			selectedColor: hsl,
+			selectedColorObject: hslObject,
+			selectedColorName: selectedObject.label,
+		});
+		this.props.onSelect(hslObject)
+	}
+	
 	hexToHSL(hex = '#c7d92c') {
 			// var color='#c7d92c'; // A nice shade of green.
 			var r = parseInt(hex.substr(1,2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
@@ -185,3 +288,29 @@ export default class NamedColor extends Component {
    }
 
 }
+/* <RenderColorList array={reseneColorsArray} /> */
+
+/*
+					<div>
+						{reseneColorsArray &&
+							<Select
+								options={reseneColorsArray}
+								components={{ Option }}
+								isSearchable
+								/>
+						}
+					</div>
+*/
+/*
+						<div className={styles.inputWrap}>
+							<input
+								type="text"
+								name="searchColor"
+								value={searchColor}
+								ref={(searchColor) => { this.textInput = searchColor; }}
+								onChange={this.handleInputChange}
+							/>
+						<button onClick={() => this.getColor()}>Search</button>
+					</div>
+
+*/

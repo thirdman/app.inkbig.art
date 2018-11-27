@@ -13,21 +13,39 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: stretch;
 		.swatchColor{
+			border-radius: 3px;
+			width: 3rem;
+			flex-basis: 3rem;
+			height: 2rem;
+			display: block;
+			flex-grow: 0;
+		}
+		.swatchTitle{
+			flex-grow: 1;
+			font-weight: bold;
+			font-size: .75rem;
+			padding-left: .5rem;
+		}
+		.swatchAction{
+		}
+	}
+/*
+	.optionItem{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.swatchColor{
 			border-radius: 3px;
 			width: 3rem;
 			height: 2rem;
 			display: block;
 		}
-		.swatchTitle{
-			font-weight: bold;
-			font-size: .75rem;
-		}
-		.swatchAction{
-		}
-	}
-	
+*/
+
 	// INPUT
 	.inputWrap{
 		background: #f9f9f9;
