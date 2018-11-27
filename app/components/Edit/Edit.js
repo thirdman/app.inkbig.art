@@ -13,11 +13,13 @@ import {
 import Toggle from 'react-toggle';
 import Slider, { Range } from 'rc-slider';
 import 'react-toggle/style.css';
+// import '../../../node_modules/react-toggle/style.css';
 import '../../assets/scss/rcSlider.css';
 // import '../../assets/scss/toggle.css';
 import fbase from '../../firebase';
 
 import Loading from '../../assets/icons/loading.svg';
+
 
 // import Dispimport variables from '../../assets/scss/variables.scss';
 // import Tick from '../../assets/icons/tick.svg';
@@ -89,7 +91,10 @@ export default class Edit extends Component {
 		theTitle: '',
 		theSubtitle1: '',
 		theSubtitle2: '',
-		togglePortraits: false,
+		renderPortraits: false,
+		renderCircles: false,
+		renderTitles: false,
+		renderPromos: false,
 	};
 
 	componentWillMount() {
@@ -155,11 +160,12 @@ export default class Edit extends Component {
 			theTitle,
 			theSubtitle1,
 			theSubtitle2,
-			togglePortraits,
-			toggleCircles,
-			toggleTitles,
-			togglePromos,
-			} = this.state;
+			renderPortraits,
+			renderCircles,
+			renderTitles,
+			renderPromos,
+		} = this.state;
+		
 		return (
 			<div className={`${styles.Edit} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
 				<div className={`${styles.column} ${styles.preview}`}>
@@ -1088,103 +1094,104 @@ export default class Edit extends Component {
 							/>
 							</div>);
 						})}
+						{renderPromos &&
 							<div>
-							<h4>PROMOTIONAL:</h4>
-							<p>Includes grey backgrounds</p>
-							<RenderImage
-								key={'renderMediumPortraitBackground'}
-								doSave={doSave}
-								doRender={doRenders}
-								displayMode={'mini'}
-								file={image}
-								sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
-								svgBackgroundColor={svgBackgroundColor}
-								aspect={'portrait'}
-								mode={'medium'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground
-								imageLevels={imageLevels}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								scale={theScale}
-								translateX={theTranslateX}
-								translateY={theTranslateY}
-								imageColorArray={swatchColorArray || pairColorArray}
-								swatchName={swatchName}
-							/>
-							<RenderImage
-								key={'renderMediumCircleBackground'}
-								doSave={doSave}
-								doRender={doRenders}
-								displayMode={'mini'}
-								file={image}
-								sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
-								svgBackgroundColor={svgBackgroundColor}
-								aspect={'circle'}
-								mode={'medium'}
-								hasHighlight={hasHighlight}
-								hasFrame={hasFrame}
-								hasBackground
-								imageLevels={imageLevels}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								scale={theScale}
-								translateX={theTranslateX}
-								translateY={theTranslateY}
-								imageColorArray={swatchColorArray || pairColorArray}
-								swatchName={swatchName}
-							/>
-							<RenderImage
-								key={'renderMediumPortraitBackgroundFrame'}
-								doSave={doSave}
-								doRender={doRenders}
-								displayMode={'mini'}
-								file={image}
-								sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
-								svgBackgroundColor={svgBackgroundColor}
-								aspect={'portrait'}
-								mode={'medium'}
-								hasHighlight={hasHighlight}
-								hasFrame
-								hasBackground
-								imageLevels={imageLevels}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								scale={theScale}
-								translateX={theTranslateX}
-								translateY={theTranslateY}
-								imageColorArray={swatchColorArray || pairColorArray}
-								swatchName={swatchName}
-							/>
-							<RenderImage
-								key={'renderMediumCircleBackgroundFrame'}
-								doSave={doSave}
-								doRender={doRenders}
-								displayMode={'mini'}
-								file={image}
-								sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
-								svgBackgroundColor={svgBackgroundColor}
-								aspect={'circle'}
-								mode={'medium'}
-								hasHighlight={hasHighlight}
-								hasFrame
-								hasBackground
-								imageLevels={imageLevels}
-								hue={theHue}
-								saturation={theSaturation}
-								lightness={theLightness}
-								scale={theScale}
-								translateX={theTranslateX}
-								translateY={theTranslateY}
-								imageColorArray={swatchColorArray || pairColorArray}
-								swatchName={swatchName}
-							/>
-							</div>
-						
+								<h4>PROMOTIONAL:</h4>
+								<p>Includes grey backgrounds</p>
+								<RenderImage
+									key={'renderMediumPortraitBackground'}
+									doSave={doSave}
+									doRender={doRenders}
+									displayMode={'mini'}
+									file={image}
+									sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
+									svgBackgroundColor={svgBackgroundColor}
+									aspect={'portrait'}
+									mode={'medium'}
+									hasHighlight={hasHighlight}
+									hasFrame={hasFrame}
+									hasBackground
+									imageLevels={imageLevels}
+									hue={theHue}
+									saturation={theSaturation}
+									lightness={theLightness}
+									scale={theScale}
+									translateX={theTranslateX}
+									translateY={theTranslateY}
+									imageColorArray={swatchColorArray || pairColorArray}
+									swatchName={swatchName}
+								/>
+								<RenderImage
+									key={'renderMediumCircleBackground'}
+									doSave={doSave}
+									doRender={doRenders}
+									displayMode={'mini'}
+									file={image}
+									sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
+									svgBackgroundColor={svgBackgroundColor}
+									aspect={'circle'}
+									mode={'medium'}
+									hasHighlight={hasHighlight}
+									hasFrame={hasFrame}
+									hasBackground
+									imageLevels={imageLevels}
+									hue={theHue}
+									saturation={theSaturation}
+									lightness={theLightness}
+									scale={theScale}
+									translateX={theTranslateX}
+									translateY={theTranslateY}
+									imageColorArray={swatchColorArray || pairColorArray}
+									swatchName={swatchName}
+								/>
+								<RenderImage
+									key={'renderMediumPortraitBackgroundFrame'}
+									doSave={doSave}
+									doRender={doRenders}
+									displayMode={'mini'}
+									file={image}
+									sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
+									svgBackgroundColor={svgBackgroundColor}
+									aspect={'portrait'}
+									mode={'medium'}
+									hasHighlight={hasHighlight}
+									hasFrame
+									hasBackground
+									imageLevels={imageLevels}
+									hue={theHue}
+									saturation={theSaturation}
+									lightness={theLightness}
+									scale={theScale}
+									translateX={theTranslateX}
+									translateY={theTranslateY}
+									imageColorArray={swatchColorArray || pairColorArray}
+									swatchName={swatchName}
+								/>
+								<RenderImage
+									key={'renderMediumCircleBackgroundFrame'}
+									doSave={doSave}
+									doRender={doRenders}
+									displayMode={'mini'}
+									file={image}
+									sourceSvg={mode === 'remote' && this.state.sourceSvgBlob && this.state.sourceSvgBlob}
+									svgBackgroundColor={svgBackgroundColor}
+									aspect={'circle'}
+									mode={'medium'}
+									hasHighlight={hasHighlight}
+									hasFrame
+									hasBackground
+									imageLevels={imageLevels}
+									hue={theHue}
+									saturation={theSaturation}
+									lightness={theLightness}
+									scale={theScale}
+									translateX={theTranslateX}
+									translateY={theTranslateY}
+									imageColorArray={swatchColorArray || pairColorArray}
+									swatchName={swatchName}
+								/>
+								</div>
+							}
 						</section>
 					}
 				</div>
