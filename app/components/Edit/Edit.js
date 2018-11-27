@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-// import * as colorPallettes from 'matrioshka.colors';
 
 // import domtoimage from 'dom-to-image';
 // import { Link } from 'react-router-dom';
@@ -90,6 +89,7 @@ export default class Edit extends Component {
 		theTitle: '',
 		theSubtitle1: '',
 		theSubtitle2: '',
+		togglePortraits: false,
 	};
 
 	componentWillMount() {
@@ -155,6 +155,10 @@ export default class Edit extends Component {
 			theTitle,
 			theSubtitle1,
 			theSubtitle2,
+			togglePortraits,
+			toggleCircles,
+			toggleTitles,
+			togglePromos,
 			} = this.state;
 		return (
 			<div className={`${styles.Edit} ${styles.wrap} ${hasMenu ? styles.hasMenu : ''}`}>
@@ -272,18 +276,18 @@ export default class Edit extends Component {
 							colour
 						</div>
 						<div
-							className={`${styles.btn} ${this.state.activeControl === 'renders' ? styles.selected : ''}`}
-							onClick={() => this.setState({ activeControl: 'renders' })}
-							role="presentation"
-						>
-							renders
-						</div>
-						<div
 							className={`${styles.btn} ${this.state.activeControl === 'titles' ? styles.selected : ''}`}
 							onClick={() => this.setState({ activeControl: 'titles' })}
 							role="presentation"
 						>
 							titles
+						</div>
+						<div
+							className={`${styles.btn} ${this.state.activeControl === 'renders' ? styles.selected : ''}`}
+							onClick={() => this.setState({ activeControl: 'renders' })}
+							role="presentation"
+						>
+							renders
 						</div>
 					</div>
 					{this.state.activeControl === 'settings' &&
@@ -340,7 +344,7 @@ export default class Edit extends Component {
 								</div>
 							</div>
 							<div className={`${styles.formItem} ${this.state.hasTitles ? styles.isActive : ''}`}>
-								<h5>Has Frame: <span>{this.state.hasTitles ? 'yes' : 'no'}</span></h5>
+								<h5>Titles</h5>
 								<div className={styles.switchWrap}>
 									<Toggle
 										className={styles.theToggle}
@@ -907,11 +911,109 @@ export default class Edit extends Component {
 							}
 						</section>
 					}
+					{this.state.activeControl === 'titles' &&
+						<section>
+							<h3>Image Text</h3>
+							<div className={styles.imageTextPreview}>
+									{theTitle &&
+										<h2>{theTitle}</h2>
+									}
+								<h3>
+									{theSubtitle1}
+									{theSubtitle2 &&
+										<span className={styles.divider} />
+									}
+									{theSubtitle2}
+								</h3>
+							</div>
+							<div className={styles.contentItem}>
+								<h5>Title</h5>
+								<input
+									type="text"
+									name="theTitle"
+									value={theTitle}
+									ref={(theTitle) => { this.textInput = theTitle; }}
+									onChange={this.handleInputChange}
+								/>
+							</div>
+							<div className={styles.contentItem}>
+								<h5>Subtitle1</h5>
+								<input
+									type="text"
+									name="theSubtitle1"
+									value={theSubtitle1}
+									ref={(iSubtitle1) => { this.textInput = iSubtitle1; }}
+									onChange={this.handleInputChange}
+								/>
+							</div>
+							<div className={styles.contentItem}>
+								<h5>Subtitle2</h5>
+								<input
+									type="text"
+									name="theSubtitle2"
+									value={theSubtitle2}
+									ref={(iSubtitle2) => { this.textInput = iSubtitle2; }}
+									onChange={this.handleInputChange}
+								/>
+							</div>
+						</section>
+					}
 					{this.state.activeControl === 'renders' &&
 						<section>
 						<div className={styles.titleBlock}>
-							<h4>Rendered Images</h4>
+							<h3>Rendered Images</h3>
 						</div>
+						<section>
+							<p>this will group the renders</p>
+							<div className={`${styles.formItem}`}>
+								<h5>Portrait</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="renderPortraits"
+										defaultChecked={renderPortraits}
+										onChange={() => this.toggleRender('renderPortraits')}
+									/>
+									<label htmlFor="renderPortraits">Render Portraits</label>
+								</div>
+							</div>
+							<div className={`${styles.formItem}`}>
+								<h5>Portrait</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="renderCircles"
+										defaultChecked={renderCircles}
+										onChange={() => this.toggleRender('renderCircles')}
+									/>
+									<label htmlFor="renderCircles">Render Circles</label>
+								</div>
+							</div>
+							<div className={`${styles.formItem}`}>
+								<h5>Portrait</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="renderTitles"
+										defaultChecked={renderTitles}
+										onChange={() => this.toggleRender('renderTitles')}
+									/>
+									<label htmlFor="renderTitles">Render Titles</label>
+								</div>
+							</div>
+							<div className={`${styles.formItem}`}>
+								<h5>Portrait</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="renderPromos"
+										defaultChecked={renderPromos}
+										onChange={() => this.toggleRender('renderPromos')}
+									/>
+									<label htmlFor="renderPromos">Render Promos</label>
+								</div>
+							</div>
+						</section>
 						{imageSizes && imageSizes.map((size) => {
 							return (<div key={`size${size}`} className={styles.renderGroup}>
 							<h4>{size}:</h4>
@@ -987,7 +1089,8 @@ export default class Edit extends Component {
 							</div>);
 						})}
 							<div>
-							<h4>MISC:</h4>
+							<h4>PROMOTIONAL:</h4>
+							<p>Includes grey backgrounds</p>
 							<RenderImage
 								key={'renderMediumPortraitBackground'}
 								doSave={doSave}
@@ -1082,53 +1185,6 @@ export default class Edit extends Component {
 							/>
 							</div>
 						
-						</section>
-					}
-					{this.state.activeControl === 'titles' &&
-						<section>
-							<h3>Image Text</h3>
-							<div className={styles.imageTextPreview}>
-									{theTitle &&
-										<h2>{theTitle}</h2>
-									}
-								<h3>
-									{theSubtitle1}
-									{theSubtitle2 &&
-										<span className={styles.divider} />
-									}
-									{theSubtitle2}
-								</h3>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>Title</h5>
-								<input
-									type="text"
-									name="theTitle"
-									value={theTitle}
-									ref={(theTitle) => { this.textInput = theTitle; }}
-									onChange={this.handleInputChange}
-								/>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>Subtitle1</h5>
-								<input
-									type="text"
-									name="theSubtitle1"
-									value={theSubtitle1}
-									ref={(iSubtitle1) => { this.textInput = iSubtitle1; }}
-									onChange={this.handleInputChange}
-								/>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>Subtitle2</h5>
-								<input
-									type="text"
-									name="theSubtitle2"
-									value={theSubtitle2}
-									ref={(iSubtitle2) => { this.textInput = iSubtitle2; }}
-									onChange={this.handleInputChange}
-								/>
-							</div>
 						</section>
 					}
 				</div>
@@ -1436,6 +1492,13 @@ export default class Edit extends Component {
 		});
 	}
 */
+	
+	toggleRender = (renderMode) => {
+		console.log('toggleRender: ', renderMode)
+		this.setState({
+			[renderMode]: !this.state[renderMode]
+		});		
+	}
 
 	//////////////////////////////
 	// TITLES

@@ -402,6 +402,9 @@ $printBgLess: 1200px;
 				}		
 			}
 			&.circle{
+				.titleBlock{
+					bottom: 10%;
+				}
 				.theSvg{
 					width: calc(#{$thumbnailShort} * 0.7);
 					height: calc(#{$thumbnailShort} * 0.7);
@@ -707,6 +710,9 @@ $printBgLess: 1200px;
 				}		
 			}
 			&.circle{
+				.titleBlock{
+					bottom: 10%;
+				}
 				.theSvg{
 					width: calc(#{$smallShort} * 0.7);
 					height: calc(#{$smallShort} * 0.7);
@@ -1049,6 +1055,9 @@ $printBgLess: 1200px;
 				}		
 			}
 			&.circle{
+				.titleBlock{
+					bottom: 10%;
+				}
 				.theSvg{
 					width: calc(#{$mediumShort} * 0.7);
 					height: calc(#{$mediumShort} * 0.7);
@@ -1376,6 +1385,9 @@ $printBgLess: 1200px;
 				}		
 			}
 			&.circle{
+				.titleBlock{
+					bottom: 10%;
+				}
 				.theSvg{
 					width: calc(#{$largeShort} * 0.7);
 					height: calc(#{$largeShort} * 0.7);
@@ -1703,6 +1715,9 @@ $printBgLess: 1200px;
 				}		
 			}
 			&.circle{
+				.titleBlock{
+					bottom: 10%;
+				}
 				.theSvg{
 					width: calc(#{$printShort} * 0.7);
 					height: calc(#{$printShort} * 0.7);
