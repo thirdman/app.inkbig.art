@@ -35,8 +35,6 @@ export default class Products extends Component {
 				<div className={`${styles.column} `}>
 					<h1>Products</h1>
 					{(isLoading || isSaving) && <Loading displayMode="default" />}
-
-
 				</div>
 				<div className={styles.column}>
 					<div className={styles.imageList}>
@@ -102,6 +100,7 @@ export default class Products extends Component {
 			</div>
 		);
 	}
+
 	// FUNCTIONS
 	doRouteImageEdit(route, imageId) {
 		const { history } = this.props;

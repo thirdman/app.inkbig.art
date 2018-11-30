@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import fbase from "../../firebase";
 import * as firebase from "firebase";
 import classNames from "classnames";
+import fbase from "../../firebase";
 import Tick from "../../assets/icons/tick.svg";
 
 import SwatchGroup from "../SwatchGroup/SwatchGroup";
@@ -23,12 +23,14 @@ export default class ImageAdmin extends Component {
 		isEditing: false,
 		isUpdated: false,
 		isError: false,
-		activeControl: 'settings',
-		activeSelect: '',
-		selectedSvg: '',
-		tempSelectedSvg: '',
-		aspects: ['portrait', 'circle'],
-		adjustmentSets: [{default: {theScale: 1, theTranslateX: 0, theTranslateY: 0}}]
+		activeControl: "settings",
+		activeSelect: "",
+		selectedSvg: "",
+		tempSelectedSvg: "",
+		aspects: ["portrait", "circle"],
+		adjustmentSets: [
+			{ default: { theScale: 1, theTranslateX: 0, theTranslateY: 0 } }
+		]
 	};
 
 	componentWillMount() {}
@@ -49,7 +51,7 @@ export default class ImageAdmin extends Component {
 			isLoadingSvg,
 			isLoadingSwatches,
 			dataSources,
-			dataSwatches,
+			dataSwatches
 		} = this.props;
 		const {
 			aspects,
@@ -73,7 +75,7 @@ export default class ImageAdmin extends Component {
 			theTitle,
 			theSubtitle1,
 			theSubtitle2,
-			renderCombinations,
+			renderCombinations
 		} = this.state;
 
 		// console.log('state is', this.state);
@@ -92,37 +94,45 @@ export default class ImageAdmin extends Component {
 					</div>
 				</div>
 				<div className={styles.row}>
-						{/* SUBNAV */}
-						<section className={styles.subnavWrap}>
-							<div className={classNames(styles.buttonGroup, styles.tabs)}>
-								<div
-									className={classNames(styles.btn, {[styles.selected]: this.state.activeControl === "settings"})}
-									onClick={() => this.setState({ activeControl: "settings" })}
-									role="presentation"
-								>
-									Settings
-								</div>
-								<div
-									className={classNames(styles.btn, {[styles.selected]: this.state.activeControl === "adjustments"})}
-									onClick={() => this.setState({ activeControl: "adjustments" })}
-									role="presentation"
-								>
-									Adjustments
-								</div>
-								<div
-									className={classNames(styles.btn, {[styles.selected]: this.state.activeControl === "swatches"})}
-									onClick={() => this.setState({ activeControl: "swatches" })}
-									role="presentation"
-								>
-									swatches
-								</div>
-								<div
-									className={classNames(styles.btn, {[styles.selected]: this.state.activeControl === "renders"})}
-									onClick={() => this.setState({ activeControl: "renders" })}
-									role="presentation"
-								>
-									renders
-								</div>
+					{/* SUBNAV */}
+					<section className={styles.subnavWrap}>
+						<div className={classNames(styles.buttonGroup, styles.tabs)}>
+							<div
+								className={classNames(styles.btn, {
+									[styles.selected]: this.state.activeControl === "settings"
+								})}
+								onClick={() => this.setState({ activeControl: "settings" })}
+								role="presentation"
+							>
+								Settings
+							</div>
+							<div
+								className={classNames(styles.btn, {
+									[styles.selected]: this.state.activeControl === "adjustments"
+								})}
+								onClick={() => this.setState({ activeControl: "adjustments" })}
+								role="presentation"
+							>
+								Adjustments
+							</div>
+							<div
+								className={classNames(styles.btn, {
+									[styles.selected]: this.state.activeControl === "swatches"
+								})}
+								onClick={() => this.setState({ activeControl: "swatches" })}
+								role="presentation"
+							>
+								swatches
+							</div>
+							<div
+								className={classNames(styles.btn, {
+									[styles.selected]: this.state.activeControl === "renders"
+								})}
+								onClick={() => this.setState({ activeControl: "renders" })}
+								role="presentation"
+							>
+								renders
+							</div>
 						</div>
 					</section>
 				</div>
@@ -152,80 +162,92 @@ export default class ImageAdmin extends Component {
 								UPDATED
 							</div>
 						)}
-						
+
 						{/*SETTINGS*/}
-						{activeControl === 'settings' &&
+						{activeControl === "settings" && (
 							<div>
 								<h3>SVG source</h3>
 								<section>
-									{selectedSvg && 
-										<h5>Selevted Svg Id: {selectedSvg}</h5>	
-									}
-									{isLoadingSvgData &&
+									{selectedSvg && <h5>Selevted Svg Id: {selectedSvg}</h5>}
+									{isLoadingSvgData && (
 										<div>
 											<Loading />
 										</div>
-									}
-									{sourceSvgData && 
+									)}
+									{sourceSvgData && (
 										<div>
-											<h5>Source SVG</h5>	
+											<h5>Source SVG</h5>
 											<p>filename: {sourceSvgData.filename}</p>
 										</div>
-									}
-									{!sourceSvgData && 
+									)}
+									{!sourceSvgData && (
 										<div>
-										<h5>No Source</h5>	
-										<button onClick={() => this.setState({activeSelect: 'svg'})}>Select SVG</button>
+											<h5>No Source</h5>
+											<button
+												onClick={() => this.setState({ activeSelect: "svg" })}
+											>
+												Select SVG
+											</button>
 										</div>
-									}
+									)}
 								</section>
 								<h3>Variations</h3>
-									<div className={styles.variationList}>
+								<div className={styles.variationList}>
 									<h5>Aspects</h5>
-									{aspects && aspects.map((aspect) => {
-										return (
-											<div>{aspect}</div>
-										);
-									})}
+									{aspects &&
+										aspects.map(aspect => {
+											return <div>{aspect}</div>;
+										})}
 									<h5>AdjustmentSets</h5>
-									{sourceSvgData && sourceSvgData.adjustmentSets && 
-									<div>
-										{Object.entries(sourceSvgData.adjustmentSets).map(([key, value]) => {
-											// console.log("setting key: ", key, " and value: ", value);
-											return (
-												<div className={styles.row} key={key}>
-													<span>{key}</span>{" "}
-													{/*<span>{activeAdjustmentSet === key && `Active`}</span>*/}
-													{/*<button
+									{sourceSvgData && sourceSvgData.adjustmentSets && (
+										<div>
+											{Object.entries(sourceSvgData.adjustmentSets).map(
+												([key, value]) => {
+													// console.log("setting key: ", key, " and value: ", value);
+													return (
+														<div className={styles.row} key={key}>
+															<span>{key}</span>{" "}
+															{/*<span>{activeAdjustmentSet === key && `Active`}</span>*/}
+															{/*<button
 														onClick={() => this.loadAdjustmentSet(key, value)}
 													>
 														load
 													</button>
 													*/}
-												</div>
-											);
-										})}
-									</div>
-									}
-									<h5>Swatch sets <button onClick={() => this.setState({activeSelect: 'swatches'})}>Select...</button></h5>
-									{swatchSets && 
-									<div>
-										{Object.entries(swatchSets).map(([key, value]) => {
-											return (
-												<div className={styles.row} key={key}>
-													<SwatchGroup
-														key={`imsw${key}`}
-														swatch={value}
-														isHorizontal
-														role="presentation"
-														onClickProps={() => this.removeSwatch(swatch.id)}
-													/>						
-												</div>
-											);
-										})}
-									</div>
-									}
-									</div>
+														</div>
+													);
+												}
+											)}
+										</div>
+									)}
+									<h5>
+										Swatch sets{" "}
+										<button
+											onClick={() =>
+												this.setState({ activeSelect: "swatches" })
+											}
+										>
+											Select...
+										</button>
+									</h5>
+									{swatchSets && (
+										<div>
+											{Object.entries(swatchSets).map(([key, value]) => {
+												return (
+													<div className={styles.row} key={key}>
+														<SwatchGroup
+															key={`imsw${key}`}
+															swatch={value}
+															isHorizontal
+															role="presentation"
+															onClickProps={() => this.removeSwatch(swatch.id)}
+														/>
+													</div>
+												);
+											})}
+										</div>
+									)}
+								</div>
 								<h3>Product Info</h3>
 								<section>
 									<div className={styles.contentItem}>
@@ -266,7 +288,9 @@ export default class ImageAdmin extends Component {
 									</div>
 									<div className={styles.contentItem}>
 										<h5>Updated</h5>
-										<span>{imageData && imageData.modifiedDate.toString()}</span>
+										<span>
+											{imageData && imageData.modifiedDate.toString()}
+										</span>
 									</div>
 								</section>
 								<section>
@@ -321,45 +345,49 @@ export default class ImageAdmin extends Component {
 									</div>
 								</section>
 							</div>
-						}
-						
+						)}
+
 						{/* ADJUSMTENT */}
-						{activeControl === 'adjustments' &&
-						<section>
-							<h3>Adjustments</h3>
-							<div className={styles.contentItem}>
-								<h5>TranslateX</h5>
-								<span>{imageData && imageData.theTranslateX}</span>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>TranslateY</h5>
-								<span>{imageData && imageData.theTranslateY}</span>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>Scale</h5>
-								<span>{imageData && imageData.theScale}</span>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>Aspect</h5>
-								<span>{imageData && imageData.aspect}</span>
-							</div>
-							<div className={styles.contentItem}>
-								<h5>hasBackground</h5>
-								<span>{imageData && imageData.hasBackground}</span>
-							</div>
-						</section>
-						}
-						
+						{activeControl === "adjustments" && (
+							<section>
+								<h3>Adjustments</h3>
+								<div className={styles.contentItem}>
+									<h5>TranslateX</h5>
+									<span>{imageData && imageData.theTranslateX}</span>
+								</div>
+								<div className={styles.contentItem}>
+									<h5>TranslateY</h5>
+									<span>{imageData && imageData.theTranslateY}</span>
+								</div>
+								<div className={styles.contentItem}>
+									<h5>Scale</h5>
+									<span>{imageData && imageData.theScale}</span>
+								</div>
+								<div className={styles.contentItem}>
+									<h5>Aspect</h5>
+									<span>{imageData && imageData.aspect}</span>
+								</div>
+								<div className={styles.contentItem}>
+									<h5>hasBackground</h5>
+									<span>{imageData && imageData.hasBackground}</span>
+								</div>
+							</section>
+						)}
+
 						{/*SWATCHES*/}
-						{activeControl === 'swatches' &&
+						{activeControl === "swatches" && (
 							<div>
 								<h3>Swatches</h3>
 								<section>
-										<button onClick={() => this.setState({activeSelect: 'swatches'})}>Select Swatches</button>
+									<button
+										onClick={() => this.setState({ activeSelect: "swatches" })}
+									>
+										Select Swatches
+									</button>
 								</section>
 							</div>
-						}
-						<hr /> 
+						)}
+						<hr />
 						<button
               onClick={() => this.saveImage()} // eslint-disable-line
 						>
@@ -368,90 +396,120 @@ export default class ImageAdmin extends Component {
 					</div>
 					<div className={styles.column}>
 						{/*DEFAULT*/}
-						{(activeSelect === 'preview' || activeSelect === '') &&
-						<div>
-							<h3>Previews</h3>
-							{isLoadingSource && 
-								<div><Loading />loading source blob</div>
-							}
-								{1===2 && swatchSets && 
-									<div className={styles.row} >
+						{(activeSelect === "preview" || activeSelect === "") && (
+							<div>
+								<h3>Previews</h3>
+								{isLoadingSource && (
+									<div>
+										<Loading />
+										loading source blob
+									</div>
+								)}
+								{1 === 2 && swatchSets && (
+									<div className={styles.row}>
 										{Object.entries(swatchSets).map(([key, value]) => {
 											return (
 												<div key={key}>
-												{!isLoadingSource && 
-													sourceSvgBlob &&
-													<div className={styles.previewImageWrap} style={{display: 'inline-block'}}>
-														<DisplayImage
-															// file={mode === "local" && image}
-															sourceSvg={sourceSvgBlob}
-															// svgBackgroundColor={svgBackgroundColor}
-															aspect={'portrait'}
-															mode="thumbnail"
-															hasTitles={true}
-															// hue={theHue}
-															// saturation={theSaturation}
-															// lightness={theLightness}
-															// scale={theScale}
-															// translateX={theTranslateX}
-															// translateY={theTranslateY}
-															theTitle={theTitle}
-															theSubtitle1={theSubtitle1}
-															theSubtitle2={theSubtitle2}
-															imageColorArray={value.swatchColorArray || value.pairColorArray}
-														/>
-													</div>
-												}			
+													{!isLoadingSource && sourceSvgBlob && (
+														<div
+															className={styles.previewImageWrap}
+															style={{ display: "inline-block" }}
+														>
+															<DisplayImage
+																// file={mode === "local" && image}
+																sourceSvg={sourceSvgBlob}
+																// svgBackgroundColor={svgBackgroundColor}
+																aspect="portrait"
+																mode="thumbnail"
+																hasTitles
+																// hue={theHue}
+																// saturation={theSaturation}
+																// lightness={theLightness}
+																// scale={theScale}
+																// translateX={theTranslateX}
+																// translateY={theTranslateY}
+																theTitle={theTitle}
+																theSubtitle1={theSubtitle1}
+																theSubtitle2={theSubtitle2}
+																imageColorArray={
+																	value.swatchColorArray || value.pairColorArray
+																}
+															/>
+														</div>
+													)}
 												</div>
 											);
 										})}
 									</div>
-									}
-									<div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'}}>
-									{!isLoadingSource && 
+								)}
+								<div
+									style={{
+										display: "flex",
+										flexWrap: "wrap",
+										justifyContent: "flex-start"
+									}}
+								>
+									{!isLoadingSource &&
 										sourceSvgBlob &&
 										renderCombinations &&
-										renderCombinations.map((combo) => {
-										// [0] = aspect
-										// [1] = adjustment
-										// [2] = swatch
-										console.log('combo: ', combo);
-										return (
-											<div style={{display: 'flex', margin: '8px'}}>
-												<DisplayImage
-													sourceSvg={sourceSvgBlob}
-													aspect={combo[0].name}
-													hasFrame={false}
-													mode="thumbnail"
-													hasTitles={combo[0].name === 'circle'}
-													scale={combo[1].data.theScale || 1}
-													translateX={combo[1].data.translateX || 1}
-													translateY={combo[1].data.translateY || 1}
-													theTitle={theTitle}
-													theSubtitle1={theSubtitle1}
-													theSubtitle2={theSubtitle2}
-													imageColorArray={combo[2].data.swatchColorArray || combo[2].data.pairColorArray}
-												/>
-												<div style={{padding: '8px'}}>
-													<div><h5>Aspect:</h5><span>{combo[0].name}</span></div>
-													<div><h5>Adjustment</h5> {combo[1].name}</div>
-													<div><h5>Swatch</h5>{combo[2].data.name}</div>
+										renderCombinations.map(combo => {
+											// [0] = aspect
+											// [1] = adjustment
+											// [2] = swatch
+											console.log("combo: ", combo);
+											return (
+												<div style={{ display: "flex", margin: "8px" }}>
+													<DisplayImage
+														sourceSvg={sourceSvgBlob}
+														aspect={combo[0].name}
+														hasFrame={false}
+														mode="thumbnail"
+														hasTitles={combo[0].name === "circle"}
+														scale={combo[1].data.theScale || 1}
+														translateX={combo[1].data.translateX || 1}
+														translateY={combo[1].data.translateY || 1}
+														theTitle={theTitle}
+														theSubtitle1={theSubtitle1}
+														theSubtitle2={theSubtitle2}
+														imageColorArray={
+															combo[2].data.swatchColorArray ||
+															combo[2].data.pairColorArray
+														}
+													/>
+													<div style={{ padding: "8px" }}>
+														<div>
+															<h5>Aspect:</h5>
+															<span>{combo[0].name}</span>
+														</div>
+														<div>
+															<h5>Adjustment</h5> {combo[1].name}
+														</div>
+														<div>
+															<h5>Swatch</h5>
+															{combo[2].data.name}
+														</div>
+													</div>
 												</div>
-											</div>
-										)
-									})}
-									</div>
-						</div>
-						}
+											);
+										})}
+								</div>
+							</div>
+						)}
 						{/*SVG*/}
-						{activeSelect === 'svg' &&
+						{activeSelect === "svg" && (
 							<div>
-									<div className={styles.row}>
-										<button onClick={() => this.setState({activeSelect: ''})}>Cancel</button>
-										{tempSelectedSvg &&
-												<button onClick={() => this.setSelectedSvg(tempSelectedSvg)}>Assign</button>
-										}
-									</div>
+								<div className={styles.row}>
+									<button onClick={() => this.setState({ activeSelect: "" })}>
+										Cancel
+									</button>
+									{tempSelectedSvg && (
+										<button
+											onClick={() => this.setSelectedSvg(tempSelectedSvg)}
+										>
+											Assign
+										</button>
+									)}
+								</div>
 								{!isLoadingSvg &&
 									dataSources &&
 									dataSources.map(svg => {
@@ -459,7 +517,9 @@ export default class ImageAdmin extends Component {
 											<div
 												key={`image${svg.id}`}
 												role="presentation"
-												className={classNames(styles.svgItem, {[styles.isSelected]: tempSelectedSvg === svg.id})}
+												className={classNames(styles.svgItem, {
+													[styles.isSelected]: tempSelectedSvg === svg.id
+												})}
 											>
 												<div>
 													<div className={styles.svgIcon}>svg</div>
@@ -491,18 +551,21 @@ export default class ImageAdmin extends Component {
 										);
 									})}
 							</div>
-						}
+						)}
 						{/*SVG*/}
-						{activeSelect === 'swatches' &&
+						{activeSelect === "swatches" && (
 							<div>
 								<div className={styles.row}>
-									<button onClick={() => this.setState({activeSelect: ''})}>Cancel</button>
+									<button onClick={() => this.setState({ activeSelect: "" })}>
+										Cancel
+									</button>
 								</div>
-								{isLoadingSwatches && 
+								{isLoadingSwatches && (
 									<div>
-										<Loading />loading swatches
+										<Loading />
+										loading swatches
 									</div>
-								}
+								)}
 								{dataSwatches &&
 									dataSwatches.map(swatch => {
 										return (
@@ -515,11 +578,10 @@ export default class ImageAdmin extends Component {
 											/>
 										);
 									})}
-
 							</div>
-						}
+						)}
 						{/*RENDERS*/}
-						{activeControl === 'renders' &&
+						{activeControl === "renders" && (
 							<div>
 								<h3>Current Renders</h3>
 								{currentRendersArray &&
@@ -584,9 +646,13 @@ export default class ImageAdmin extends Component {
 										);
 									})}
 							</div>
-						}
+						)}
 						<div>
-							<button onClick={() => this.combinations([['1', '2'], ['a', 'b', 'c']])}>render Previews</button>
+							<button
+								onClick={() => this.combinations([["1", "2"], ["a", "b", "c"]])}
+							>
+								render Previews
+							</button>
 						</div>
 					</div>
 				</div>
@@ -611,7 +677,7 @@ export default class ImageAdmin extends Component {
 						isLoadingImageData: false,
 						imageData: doc.data(),
 						selectedSvg: doc.data().svgId,
-						swatchSets: doc.data().swatchSets,
+						swatchSets: doc.data().swatchSets
 					});
 					this.getAvailableFiles(doc.data().image); // image = imageid!
 					this.getImageRenders(imageId);
@@ -634,16 +700,19 @@ export default class ImageAdmin extends Component {
 			.get()
 			.then(querySnapshot => {
 				if (querySnapshot.exists) {
-					console.log('svg data: ', querySnapshot.data());
+					console.log("svg data: ", querySnapshot.data());
 					const sourceSvgData = querySnapshot.data();
 					this.setState({
 						isLoadingSvgData: false,
 						sourceSvgData,
 						theTitle: sourceSvgData.theTitle,
 						theSubtitle1: sourceSvgData.theSubtitle1,
-						theSubtitle2: sourceSvgData.theSubtitle2,
+						theSubtitle2: sourceSvgData.theSubtitle2
 					});
-					console.log('querySnapshot.data().filename', querySnapshot.data().filename);
+					console.log(
+						"querySnapshot.data().filename",
+						querySnapshot.data().filename
+					);
 					if (querySnapshot.data().filename) {
 						this.getSvgSource(querySnapshot.data().filename);
 					}
@@ -657,11 +726,11 @@ export default class ImageAdmin extends Component {
 				console.log("Error getting svg: ", error);
 			});
 	}
-	
-	getSvgSource = (filename) => {
+
+	getSvgSource = filename => {
 		console.log("this will load svg");
-		if(!filename){
-			console.error('no filename');
+		if (!filename) {
+			console.error("no filename");
 			return false;
 		}
 		this.setState({ isLoadingSvg: true });
@@ -684,7 +753,7 @@ export default class ImageAdmin extends Component {
 					console.log("XHR event", event);
 					this.setState({
 						sourceSvgBlob: blob,
-						isLoadingSource: false,
+						isLoadingSource: false
 						// sourceSvg: url
 					});
 				};
@@ -701,11 +770,11 @@ export default class ImageAdmin extends Component {
 				// Handle any errors
 				console.log("error: ", error);
 				this.setState({
-					isLoadingSource: false,
+					isLoadingSource: false
 				});
 			});
 	};
-	
+
 	getAvailableFiles(imageId) {
 		const filesRef = fbase.collection("renders").where("slug", "==", imageId);
 		const filesArray = [];
@@ -720,7 +789,7 @@ export default class ImageAdmin extends Component {
 				});
 				this.setState({
 					filesArray
-				})
+				});
 			})
 			.catch(error => {
 				console.log("Error getting documents: ", error);
@@ -878,22 +947,24 @@ export default class ImageAdmin extends Component {
 	/////////////////////////
 	// Selecting
 	/////////////////////////
-	selectSvg = (svgId) => {
+	selectSvg = svgId => {
 		this.setState({
 			tempSelectedSvg: svgId
-		})
-	}
-	setSelectedSvg = (svgId) => {
-		console.log('setSelectedSvg', svgId);
+		});
+	};
+
+	setSelectedSvg = svgId => {
+		console.log("setSelectedSvg", svgId);
 		const currentDateTime = new Date();
 		// const currentDateTime2 = fbase.firestore.ServerValue.TIMESTAMP;
 		// console.log('currentDateTime2', currentDateTime2);
-		const imageId = this.props.location.state && this.props.location.state.imageId;
-		console.log('imageId', imageId);
+		const imageId =
+			this.props.location.state && this.props.location.state.imageId;
+		console.log("imageId", imageId);
 		const { imageData } = this.state;
 		// console.log("imageData", imageData);
-		if(!imageId) {
-			console.log('no iamgeId');
+		if (!imageId) {
+			console.log("no iamgeId");
 			return "no iamge Id";
 		}
 		fbase
@@ -901,7 +972,7 @@ export default class ImageAdmin extends Component {
 			.doc(imageId)
 			.update({
 				svgId,
-				name: imageData.name || imageData.slug || '',
+				name: imageData.name || imageData.slug || "",
 				modifiedDate: currentDateTime
 			}) // { merge: true }
 			.then(() => {
@@ -909,7 +980,7 @@ export default class ImageAdmin extends Component {
 				this.setState({
 					isUpdated: true,
 					isError: false,
-					selectedSvg: svgId,
+					selectedSvg: svgId
 				});
 				this.getSvgData(svgId);
 				setTimeout(() => {
@@ -924,25 +995,26 @@ export default class ImageAdmin extends Component {
 					isUpdated: false,
 					isError: true
 				});
-		});
-	}
+			});
+	};
 	//////////////////////////////
 	// SWATCHES
 	//////////////////////////////
-	
-	addSwatch = (swatchId) => {
-		const imageId = this.props.location.state && this.props.location.state.imageId;
-		if(!swatchId) {
+
+	addSwatch = swatchId => {
+		const imageId =
+			this.props.location.state && this.props.location.state.imageId;
+		if (!swatchId) {
 			return "no swatch id";
 		}
 		const currentDateTime = new Date();
-		let tempSwatchSets = this.state.swatchSets || {};
-		const {dataSwatches} = this.props;
-		console.log('tempSwatchSets', tempSwatchSets);
-		console.log('swatchData', dataSwatches);
+		const tempSwatchSets = this.state.swatchSets || {};
+		const { dataSwatches } = this.props;
+		console.log("tempSwatchSets", tempSwatchSets);
+		console.log("swatchData", dataSwatches);
 		const thisSwatch = this.filterSwatches(dataSwatches, swatchId);
-		console.log('thisSwatch', thisSwatch);
-		
+		console.log("thisSwatch", thisSwatch);
+
 		// tempImageData[name] = value;
 		tempSwatchSets[thisSwatch.id] = thisSwatch.data;
 		console.log(tempSwatchSets);
@@ -959,7 +1031,7 @@ export default class ImageAdmin extends Component {
 				this.setState({
 					isUpdated: true,
 					isError: false,
-					swatchSets: tempSwatchSets,
+					swatchSets: tempSwatchSets
 				});
 				// this.getSvgData(svgId);
 				setTimeout(() => {
@@ -974,9 +1046,9 @@ export default class ImageAdmin extends Component {
 					isUpdated: false,
 					isError: true
 				});
-		});
-	}
-	
+			});
+	};
+
 	// MISC
 	doRoute = (route, name, filename, id) => {
 		const theRoute = route === "edit/remote" ? "/edit/remote" : "/edit";
@@ -991,7 +1063,8 @@ export default class ImageAdmin extends Component {
 				mode: route === "edit/remote" ? "remote" : "local"
 			}
 		});
-	}
+	};
+
 	filterSwatches = (swatches, swatchId) => {
 		// console.log("filtering id: ", swatchId, " in swatches", swatches);
 		if (!swatchId || !swatches) {
@@ -999,88 +1072,97 @@ export default class ImageAdmin extends Component {
 			return false;
 		}
 		const selected = swatches.filter(swatch => swatch.id === swatchId);
-		console.log('selected: ', selected);
+		console.log("selected: ", selected);
 		return selected[0];
 	};
 
-	combinations() { // array
+	combinations() {
+		// array
 		// console.log('initial array: ', array);
-		const {swatchSets, sourceSvgData} = this.state;
-		const aspects = [{type: 'aspect', name: 'circle'}, {type: 'aspect', name: 'portrait'}];
-		
-		let adjustmentArray = [];
-		let swatchSetArray = [];
-		if(swatchSets) {
-			console.log('swatchSets', swatchSets);
+		const { swatchSets, sourceSvgData } = this.state;
+		const aspects = [
+			{ type: "aspect", name: "circle" },
+			{ type: "aspect", name: "portrait" }
+		];
+
+		const adjustmentArray = [];
+		const swatchSetArray = [];
+		if (swatchSets) {
+			console.log("swatchSets", swatchSets);
 			Object.entries(swatchSets).map(([key, value]) => {
-				console.log('key, value', key, value);
+				console.log("key, value", key, value);
 				swatchSetArray[key] = value;
 				const tempObj = {
-					type: 'swatch',
+					type: "swatch",
 					name: key,
-					data: value,
-				}
+					data: value
+				};
 				swatchSetArray.push(tempObj);
 			});
 		}
-		const adjustmentSetSource = sourceSvgData && sourceSvgData.adjustmentSets || this.state.adjustmentSets;
-		if(adjustmentSetSource) {
-			console.log('sourceSvgData.adjustmentSets', adjustmentSetSource);
+		const adjustmentSetSource =
+			(sourceSvgData && sourceSvgData.adjustmentSets) ||
+			this.state.adjustmentSets;
+		if (adjustmentSetSource) {
+			console.log("sourceSvgData.adjustmentSets", adjustmentSetSource);
 			Object.entries(adjustmentSetSource).map(([key, value]) => {
 				// console.log('key, value', key, value);
 				const tempObj = {
-					type: 'adjustment',
+					type: "adjustment",
 					name: key,
 					data: value,
 					theScale: value.theScale,
 					theTranslateX: value.theTranslateX,
-					theTranslateY: value.theTranslateY,
-				}
+					theTranslateY: value.theTranslateY
+				};
 				adjustmentArray.push(tempObj);
 			});
 		}
-		console.log('swatchSetArray', swatchSetArray);
-		console.log('swatchSetArraylength', swatchSetArray.length);
-		const array2 = ['1', '2', '3'];
-		let array = [aspects, array2]
-		if(adjustmentArray.length) {
+		console.log("swatchSetArray", swatchSetArray);
+		console.log("swatchSetArraylength", swatchSetArray.length);
+		const array2 = ["1", "2", "3"];
+		let array = [aspects, array2];
+		if (adjustmentArray.length) {
 			array = [aspects, adjustmentArray, swatchSetArray];
 		}
-	  if(!array.length) {
-	    return [];
-	  }
-	
-	  // wrap non-array values
-	  // e.g. ['x',['y','z']] becomes [['x'],['y','z']]
-	  array = array.map(function (item) {
-	    return item instanceof Array ? item : [item];
-	  });
-	
-	  // internal recursive function
-	  function combine(list) {
-	    var prefixes, combinations;
-	
-	    if(list.length === 1) {
-	      return list[0];
-	    }
-	
-	    prefixes = list[0];
-	    combinations = combine(list.slice(1)); // recurse
-	
-	    // produce a flat list of each of the current
-	    // set of values prepended to each combination
-	    // of the remaining sets.
-	    return prefixes.reduce(function (memo, prefix) {
-	      return memo.concat(combinations.map(function (combination) {
-	        return [prefix].concat(combination);
-	      }));
-	    }, []);
-	  }
-		console.log('result: ', combine(array));
+		if (!array.length) {
+			return [];
+		}
+
+		// wrap non-array values
+		// e.g. ['x',['y','z']] becomes [['x'],['y','z']]
+		array = array.map(item => {
+			return item instanceof Array ? item : [item];
+		});
+
+		// internal recursive function
+		function combine(list) {
+			let prefixes;
+			let combinations;
+
+			if (list.length === 1) {
+				return list[0];
+			}
+
+			prefixes = list[0];
+			combinations = combine(list.slice(1)); // recurse
+
+			// produce a flat list of each of the current
+			// set of values prepended to each combination
+			// of the remaining sets.
+			return prefixes.reduce((memo, prefix) => {
+				return memo.concat(
+					combinations.map(combination => {
+						return [prefix].concat(combination);
+					})
+				);
+			}, []);
+		}
+		console.log("result: ", combine(array));
 		this.setState({
 			renderCombinations: combine(array)
-		})
-	  return combine(array);
+		});
+		return combine(array);
 	}
 }
 /*

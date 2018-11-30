@@ -181,7 +181,7 @@ export default class NamedColor extends Component {
 		let b = parseInt(hex.substr(5, 2), 16);
 
 		r /= 255;
-		g /= 255; 
+		g /= 255;
 		b /= 255;
 		const max = Math.max(r, g, b);
 		const min = Math.min(r, g, b);

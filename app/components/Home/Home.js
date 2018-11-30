@@ -299,9 +299,7 @@ export default class Home extends Component {
 													)}
 												</h6>
 											</div>
-											<div>
-												{img.data.svgId}
-											</div>
+											<div>{img.data.svgId}</div>
 											<div className={styles.meta}>
 												{img.renders && ( // (img.renders.length >= 0) &&
 													<div className={styles.theCount}>
