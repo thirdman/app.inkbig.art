@@ -1,0 +1,69 @@
+@import '../../assets/scss/_global.scss';
+
+.Loading{
+	align-items: center;
+	justify-content: center;
+	transition: transform .5s ease-in-out;
+	transition-delay: .2s;
+	perspective: 1000px;
+	transform-style: preserve-3d;
+  width: 100%;
+  min-height: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+	display: flex;
+	&.centered{
+		z-index: 9999999999;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+	}
+	
+	.theLoading{
+		width: 20px !important;
+		height: 20px;
+		position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation-duration: 1s;
+		animation-name: rotateMe;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		animation-direction: forwards;
+		svg{
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&.isActive{
+		
+/*
+		opacity: 1;
+		animation-name: loading;
+		animation-direction: forwards;
+		animation-timing-function: ease-in;
+    animation-duration: 1s;
+    animation-iteration-count: 10000000;
+*/
+	}
+	&.app{
+	}
+}
+
+/*
+@keyframes rotateMe {
+  from {
+	  transform: rotateY(0deg);
+	}
+	50% {
+	  transform: rotateY(180deg);
+	  }
+  to {
+	  transform: rotateY(0deg);
+	}
+}
+*/
+
+

@@ -41,7 +41,7 @@ $printBgLess: 1200px;
   box-sizing: border-box;
   border: 0px solid red;
   overflow: hidden;
-  background: pink;
+  background: transparent;
   margin: 0;
 	.theSvg{
 		// width: 100%;
@@ -55,6 +55,11 @@ $printBgLess: 1200px;
 		left: 0;
 		bottom: 0;
 		right: 0;
+		opacity: 1;
+		transition: opacity .3s ease;
+	}
+	&.preview{
+		box-shadow: 0 4px 29px -7px rgba(0,0,0,.2);
 	}
 	.titleBlock{
     position: absolute;
@@ -1803,5 +1808,14 @@ $printBgLess: 1200px;
 			display: block;
 	    // border: none;
     }
+	}
+	
+	&.isLoading{
+		.hasFrame{
+			display: none;
+		}
+		.theSvg{
+			opacity: .5;
+		}
 	}
 }

@@ -29,7 +29,7 @@
 		display: flex;
 		min-height: 2rem;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: stretch;
 		flex-wrap:wrap;
 		&.toDelete{
 	    // background: rgb(255, 218, 222);
@@ -39,6 +39,11 @@
 		    opacity: 0;
 		    visibility: 0;
 	    }
+		}
+		> div{
+			flex-basis: 38%;
+			flex-shrink: 1;
+			flex-grow: 1;
 		}
 		.svgIcon{
 			width: 1.25rem;
@@ -54,9 +59,12 @@
 			text-align: center;
 			line-height: 1.5rem;
 			font-size: 11px;
+			flex-basis: 1.25rem;
+			flex-grow: 0;
 		}
 		.buttonWrap{
-			
+			flex-basis: 10%;
+			flex-grow: 1;
 		}
 		.deleteWarning{
 	    background: rgba(255, 25, 52, 1);

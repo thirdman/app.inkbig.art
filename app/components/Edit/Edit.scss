@@ -31,6 +31,11 @@
 			}
 		}
 	}
+	.row{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
 	.previewImageWrap, .renderImageWrap, .sourceImageWrap{
 		width: 100%;
 		padding: 24px;
@@ -104,6 +109,19 @@
 			position: absolute;
 			right: 0;
 			top: 4px;
+		}
+	}
+	.saveDialog{
+		display: flex;
+		flex-direction: row;
+		input{
+			flex-basis: 50%;
+			flex-grow: 1;
+			flex-shrink: 1;
+		}
+		> div {
+			flex-grow: 1;
+			flex-shrink: 1;
 		}
 	}
 	.newImg{

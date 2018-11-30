@@ -1,0 +1,101 @@
+@import '../../assets/scss/_global.scss';
+
+.Products{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	.column{
+		flex-basis: 1;
+		width: 50%;
+		height: 100%;
+		padding: 24px;
+	}
+
+	.imageList{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		width: 100%;
+		.listItem{
+			display: flex;
+			flex-direction: row;
+			align-items: flex-start;
+			justify-content: flex-start;
+			.preview{
+				flex-basis: 3rem;
+				height: 3rem;
+				flex-shrink: 1;
+				flex-grow: 0;
+				overflow: hidden;
+				> div > div { // the dosplay image wrap
+					width: 3rem !important;
+			    height: 3rem !important;
+			    > div { // the display image
+						width: 3rem !important;
+				    height: 3rem !important;				    
+			    }
+				}
+			}
+			.content{
+				flex-basis: 100%;
+				height: 40px;
+				flex-shrink: 1;
+				flex-grow: 1;	
+				padding: 2px;
+				h5{
+					padding: 0;
+					margin: 0;				
+				}	
+				h6{
+					font-size: 11px;
+					padding: 2px 0;
+					margin: 0;
+					font-weight: normal;
+					color: #777;
+				}		
+			}
+			.meta{
+				flex-basis: 50%;
+				flex-shrink: 1;
+				flex-grow: 1;
+				height: 3rem;
+				line-height: 3rem;
+			}
+		}
+		.imageCard{
+			width: 100%;
+			height: 3rem;
+			background: #f9f9f9;
+			// box-shadow: 0 1px 4px rgba(0,0,0,.1);
+			// display: inline-block; 
+			margin: 1px 0;
+			font-size: 11px;
+			position: relative;
+			button{
+				position: relative;
+				background: transparent;
+				box-shadow: none;
+				&.editButton{
+					position: absolute;
+					top: 4px;
+					right: 4px;
+					opacity: 1;
+				}
+			}
+			.theCount{
+				width: 18px;
+				height: 18px;
+				background: #222;
+				text-align: center;
+				line-height: 18px;
+				font-size: 12px;
+				color: #eee;
+				border-radius: 50%;
+				display: inline-block;
+				vertical-align: middle;
+			}
+		}
+	}
+
+}
