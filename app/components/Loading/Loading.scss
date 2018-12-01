@@ -35,6 +35,12 @@
 			width: 20px;
 			height: 20px;
 		}
+		+ span{
+			margin-left: 8px;
+			font-size: .875rem;
+			color: #777;
+			font-style: italic;
+		}
 	}
 
 	&.isActive{

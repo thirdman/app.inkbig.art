@@ -6,9 +6,6 @@
 	width="100%" height="100%"
 	preserveAspectRatio="xMidYMid slice"
 >
-  <title>
-    Rakiura
-  </title>
   <g id="background" fill="#8B9BB2" class="lightest">
     <path id="bgsky" d="M0 0h3014v3000H0z"/>
   </g>

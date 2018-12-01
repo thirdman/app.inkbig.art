@@ -115,7 +115,7 @@
 		display: flex;
 		flex-direction: row;
 		input{
-			flex-basis: 50%;
+			flex-basis: 40%;
 			flex-grow: 1;
 			flex-shrink: 1;
 		}
@@ -400,6 +400,7 @@
 			}
 			&.selected{
 				background-color: rgba(85, 151, 249, 1);
+				background-color: #38393c;
 				color: #fff;
 			}
 			&.portrait{}

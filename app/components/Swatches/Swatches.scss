@@ -1,0 +1,13 @@
+@import '../../assets/scss/_global.scss';
+
+.Swatches{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	.column{
+		flex-basis: 1;
+		width: 50%;
+		height: 100%;
+		padding: 24px;
+	}
+}

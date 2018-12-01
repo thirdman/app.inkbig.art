@@ -7,6 +7,7 @@
 	background: #fff;
 	box-shadow: 0 1px 8px -2px rgba(0,0,0,.2);
 	flex-wrap: nowrap;
+	position: relative;
 	&:hover{
 		cursor: pointer;
 	}
@@ -88,6 +89,25 @@
 			.colorName{
 				display: block;
 			}
+		}
+	}
+	&.isFav{
+		border: 1px solid #7b7b7b;
+		&:before{
+			content: "•";
+			width: 1rem;
+			height: 1rem;
+			background: #45c00b;
+			border-radius: 1rem;
+    bottom: .25rem;
+    left: .25rem;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1rem;
+    color: #fff;
+    position: absolute;
 		}
 	}
 }

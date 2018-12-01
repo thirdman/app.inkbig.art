@@ -6,9 +6,6 @@
 	width="100%" height="100%"
 	preserveAspectRatio="xMidYMid slice"
 >
-  <title>
-    Kahurangi
-  </title>
   <g id="Bg" class="lightest">
     <path d="M0,0 L3000,0 L3000,3000 L0,3000 z" fill="#6A8EB4"/>
   </g>
