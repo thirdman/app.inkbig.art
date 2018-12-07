@@ -1,6 +1,6 @@
 {
 	"plugins": ["prettier"],
-  "extends": ["airbnb", "plugin:prettier/recommended", "plugin:react/recommended", "prettier/react"],
+  "extends": ["airbnb", "plugin:react/recommended", "prettier/react", "plugin:prettier/recommended"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 6,
@@ -15,7 +15,6 @@
     "es6": true
   },
   "rules": {
-	  "prettier/prettier": ["error", {useTabs: true, trailingComma "es5"}],
 	  "indent": "off",
     "no-tabs": "off",
     "no-console": "off",
@@ -24,6 +23,13 @@
     "object-curly-spacing": "off",
     "no-trailing-spaces": "off",
     "spaced-comment": "off",
+    "class-methods-use-this": "off",
+    "linebreak-style": "off",
+    "global-require": "off",
+    "semi": "warn",
+    "arrow-body-style": "off",
+    "no-plusplus": "off",
+    "no-multi-assign": "off",
     "react/sort-comp": "off",
     "react/no-danger": "off",
     "react/prop-types": "off",
@@ -31,21 +37,29 @@
     "react/jsx-indent-props": "off",
     "react/destructuring-assignment": "off",
     "react/button-has-type": "off",
+    "react/no-multi-comp": "off",
     "space-before-function-paren": "off",
+    "react/no-access-state-in-setstate": "off",
     "react/prefer-stateless-function": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "linebreak-style": "off",
-    "global-require": "off",
-    "semi": "warn",
-    "arrow-body-style": "off",
-    "no-plusplus": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "jsx-a11y/heading-has-content": "off",
+		"jsx-a11y/label-has-associated-control": [ "error", {
+        "required": {
+          "some": [ "nesting", "id"  ]
+        }
+      }],
+    "jsx-a11y/label-has-for": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }],
     "max-len": ["error", {
     	"code": 170,
     	"ignoreTrailingComments": true,
     	"ignoreStrings": true ,
     	"ignoreComments": true,
     	}],
+	  "prettier/prettier": ["error", {useTabs: true, trailingComma "es5"}],
   }
 }

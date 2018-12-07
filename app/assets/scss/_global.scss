@@ -141,6 +141,23 @@ input[type="text"]{
 	}
 }
 
+// SWITCHES
+.switchWrap{
+	min-height: 2rem;
+	display: flex;
+	border-bottom: 1px dashed rgba(0,0,0,.1);
+  margin-bottom: .25rem;
+  align-items: center;
+  justify-content: space-between;
+	flex-direction: row-reverse;
+	.theToggle{
+		// float: right;
+	}
+	.label{
+		float: left;
+	}
+}
+
 ///////// TABLET /////
 @include media("<=large") { //">tablet", 
 	html, body {

@@ -125,9 +125,10 @@
 			.preview{
 				flex-basis: 3rem;
 				height: 3rem;
+				width: 3rem;
 				flex-shrink: 1;
 				flex-grow: 0;
-				overflow: hidden;
+				// overflow: hidden;
 				> div > div { // the dosplay image wrap
 					width: 3rem !important;
 			    height: 3rem !important;
@@ -167,11 +168,12 @@
 			width: 100%;
 			height: 3rem;
 			background: #f9f9f9;
-			// box-shadow: 0 1px 4px rgba(0,0,0,.1);
-			// display: inline-block; 
 			margin: 1px 0;
+			margin-bottom: .5rem;
 			font-size: 11px;
 			position: relative;
+	    border-radius: 3px;
+	    box-shadow: 0 1px 12px -8px rgba(0,0,0,.2);	
 			button{
 				position: relative;
 				background: transparent;

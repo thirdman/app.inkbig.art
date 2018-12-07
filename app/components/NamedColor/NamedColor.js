@@ -1,46 +1,46 @@
 import React, { Component } from "react";
-import Select, { components } from "react-select";
+import Select from "react-select"; // , { components }
 import { FixedSizeList as List } from "react-window";
 
-import reseneColors from "../../../node_modules/matrioshka.colors/dist/data/resene.json";
+// import reseneColors from "../../../node_modules/matrioshka.colors/dist/data/resene.json";
 import reseneColors2 from "../../assets/resene.json";
 
 import styles from "./NamedColor.scss";
 
 export default class NamedColor extends Component {
-  state = {
-    isLoading: false,
-    searchColor: ""
-  };
+	state = {
+		isLoading: false,
+		searchColor: ""
+	};
 
-  componentWillMount() {}
+	componentWillMount() {}
 
-  componentDidMount() {
-    // const {
-    // type,
-    // name,
-    // } = this.props;
-    // const selectedColor = this.filterSwatches(reseneColors, name);
-  }
+	componentDidMount() {
+		// const {
+		// type,
+		// name,
+		// } = this.props;
+		// const selectedColor = this.filterSwatches(reseneColors, name);
+	}
 
-  render() {
-    const {
-      isLoading,
-      selectedColorName,
-      selectedColor,
-      selectedColorObject
-      // searchColor
-    } = this.state;
-    const {
-      type = "resene"
-      // name
-      // onSelect
-    } = this.props;
-    const height = 35;
-    const reseneColorsArray =
-      reseneColors2 &&
-      this.convertObjToArray(reseneColors2.colorGroups[0].shades);
-    /*
+	render() {
+		const {
+			isLoading,
+			selectedColorName,
+			selectedColor,
+			selectedColorObject
+			// searchColor
+		} = this.state;
+		const {
+			type = "resene"
+			// name
+			// onSelect
+		} = this.props;
+		const height = 35;
+		const reseneColorsArray =
+			reseneColors2 &&
+			this.convertObjToArray(reseneColors2.colorGroups[0].shades);
+		/*
 		const Option = (props) => {
 			console.log('option props: ', props);
 		  return (
@@ -51,219 +51,224 @@ export default class NamedColor extends Component {
 		  );
 		};
 */
-    class MenuList extends Component {
-      render() {
-        const { options, children, maxHeight, getValue } = this.props;
-        const [value] = getValue();
-        const initialOffset = options.indexOf(value) * height;
-        console.log("children[0]: ", children[0]);
-        return (
-          <List
-            height={maxHeight}
-            itemCount={children.length}
-            itemSize={height}
-            initialScrollOffset={initialOffset}
-          >
-            {({ index, style }) => (
-              <div className={styles.swatchitem} style={style}>
-                <div
-                  className={styles.swatchColor}
-                  style={{ background: children[index].props.value }}
-                />
-                <div className={styles.swatchTitle}>{children[index]}</div>
-              </div>
-            )}
-          </List>
-        );
-      }
-    }
+		class MenuList extends Component {
+      // eslint-disable-line
+			render() {
+				const { options, children, maxHeight, getValue } = this.props;
+				const [value] = getValue();
+				const initialOffset = options.indexOf(value) * height;
+				console.log("children[0]: ", children[0]);
+				return (
+					<List
+						height={maxHeight}
+						itemCount={children.length}
+						itemSize={height}
+						initialScrollOffset={initialOffset}
+					>
+						{({ index, style }) => (
+							<div className={styles.swatchitem} style={style}>
+								<div
+									className={styles.swatchColor}
+									style={{ background: children[index].props.value }}
+								/>
+								<div className={styles.swatchTitle}>{children[index]}</div>
+							</div>
+						)}
+					</List>
+				);
+			}
+		}
 
-    return (
-      <div
-        className={`${styles.NamedColor} ${isLoading ? styles.isLoading : ""}`}
-        onClick={this.props.onClickProps}
-        role="presentation"
-      >
-        <div className={`${styles.segment} ${styles.info}`}>
-          <h4>Select {type} Color</h4>
-          <div>
-            {reseneColorsArray && (
-              <Select
-                options={reseneColorsArray}
-                // components={{ Option }}
-                components={{ MenuList }}
-                isSearchable
-                onInputChange={this.onSelectChange}
-                onChange={this.onSelectChange}
-              />
-            )}
-          </div>
+		return (
+			<div
+				className={`${styles.NamedColor} ${isLoading ? styles.isLoading : ""}`}
+				onClick={this.props.onClickProps}
+				role="presentation"
+			>
+				<div className={`${styles.segment} ${styles.info}`}>
+					<h4>Select {type} Color</h4>
+					<div>
+						{reseneColorsArray && (
+							<Select
+								options={reseneColorsArray}
+								// components={{ Option }}
+								components={{ MenuList }}
+								isSearchable
+								onInputChange={this.onSelectChange}
+								onChange={this.onSelectChange}
+							/>
+						)}
+					</div>
 
-          <div className={styles.swatchResults}>
-            {selectedColor && (
-              <div className={styles.swatchitem}>
-                <div
-                  className={styles.swatchColor}
-                  style={{ background: selectedColor }}
-                />
-                <div className={styles.swatchTitle}>{selectedColorName}</div>
-                <button
-                  onClick={() => this.props.onSelect(selectedColorObject)}
-                >
-                  Use Color
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-  // FUCNTIONS
+					<div className={styles.swatchResults}>
+						{selectedColor && (
+							<div className={styles.swatchitem}>
+								<div
+									className={styles.swatchColor}
+									style={{ background: selectedColor }}
+								/>
+								<div className={styles.swatchTitle}>{selectedColorName}</div>
+								<button
+									onClick={() => this.props.onSelect(selectedColorObject)}
+								>
+									Use Color
+								</button>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+		);
+	}
+	// FUCNTIONS
 
-  filterSwatches = (swatches, swatchName) => {
-    console.log("filtering name in swatches", swatchName);
-    // console.log('filtering name in swatches', swatches);
-    if (!swatchName || !swatches) {
-      console.log("missing name or swatches");
-      return false;
-    }
+	filterSwatches = (swatches, swatchName) => {
+		console.log("filtering name in swatches", swatchName);
+		// console.log('filtering name in swatches', swatches);
+		if (!swatchName || !swatches) {
+			console.log("missing name or swatches");
+			return false;
+		}
     // eslint-disable-line
-    /*
+		/*
 			swatches && swatches.map((swatch) => {
 				console.log('swatch: ', swatch);
 				console.log('swatch.obj ', swatch.obj);
 			})
 */
-    const selected = swatches.filter(swatch => swatch.obj.key === swatchName);
-    console.log("selected is: ", selected);
-    return selected[0].obj;
-  };
+		const selected = swatches.filter(swatch => swatch.obj.key === swatchName);
+		console.log("selected is: ", selected);
+		return selected[0].obj;
+	};
 
-  convertObjToArray = object => {
-    // console.log('converting obj', object);
-    const theTempArray = Object.entries(object);
-    // console.log('theTempArray: ', theTempArray);
-    const theArray = theTempArray.map(color => ({
-      value: color[1],
-      label: color[0]
-    }));
-    // console.log('theArray', theArray);
-    return theArray;
-  };
+	convertObjToArray = object => {
+		// console.log('converting obj', object);
+		const theTempArray = Object.entries(object);
+		// console.log('theTempArray: ', theTempArray);
+		const theArray = theTempArray.map(color => ({
+			value: color[1],
+			label: color[0]
+		}));
+		// console.log('theArray', theArray);
+		return theArray;
+	};
 
-  handleInputChange = event => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  };
+	handleInputChange = event => {
+		const { target } = event;
+		const { name } = target;
+		const value = target.type === "checkbox" ? target.checked : target.value;
+		// const name = target.name;
+		this.setState({
+			[name]: value
+		});
+	};
 
-  onSelectChange = selectedObject => {
-    console.log("onSelectChange: ", selectedObject);
-    const hsl = this.hexToHSL(selectedObject.value);
-    const hslObject = this.hexToHSLObject(selectedObject.value);
+	onSelectChange = selectedObject => {
+		console.log("onSelectChange: ", selectedObject);
+		const hsl = this.hexToHSL(selectedObject.value);
+		const hslObject = this.hexToHSLObject(selectedObject.value);
 
-    this.setState({
-      selectedColor: hsl,
-      selectedColorObject: hslObject,
-      selectedColorName: selectedObject.label
-    });
-    this.props.onSelect(hslObject);
-  };
+		this.setState({
+			selectedColor: hsl,
+			selectedColorObject: hslObject,
+			selectedColorName: selectedObject.label
+		});
+		this.props.onSelect(hslObject);
+	};
 
-  hexToHSL(hex = "#c7d92c") {
-    // const color='#c7d92c'; // A nice shade of green.
-    let r = parseInt(hex.substr(1, 2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
-    let g = parseInt(hex.substr(3, 2), 16);
-    let b = parseInt(hex.substr(5, 2), 16);
+	hexToHSL(hex = "#c7d92c") {
+		// const color='#c7d92c'; // A nice shade of green.
+		let r = parseInt(hex.substr(1, 2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
+		let g = parseInt(hex.substr(3, 2), 16);
+		let b = parseInt(hex.substr(5, 2), 16);
 
-    r /= 255;
-    g /= 255;
-    b /= 255;
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h = (max + min) / 2;
-    let s = (max + min) / 2;
-    let l = (max + min) / 2;
+		r /= 255;
+		g /= 255;
+		b /= 255;
+		const max = Math.max(r, g, b);
+		const min = Math.min(r, g, b);
+		let h = (max + min) / 2;
+		let s = (max + min) / 2;
+		let l = (max + min) / 2;
 
-    if (max === min) {
-      h = s = 0; // achromatic
-    } else {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch (max) {
-        case r:
-          h = (g - b) / d + (g < b ? 6 : 0);
-          break;
-        case g:
-          h = (b - r) / d + 2;
-          break;
-        case b:
-          h = (r - g) / d + 4;
-          break;
-      }
-      h /= 6;
-    }
+		if (max === min) {
+			h = s = 0; // achromatic // eslint-disable-line
+		} else {
+			const d = max - min;
+			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+			switch (max) {
+				case r:
+					h = (g - b) / d + (g < b ? 6 : 0);
+					break;
+				case g:
+					h = (b - r) / d + 2;
+					break;
+				case b:
+					h = (r - g) / d + 4;
+					break;
+				default:
+					h = (g - b) / d + (g < b ? 6 : 0);
+          break; // eslint-disable-line
+			}
+			h /= 6;
+		}
 
-    s *= 100;
-    s = Math.round(s);
-    l *= 100;
-    l = Math.round(l);
-    h = Math.round(360 * h);
+		s *= 100;
+		s = Math.round(s);
+		l *= 100;
+		l = Math.round(l);
+		h = Math.round(360 * h);
 
-    const colorInHSL = `hsl(${h}, ${s}%, ${l}%)`;
-    return colorInHSL;
-    // $rootScope.$emit('colorChanged', {colorInHSL});
-  }
+		const colorInHSL = `hsl(${h}, ${s}%, ${l}%)`;
+		return colorInHSL;
+		// $rootScope.$emit('colorChanged', {colorInHSL});
+	}
 
-  hexToHSLObject(hex = "#c7d92c") {
-    let r = parseInt(hex.substr(1, 2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
-    let g = parseInt(hex.substr(3, 2), 16);
-    let b = parseInt(hex.substr(5, 2), 16);
+	hexToHSLObject(hex = "#c7d92c") {
+		let r = parseInt(hex.substr(1, 2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
+		let g = parseInt(hex.substr(3, 2), 16);
+		let b = parseInt(hex.substr(5, 2), 16);
 
-    r /= 255;
-    g /= 255;
-    b /= 255;
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h = (max + min) / 2;
-    let s = (max + min) / 2;
-    const l = (max + min) / 2;
+		r /= 255;
+		g /= 255;
+		b /= 255;
+		const max = Math.max(r, g, b);
+		const min = Math.min(r, g, b);
+		let h = (max + min) / 2;
+		let s = (max + min) / 2;
+		const l = (max + min) / 2;
 
-    if (max === min) {
-      h = s = 0; // achromatic
-    } else {
-      const d = max - min;
+		if (max === min) {
+			h = s = 0; // achromatic // eslint-disable-line
+		} else {
+			const d = max - min;
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min); // eslint-disable-line
-      switch (max) {
-        case r:
-          h = (g - b) / d + (g < b ? 6 : 0);
+			switch (max) {
+				case r:
+					h = (g - b) / d + (g < b ? 6 : 0);
           break; // eslint-disable-line
-        case g:
-          h = (b - r) / d + 2;
+				case g:
+					h = (b - r) / d + 2;
           break; // eslint-disable-line
-        case b:
-          h = (r - g) / d + 4;
+				case b:
+					h = (r - g) / d + 4;
           break; // eslint-disable-line
-        default:
-          h = (g - b) / d + (g < b ? 6 : 0);
+				default:
+					h = (g - b) / d + (g < b ? 6 : 0);
           break; // eslint-disable-line
-      }
-      h /= 6;
-    }
+			}
+			h /= 6;
+		}
 
-    // s = s*100;
-    // l = l*100;
-    // l = Math.round(l);
-    h = Math.round(360 * h);
+		// s = s*100;
+		// l = l*100;
+		// l = Math.round(l);
+		h = Math.round(360 * h);
 
-    const HSLObject = { h, s, l, a: 1 };
-    return HSLObject;
-    // $rootScope.$emit('colorChanged', {colorInHSL});
-  }
+		const HSLObject = { h, s, l, a: 1 };
+		return HSLObject;
+		// $rootScope.$emit('colorChanged', {colorInHSL});
+	}
 }
 /* <RenderColorList array={reseneColorsArray} /> */
 

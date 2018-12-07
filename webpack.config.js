@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+// const PrettierPlugin = require("prettier-webpack-plugin");
 
 const config = {
   devtool: 'cheap-module-eval-source-map',
@@ -104,6 +105,7 @@ const config = {
         eslint: {
           configFile: resolve(__dirname, '.eslintrc'),
           cache: false,
+          fix: true,
         }
       },
     }),
@@ -111,6 +113,16 @@ const config = {
     new ExtractTextPlugin({ filename: './styles/style.css', disable: false, allChunks: true }),
     new CopyWebpackPlugin([{ from: 'vendors', to: 'vendors' }]),
     new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
+/*
+	  new PrettierPlugin({
+	    printWidth: 120,               // Specify the length of line that the printer will wrap on.
+	    tabWidth: 2,                  // Specify the number of spaces per indentation-level.
+	    useTabs: true,               // Indent lines with tabs instead of spaces.
+	    semi: true,                   // Print semicolons at the ends of statements.
+	    encoding: 'utf-8',            // Which encoding scheme to use on files
+	    extensions: [ ".js", ".ts" ]  // Which file extensions to process
+	  }),
+*/
     new webpack.HotModuleReplacementPlugin(),
   ],
 };

@@ -1,0 +1,4 @@
+{
+  "rules": {
+		"react/jsx-indent": [1, "tab"],  
+}
