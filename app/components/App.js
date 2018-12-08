@@ -146,9 +146,16 @@ export default class App extends Component {
 				tempThing.data = doc.data();
 				svgArray.push(tempThing);
 			});
+			/*
 			const sortedArray = svgArray.sort((a, b) => {
 				return b.data.modifiedDate - a.data.modifiedDate;
 			});
+*/
+
+			const sortedArray = svgArray.sort((a, b) => {
+				return b.data.fileName - a.data.fileName;
+			});
+
 			this.setState({
 				dataSources: sortedArray,
 				isLoadingSvg: false

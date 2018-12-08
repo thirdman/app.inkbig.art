@@ -87,6 +87,7 @@ export default class RenderImage extends Component {
 			// hasFrame = false,
 			swatchName,
 			adjustmentName
+			// onAssignRender
 		} = this.props;
 
 		return (
@@ -335,7 +336,7 @@ export default class RenderImage extends Component {
 	}
 
 	doSave(dataUrl) {
-		console.log("this will save the image", this.state);
+		// console.log("this will save the image", this.state);
 		const {
 			productId,
 			productName,
@@ -343,8 +344,8 @@ export default class RenderImage extends Component {
 			aspect,
 			hasFrame = false,
 			hasBackground,
-			swatchName,
-			sourceSvg
+			swatchName
+			// sourceSvg
 		} = this.props;
 		const { size } = this.state;
 		if (!dataUrl) {
@@ -361,22 +362,22 @@ export default class RenderImage extends Component {
 		);
 		const cleanSwatchName = swatchName.replace(/\s+/g, "-");
 
-		console.log("dataUrl: ", dataUrl);
-		console.log(fbase.collection("renders"));
+		// console.log("dataUrl: ", dataUrl);
+		// console.log(fbase.collection("renders"));
 		const fStorage = firebase.storage();
 		const storageLocation = `renders/${productId}_${productName ||
 			file}_${cleanSwatchName}_${aspect}_${size}${hasFrame ? "_Frame" : ""}${
 			hasBackground ? "_Background" : ""
 		}.jpg`;
-		const renderType = sourceSvg ? "source" : "file";
-		console.log("cleanSwatchName: ", cleanSwatchName);
-		console.log("renderType: ", renderType);
-		console.log("storageLocation", storageLocation);
+		// const renderType = sourceSvg ? "source" : "file";
+		// console.log("cleanSwatchName: ", cleanSwatchName);
+		// console.log("renderType: ", renderType);
+		// console.log("storageLocation", storageLocation);
 		const storageRef = fStorage.ref().child(storageLocation);
 		this.setState({
 			isSaving: true
 		});
-		storageRef.putString(dataUrl, "data_url").then(snapshot => {
+		return storageRef.putString(dataUrl, "data_url").then(snapshot => {
 			console.log("Uploaded a blob or file!", snapshot);
 			this.setState({
 				storageLocation,
@@ -474,6 +475,7 @@ export default class RenderImage extends Component {
 			[renderName]: url
 		};
 		console.log("this will assign url to productId: ", productId, url, obj);
+		this.props.onAssignRender(renderName, url, true); // name, url, isPreview
 	};
 
 	makeId() {

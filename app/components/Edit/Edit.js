@@ -53,6 +53,7 @@ export default class Edit extends Component {
 		imageSaved: false,
 		aspect: "portrait",
 		hasFrame: false,
+		hasPaper: false,
 		hasHighlight: false,
 		hasBackground: false,
 		hasTitles: false,
@@ -156,6 +157,7 @@ export default class Edit extends Component {
 			tempAdjustmentSetName,
 			hasHighlight = false,
 			hasFrame = false,
+			hasPaper,
 			hasBackground,
 			hasTitles,
 			pairColor1,
@@ -248,6 +250,7 @@ export default class Edit extends Component {
 									hasHighlight={hasHighlight}
 									hasFrame={hasFrame}
 									hasBackground={hasBackground}
+									hasPaper={hasPaper}
 									imageLevels={imageLevels}
 									isCentered
 									hasMargin
@@ -429,6 +432,22 @@ export default class Edit extends Component {
 										onChange={this.toggleFrame}
 									/>
 									<label htmlFor="hasFrameToggle">Add a frame</label>
+								</div>
+							</div>
+							<div
+								className={`${styles.formItem} ${
+									this.state.hasPaper ? styles.isActive : ""
+								}`}
+							>
+								<h5>Has Paper:</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="hasPaperToggle"
+										defaultChecked={this.state.hasPaper}
+										onChange={this.togglePaper}
+									/>
+									<label htmlFor="hasPaperToggle">Show Paper</label>
 								</div>
 							</div>
 							<div
@@ -2034,6 +2053,12 @@ export default class Edit extends Component {
 	toggleFrame = () => {
 		this.setState({
 			hasFrame: !this.state.hasFrame
+		});
+	};
+
+	togglePaper = () => {
+		this.setState({
+			hasPaper: !this.state.hasPaper
 		});
 	};
 

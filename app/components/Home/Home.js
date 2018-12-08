@@ -245,7 +245,7 @@ export default class Home extends Component {
 					})}
 				</div>
 				<div className={`${styles.column} `}>
-					<h2>Editions</h2>
+					<h2>Products</h2>
 					{isLoadingEditions && (
 						<div className={styles.loadingWrap}>
 							{isLoadingEditions && (
@@ -262,7 +262,6 @@ export default class Home extends Component {
 							{!isLoadingEditions &&
 								dataEditions &&
 								dataEditions.map(img => {
-									// console.log("dataEditions img: ", img);
 									// console.log('img.renders: ', img.renders);
 									return (
 										<div
@@ -273,8 +272,17 @@ export default class Home extends Component {
 												this.doRouteImageEdit("/image/admin", img.id)
                       } // eslint-disable-line
 										>
-											<div className={styles.preview}>
-												{img.data && img.data.image && (
+											<div
+												className={`${styles.preview} ${
+													img.data && img.data.preview
+														? styles.isImage
+														: styles.isSvg
+												}`}
+											>
+												{img.data && img.data.preview && (
+													<img src={img.data.preview} />
+												)}
+												{img.data && img.data.image && !img.data.preview && (
 													<DisplayImage
 														file={img.data.image}
 														aspect="square"

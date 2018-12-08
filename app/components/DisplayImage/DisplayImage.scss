@@ -61,9 +61,6 @@ $printBgLess: 1200px;
 -webkit-background-clip: padding-box !important;
 background-clip: padding-box !important;
 	}
-	&.preview{
-		box-shadow: 0 4px 29px -7px rgba(0,0,0,.2);
-	}
 	.titleBlock{
     position: absolute;
     background: transparent;
@@ -109,6 +106,13 @@ background-clip: padding-box !important;
 	}
 	&.hasTitles{
 		// used below	
+	}
+	&.hasPaper{
+		.paper{
+			display: block;
+			background: #fff;
+			position: absolute;
+		}
 	}
 	&.hasNarrowTitle{
 		.titleBlock{
@@ -455,12 +459,11 @@ background-clip: padding-box !important;
 					width: calc(#{$thumbnailShort} * 0.7);
 					height: calc(#{$thumbnailShort} * 0.7);
 					left: calc(#{$thumbnailShort} * 0.3 / 2); // 10% of the length, divided by 2
-					top: calc(((#{$thumbnailLong} / 3) - ((#{$thumbnailShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					top: calc((#{$thumbnailLong} / 3) - ((#{$thumbnailShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
 					border-radius: $thumbnailShort; // make the circle
 					-moz-background-clip: padding; 
 					-webkit-background-clip: padding-box !important;
 					background-clip: padding-box !important;
-
 				}	
 			}
 		}
@@ -709,9 +712,8 @@ background-clip: padding-box !important;
 					// top: #{$smallBgLess/2};	
 					width: calc(#{$smallShort} * 0.8);
 					height: calc(#{$smallShort} * 0.8);
-					left: calc((((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
-					top: calc((((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
-
+					left: calc(((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
+					top: calc(((#{$smallLong} + #{$smallBgLess}) / 2) - (((#{$smallShort}) * 0.8) / 2));
 				}
 				&.hasFrame{
 					box-shadow: none; // added later
@@ -750,7 +752,28 @@ background-clip: padding-box !important;
 				    z-index: 11;
 					}
 				}
+				&.hasPaper{
+					.paper{
+						position: absolute;
+						box-shadow: 0 4px 29px -7px rgba(0,0,0,.2);
+						top: calc((#{$smallShort} * 0.2 / 2)); // 10% of the length, divided by 2
+						left: calc((#{$smallLong} / 2) - ((#{$smallShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+					}
+				}
 			}
+		}
+		&.hasPaper{
+			&.hasBackground{
+				.paper{
+					width: $smallShort;
+					height: $smallLong;
+			    background: #fff;
+					position: absolute;
+					box-shadow: 0 4px 29px -7px rgba(0,0,0,.2);
+					top: calc((#{$smallShort} * 0.2 / 2)); // 10% of the length, divided by 2
+					left: calc((#{$smallLong} / 2) - ((#{$smallShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				}
+	    }
 		}
 		&.hasTitles{
 			.titleBlock{
@@ -773,12 +796,22 @@ background-clip: padding-box !important;
 					width: calc(#{$smallShort} * 0.7);
 					height: calc(#{$smallShort} * 0.7);
 					left: calc(#{$smallShort} * 0.3 / 2); // 10% of the length, divided by 2
-					top: calc(((#{$smallLong} / 3) - ((#{$smallShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					top: calc((#{$smallLong} / 3) - ((#{$smallShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
 					border-radius: $smallShort; // make the circle
 					-moz-background-clip: padding; 
 					-webkit-background-clip: padding-box !important;
 					background-clip: padding-box !important;
 				}	
+				&.hasBackground{
+					.titleBlock{
+						left: calc((#{$smallLong} / 2) - ((#{$smallShort} * 0.8) / 2));
+						bottom: 13.5%;
+					}
+					.theSvg{
+						left: calc((#{$smallLong} / 2) - ((#{$smallShort} * 0.7) / 3));
+						top: calc(((#{$smallLong} / 2) - ((#{$smallShort} * 0.7) / 2)) ); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles				//- ((#{$smallShort} * 0.3) / 3)
+					}
+				}
 			}
 		}
 	}

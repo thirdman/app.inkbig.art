@@ -109,6 +109,7 @@ export default class DisplayImage extends Component {
 			hasFrame = true,
 			hasMargin = false,
 			hasHighlight = false,
+			hasPaper = true,
 			hasTitles = this.props.aspect === "circle" || false,
 			isInline = false,
 			isCentered = false,
@@ -360,6 +361,7 @@ export default class DisplayImage extends Component {
 				${isInline ? styles.isInline : ""} 
 				${hasTitles ? styles.hasTitles : ""} 
 				${hasFrame ? styles.hasFrame : ""} 
+				${hasPaper ? styles.hasPaper : ""} 
 				${hasMargin ? styles.hasMargin : ""} 
 				${hasBackground ? styles.hasBackground : ""} 
 				${titleLength && titleLength > 15 ? styles.hasNarrowTitle : ""}
@@ -385,6 +387,7 @@ export default class DisplayImage extends Component {
 							</h3>
 						</div>
 					)}
+					{!isLoading && hasPaper && <div className={styles.paper} />}
 					{isLoading && <Loading displayMode="centered" />}
 				</div>
 			</InlineCss>

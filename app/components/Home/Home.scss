@@ -128,6 +128,17 @@
 				width: 3rem;
 				flex-shrink: 1;
 				flex-grow: 0;
+				&.isImage{
+					overflow: hidden;
+					flex-shrink: 0;
+				}
+				&.isSvg{
+					
+				}
+				> img {
+					width: 3rem !important;
+					height: auto;
+				}
 				// overflow: hidden;
 				> div > div { // the dosplay image wrap
 					width: 3rem !important;
@@ -143,7 +154,7 @@
 				height: 40px;
 				flex-shrink: 1;
 				flex-grow: 1;	
-				padding: 2px;
+				padding: 4px 8px;
 				h5{
 					padding: 0;
 					margin: 0;				

@@ -22,6 +22,7 @@ export default class ImageAdmin extends Component {
 		doSave: false,
 		doRenderPreview: false,
 		doRenderPrint: false,
+		doRenderPromo: true,
 		isLoadingSource: true,
 		isLoadingSvgData: true,
 		isLoadingImageData: true,
@@ -67,6 +68,7 @@ export default class ImageAdmin extends Component {
 			doSave,
 			doRenderPreview,
 			doRenderPrint,
+			doRenderPromo,
 			imageData,
 			isError,
 			isUpdated,
@@ -91,7 +93,7 @@ export default class ImageAdmin extends Component {
 		// console.log('state is', this.state);
 		// console.log('props is', this.props);
 		// console.log(imageId);
-		console.log("AppConfig:", AppConfig);
+		// console.log("AppConfig:", AppConfig);
 		return (
 			<div
 				className={classNames(styles.ImageAdmin, styles.wrap, {
@@ -316,57 +318,60 @@ export default class ImageAdmin extends Component {
 										</span>
 									</div>
 								</section>
-								<section>
-									<h3>Image Text</h3>
-									<div className={styles.imageTextPreview}>
-										{imageData && imageData.theTitle && (
-											<h2>{imageData.theTitle}</h2>
-										)}
-										<h3>
-											{imageData && imageData.theSubtitle1}
-											{imageData && imageData.theSubtitle2 && (
-												<span className={styles.divider} />
+
+								{1 === 2 && (
+									<section>
+										<h3>Image Text</h3>
+										<div className={styles.imageTextPreview}>
+											{imageData && imageData.theTitle && (
+												<h2>{imageData.theTitle}</h2>
 											)}
-											{imageData && imageData.theSubtitle2}
-										</h3>
-									</div>
-									<div className={styles.contentItem}>
-										<h5>Title</h5>
-										<input
-											type="text"
-											name="theTitle"
-											value={imageData && imageData.theTitle}
-											ref={theTitle => {
-												this.textInput = theTitle;
-											}}
-											onChange={this.handleInputChange}
-										/>
-									</div>
-									<div className={styles.contentItem}>
-										<h5>Subtitle1</h5>
-										<input
-											type="text"
-											name="theSubtitle1"
-											value={imageData && imageData.theSubtitle1}
-											ref={iSubtitle1 => {
-												this.textInput = iSubtitle1;
-											}}
-											onChange={this.handleInputChange}
-										/>
-									</div>
-									<div className={styles.contentItem}>
-										<h5>Subtitle2</h5>
-										<input
-											type="text"
-											name="theSubtitle2"
-											value={imageData && imageData.theSubtitle2}
-											ref={iSubtitle2 => {
-												this.textInput = iSubtitle2;
-											}}
-											onChange={this.handleInputChange}
-										/>
-									</div>
-								</section>
+											<h3>
+												{imageData && imageData.theSubtitle1}
+												{imageData && imageData.theSubtitle2 && (
+													<span className={styles.divider} />
+												)}
+												{imageData && imageData.theSubtitle2}
+											</h3>
+										</div>
+										<div className={styles.contentItem}>
+											<h5>Title</h5>
+											<input
+												type="text"
+												name="theTitle"
+												value={imageData && imageData.theTitle}
+												ref={theTitle => {
+													this.textInput = theTitle;
+												}}
+												onChange={this.handleInputChange}
+											/>
+										</div>
+										<div className={styles.contentItem}>
+											<h5>Subtitle1</h5>
+											<input
+												type="text"
+												name="theSubtitle1"
+												value={imageData && imageData.theSubtitle1}
+												ref={iSubtitle1 => {
+													this.textInput = iSubtitle1;
+												}}
+												onChange={this.handleInputChange}
+											/>
+										</div>
+										<div className={styles.contentItem}>
+											<h5>Subtitle2</h5>
+											<input
+												type="text"
+												name="theSubtitle2"
+												value={imageData && imageData.theSubtitle2}
+												ref={iSubtitle2 => {
+													this.textInput = iSubtitle2;
+												}}
+												onChange={this.handleInputChange}
+											/>
+										</div>
+									</section>
+								)}
 							</div>
 						)}
 
@@ -434,7 +439,7 @@ export default class ImageAdmin extends Component {
 										/>
 										<label htmlFor="doSaveToggle">Save on render</label>
 									</div>
-
+									<h4>Type</h4>
 									<div className={styles.switchWrap}>
 										<Toggle
 											className={styles.theToggle}
@@ -455,6 +460,17 @@ export default class ImageAdmin extends Component {
 										/>
 										<label htmlFor="doRenderPreviewToggle">
 											Render Preview Versions
+										</label>
+									</div>
+									<div className={styles.switchWrap}>
+										<Toggle
+											className={styles.theToggle}
+											id="doRenderPromoToggle"
+											defaultChecked={this.state.doRenderPromo}
+											onChange={this.toggleDoRenderPromo}
+										/>
+										<label htmlFor="doRenderPromoToggle">
+											Show Promo Versions
 										</label>
 									</div>
 									<div>
@@ -516,6 +532,7 @@ export default class ImageAdmin extends Component {
 																combo[2].data.swatchColorArray ||
 																combo[2].data.pairColorArray
 															}
+															onAssignRender={this.doAssignRenderToProduct}
 														/>
 													</div>
 												) : (
@@ -583,105 +600,101 @@ export default class ImageAdmin extends Component {
 											})}
 									</section>
 								)}
-								{1 === 2 && doRenderPrint && (
+
+								{doRenderPromo && (
 									<section>
-										<h3>Print Renders</h3>
-										{sourceSvgBlob &&
-											swatchSets &&
-											Object.entries(swatchSets).map(([key, value]) => {
-												return (
-													<div key={key}>
-														<RenderImage
-															key="key"
-															doSave={false}
-															doRender={doRenders}
-															displayMode="mini"
-															sourceSvg={sourceSvgBlob}
-															hasTitles={false}
-															// svgBackgroundColor={svgBackgroundColor}
-															aspect="portrait"
-															mode="print"
-															hasFrame={false}
-															// scale={theScale}
-															// translateX={theTranslateX}
-															// translateY={theTranslateY}
-															theTitle={theTitle}
-															theSubtitle1={theSubtitle1}
-															theSubtitle2={theSubtitle2}
-															swatchName={value.name}
-															// imageColorArray={swatchColorArray || pairColorArray}
-															imageColorArray={
-																value.swatchColorArray || value.pairColorArray
-															}
-														/>
-													</div>
-												);
-											})}
+										{!isLoading && sourceSvgBlob && (
+											<div>
+												<h4>PROMOTIONAL:</h4>
+												<p>Includes grey backgrounds and/or frames</p>
+												<RenderImage
+													key="renderMediumPortraitBackgroundFrame"
+													doSave={false}
+													doRender={doRenders}
+													sourceSvg={sourceSvgBlob}
+													// svgBackgroundColor={svgBackgroundColor}
+													aspect="portrait"
+													mode="print"
+													hasFrame
+													hasBackground
+													hasTitles={false}
+													// scale={theScale}
+													// translateX={theTranslateX}
+													// translateY={theTranslateY}
+													// theTitle={theTitle}
+													// theSubtitle1={theSubtitle1}
+													// theSubtitle2={theSubtitle2}
+													// imageColorArray={swatchColorArray || pairColorArray}
+													swatchName="test"
+													adjustmentName="none"
+													imageColorArray={[
+														"hsl(100, 14.285714285714288%, 15%)",
+														"hsl(100, 14.285714285714288%, 35%)",
+														"hsl(100, 14.285714285714288%, 50%)",
+														"hsl(100, 14.285714285714288%, 65%)",
+														"hsl(100, 14.285714285714288%, 85%)"
+													]}
+												/>
+												<RenderImage
+													key="renderMediumPortraitBackground"
+													doSave={false}
+													doRender={doRenders}
+													displayMode="mini"
+													sourceSvg={sourceSvgBlob}
+													hasTitles
+													// svgBackgroundColor={svgBackgroundColor}
+													aspect="circle"
+													mode="print"
+													hasFrame={false}
+													hasBackground
+													// scale={theScale}
+													// translateX={theTranslateX}
+													// translateY={theTranslateY}
+													theTitle={theTitle}
+													theSubtitle1={theSubtitle1}
+													theSubtitle2={theSubtitle2}
+													// imageColorArray={swatchColorArray || pairColorArray}
+													swatchName="test"
+													adjustmentName="none"
+													imageColorArray={[
+														"hsl(100, 14.285714285714288%, 15%)",
+														"hsl(100, 14.285714285714288%, 35%)",
+														"hsl(100, 14.285714285714288%, 50%)",
+														"hsl(100, 14.285714285714288%, 65%)",
+														"hsl(100, 14.285714285714288%, 85%)"
+													]}
+												/>
+												<RenderImage
+													key="renderMediumCircle"
+													doSave={false}
+													doRender={doRenders}
+													displayMode="mini"
+													sourceSvg={sourceSvgBlob}
+													hasTitles
+													aspect="landscape"
+													mode="medium"
+													hasFrame={false}
+													// hasBackground
+													// scale={theScale}
+													// translateX={theTranslateX}
+													// translateY={theTranslateY}
+													theTitle={theTitle}
+													theSubtitle1={theSubtitle1}
+													theSubtitle2={theSubtitle2}
+													// imageColorArray={swatchColorArray || pairColorArray}
+													swatchName="test"
+													imageColorArray={[
+														"hsl(100, 14.285714285714288%, 15%)",
+														"hsl(100, 14.285714285714288%, 35%)",
+														"hsl(100, 14.285714285714288%, 50%)",
+														"hsl(100, 14.285714285714288%, 65%)",
+														"hsl(100, 14.285714285714288%, 85%)"
+													]}
+												/>
+											</div>
+										)}
 									</section>
 								)}
-
-								<section>
-									{!isLoading && sourceSvgBlob && (
-										<div>
-											<h4>PROMOTIONAL:</h4>
-											<p>Includes grey backgrounds</p>
-											<RenderImage
-												key="renderMediumPortraitBackground"
-												doSave={false}
-												doRender={doRenders}
-												displayMode="mini"
-												sourceSvg={sourceSvgBlob}
-												hasTitles
-												// svgBackgroundColor={svgBackgroundColor}
-												aspect="circle"
-												mode="print"
-												hasFrame={false}
-												// scale={theScale}
-												// translateX={theTranslateX}
-												// translateY={theTranslateY}
-												theTitle={theTitle}
-												theSubtitle1={theSubtitle1}
-												theSubtitle2={theSubtitle2}
-												// imageColorArray={swatchColorArray || pairColorArray}
-												swatchName="test"
-												imageColorArray={[
-													"hsl(100, 14.285714285714288%, 15%)",
-													"hsl(100, 14.285714285714288%, 35%)",
-													"hsl(100, 14.285714285714288%, 50%)",
-													"hsl(100, 14.285714285714288%, 65%)",
-													"hsl(100, 14.285714285714288%, 85%)"
-												]}
-											/>
-											<RenderImage
-												key="renderMediumCircle"
-												doSave={false}
-												doRender={doRenders}
-												displayMode="mini"
-												sourceSvg={sourceSvgBlob}
-												hasTitles
-												aspect="landscape"
-												mode="medium"
-												hasFrame={false}
-												// hasBackground
-												// scale={theScale}
-												// translateX={theTranslateX}
-												// translateY={theTranslateY}
-												theTitle={theTitle}
-												theSubtitle1={theSubtitle1}
-												theSubtitle2={theSubtitle2}
-												// imageColorArray={swatchColorArray || pairColorArray}
-												swatchName="test"
-												imageColorArray={[
-													"hsl(100, 14.285714285714288%, 15%)",
-													"hsl(100, 14.285714285714288%, 35%)",
-													"hsl(100, 14.285714285714288%, 50%)",
-													"hsl(100, 14.285714285714288%, 65%)",
-													"hsl(100, 14.285714285714288%, 85%)"
-												]}
-											/>
-										</div>
-									)}
-								</section>
 							</div>
 						)}
 
@@ -703,6 +716,15 @@ export default class ImageAdmin extends Component {
 						{(activeSelect === "preview" || activeSelect === "") && (
 							<div>
 								<h3>Previews</h3>
+								<div>
+									<button
+										onClick={() =>
+											this.combinations([["1", "2"], ["a", "b", "c"]])
+										}
+									>
+										render Previews
+									</button>
+								</div>
 								{isLoadingSource && (
 									<div>
 										<Loading />
@@ -972,13 +994,6 @@ export default class ImageAdmin extends Component {
 									})}
 							</div>
 						)}
-						<div>
-							<button
-								onClick={() => this.combinations([["1", "2"], ["a", "b", "c"]])}
-							>
-								render Previews
-							</button>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -1067,7 +1082,7 @@ export default class ImageAdmin extends Component {
 		const storageRef = fStorage.ref().child(storageLocation);
 		// const fileRef = storageRef.child(filename);
 
-		storageRef
+		return storageRef
 			.child(filename)
 			.getDownloadURL()
 			.then(url => {
@@ -1268,6 +1283,54 @@ export default class ImageAdmin extends Component {
 				});
 		}
 	}
+
+	// RENDERS (TO REFACTOR)
+	//
+
+	doAssignRenderToProduct = (fileName, url, isPreview) => {
+		const {
+			productName,
+			imageId = this.props.location.state && this.props.location.state.imageId
+		} = this.props;
+		console.log("productId, productName: ", imageId, productName);
+		const obj = {
+			[fileName]: url
+		};
+		console.log("this will assign url to imageId: ", imageId, url, obj);
+		const currentDateTime = new Date();
+
+		fbase
+			.collection("images")
+			.doc(imageId)
+			.update({
+				modifiedDate: currentDateTime,
+				imageRenders: obj,
+				preview: isPreview ? url : ""
+			}) // , { merge: true }
+			.then(() => {
+				console.log("Document successfully written!");
+				this.setState({
+					isSaving: false,
+					isUpdated: true,
+					isError: false,
+					imageRenders: obj,
+					preview: isPreview ? url : ""
+				});
+				setTimeout(() => {
+					this.setState({
+						isUpdated: false
+					});
+				}, 2000);
+			})
+			.catch(error => {
+				console.error("Error writing document: ", error);
+				this.setState({
+					isSaving: false,
+					isUpdated: false,
+					isError: true
+				});
+			});
+	};
 
 	/////////////////////////
 	// Selecting
@@ -1479,11 +1542,10 @@ export default class ImageAdmin extends Component {
 	fetchData = () => {
 		const { printfulApiKey } = AppConfig;
 		const base64Key = new Buffer(printfulApiKey).toString("base64");
-		console.log("base64Key");
 		// Where we're fetching data from
 		fetch(`https://api.printful.com/mockup-generator/create-task/171`, {
 			method: "post",
-			mode: "no-cors",
+			// mode: "no-cors",
 			headers: {
 				Authorization: `Basic ${base64Key}`
 				// 'Content-Type': 'application/x-www-form-urlencoded'
@@ -1511,7 +1573,10 @@ export default class ImageAdmin extends Component {
 			}
 		})
 			// We get the API response and receive data in JSON format...
-			.then(response => response.json())
+			.then(response => {
+				console.log("response", response);
+				response.json();
+			})
 			// ...then we update the users state
 			.then(data =>
 				this.setState({
@@ -1543,7 +1608,7 @@ export default class ImageAdmin extends Component {
 	};
 
 	toggleDoRenderPrint = () => {
-		if (this.state.doRenderPrint && !this.state.imageData.name) {
+		if (!this.state.doRenderPrint && !this.state.imageData.name) {
 			alert("no product name!");
 		}
 		this.setState({
@@ -1552,11 +1617,20 @@ export default class ImageAdmin extends Component {
 	};
 
 	toggleDoRenderPreview = () => {
-		if (this.state.doRenderPreview && !this.state.imageData.name) {
+		if (!this.state.doRenderPreview && !this.state.imageData.name) {
 			alert("no product name!");
 		}
 		this.setState({
 			doRenderPreview: !this.state.doRenderPreview
+		});
+	};
+
+	toggleDoRenderPromo = () => {
+		if (!this.state.doRenderPromo && !this.state.imageData.name) {
+			alert("no product name!");
+		}
+		this.setState({
+			doRenderPromo: !this.state.doRenderPromo
 		});
 	};
 
@@ -1600,7 +1674,7 @@ export default class ImageAdmin extends Component {
 			{ type: "aspect", name: "circle" },
 			{ type: "aspect", name: "portrait" }
 		];
-		console.log("sourceSvgData: ", sourceSvgData);
+		// console.log("sourceSvgData: ", sourceSvgData);
 		let adjustmentArray = [];
 		const swatchSetArray = [];
 		if (swatchSets) {
@@ -1618,8 +1692,8 @@ export default class ImageAdmin extends Component {
 				return swatchSetArray;
 			});
 		}
-		console.log("swatchSetArray", swatchSetArray);
-		console.log("swatchSetArraylength", swatchSetArray.length);
+		// console.log("swatchSetArray", swatchSetArray);
+		// console.log("swatchSetArraylength", swatchSetArray.length);
 
 		const adjustmentSetSource = sourceSvgData && sourceSvgData.adjustmentSets;
 		console.log("adjustmentSetSource", adjustmentSetSource);
@@ -1639,8 +1713,8 @@ export default class ImageAdmin extends Component {
 				return adjustmentArray;
 			});
 		}
-		console.log("adjustmentArray", adjustmentArray);
-		console.log("adjustmentArrayLength", adjustmentArray.length);
+		// console.log("adjustmentArray", adjustmentArray);
+		// console.log("adjustmentArrayLength", adjustmentArray.length);
 		const fallBackAdjustmentArray = [
 			{
 				type: "adjustment",
@@ -1687,7 +1761,7 @@ export default class ImageAdmin extends Component {
 				);
 			}, []);
 		}
-		console.log("result: ", combine(array));
+		// console.log("result: ", combine(array));
 		this.setState({
 			renderCombinations: combine(array)
 		});
