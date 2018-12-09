@@ -8,21 +8,23 @@ import { DisplayImage } from "..";
 import styles from "./RenderImage.scss";
 import Tick from "../../assets/icons/tick.svg";
 import Loading from "../../assets/icons/loading.svg";
+// import Message from "../Message/Message.js";
 
 require("firebase/firestore"); // loads the storage part
 
 export default class RenderImage extends Component {
 	state = {
 		isLoading: true,
-		hasLoaded: false,
+		// hasLoaded: false,
 		isRendering: false,
 		hasRendered: false,
 		isSaving: false,
 		hasSaved: false,
-		theHue: 10,
+		// theHue: 10,
 		theId: this.makeId(),
 		showDetail: false,
-		size: this.props.mode,
+		size: this.props.mode
+		/*
 		svgArributes: {
 			version: "1.1",
 			xmlns: "http://www.w3.org/2000/svg",
@@ -34,6 +36,7 @@ export default class RenderImage extends Component {
 			height: "100%",
 			preserveAspectRatio: "xMidYMid slice"
 		}
+*/
 	};
 
 	componentWillMount() {}
@@ -65,6 +68,7 @@ export default class RenderImage extends Component {
 
 	render() {
 		const {
+			isError,
 			isLoading,
 			isRendering,
 			isSaving,
@@ -99,6 +103,9 @@ export default class RenderImage extends Component {
 					${isSaving ? styles.isSaving : ""}`}
 				id={`renderImage${theId}_${file}`}
 			>
+				{isError && (
+					<div className={styles.message} mode="error" text="Error" />
+				)}
 				<div className={`${styles.row} ${styles.infoRow}`}>
 					<div className={styles.column}>
 						<h4>Aspect</h4>
@@ -380,7 +387,7 @@ export default class RenderImage extends Component {
 		return storageRef.putString(dataUrl, "data_url").then(snapshot => {
 			console.log("Uploaded a blob or file!", snapshot);
 			this.setState({
-				storageLocation,
+				// storageLocation,
 				renderUrl: snapshot.downloadURL,
 				isSaving: false,
 				hasSaved: true

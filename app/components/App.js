@@ -135,7 +135,7 @@ export default class App extends Component {
 	// LOAD FIREBASE DATA
 	// FUCNTIONS
 	getSources() {
-		const svgRef = fbase.collection("svg");
+		const svgRef = fbase.collection("svg").orderBy("filename");
 		const svgArray = [];
 		this.setState({ isLoadingSvg: true });
 		svgRef.get().then(querySnapshot => {
@@ -152,12 +152,15 @@ export default class App extends Component {
 			});
 */
 
+			/*
 			const sortedArray = svgArray.sort((a, b) => {
-				return b.data.fileName - a.data.fileName;
+				// console.log("a.data.filename:", a.data.filename);
+				return b.data.filename - a.data.filename;
 			});
-
+*/
+			// console.log("sortedArray", sortedArray);
 			this.setState({
-				dataSources: sortedArray,
+				dataSources: svgArray,
 				isLoadingSvg: false
 			});
 		});

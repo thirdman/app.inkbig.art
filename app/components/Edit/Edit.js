@@ -213,7 +213,9 @@ export default class Edit extends Component {
 						{colorSaved && "Color saved!"}
 						<div>
 							{this.state.image && (
-								<button onClick={() => this.doSaveImage()}>Save Image</button>
+								<button onClick={() => this.doSaveImage()}>
+									Create Product from svg
+								</button>
 							)}
 							{this.state.image && (
 								<button onClick={() => this.doRenders()}>Render All</button>
@@ -1963,12 +1965,14 @@ export default class Edit extends Component {
 
 		const {
 			aspect,
+			adjustmentSets,
 			colorObj = this.props.location.state &&
 				this.props.location.state.colorObj,
 			hasFrame,
 			hasHighlight,
 			hasBackground,
 			image,
+			slug,
 			imageLevels,
 			theScale,
 			theTranslateX,
@@ -1982,11 +1986,13 @@ export default class Edit extends Component {
 		console.log(
 			"trying to save:",
 			aspect,
+			adjustmentSets,
 			colorObj,
 			hasFrame,
 			hasHighlight,
 			hasBackground,
 			image,
+			slug,
 			imageLevels,
 			theScale,
 			theTranslateX,
@@ -1999,7 +2005,9 @@ export default class Edit extends Component {
 			fbase
 				.collection("images")
 				.add({
+					name: slug,
 					aspect,
+					adjustmentSets,
 					colorObj,
 					hasFrame,
 					hasHighlight,

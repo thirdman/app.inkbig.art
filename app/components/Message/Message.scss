@@ -1,5 +1,15 @@
 @import "../../styles/includes/_include-media.scss";
-@import "../../styles/variables/_colors.scss";
+
+$color-background: #eee;
+$color-overlay: rgba(0,0,0,0.2);
+$color-secondary: #444444;
+$color-primary: #333;
+$color-danger: red;
+$color-warning: orange;
+$color-success: lime;
+
+$body_padding: 16px;
+// @import "../../styles/variables/_colors.scss";
 // TYPES
 // error: red
 // info: teal
@@ -222,73 +232,3 @@ $body_padding: 32px;
   }
 
 }
-
-
-/*
-
- OLD:
-
-.Message {
-  font-style: normal;
-  padding-left: 48px !important;
-  border-radius: 4px;
-  background: #777;
-  padding: 4px;
-  padding-left: 50px;
-  color: #fff;
-  position: relative;
-  margin-bottom: 8px;
-  min-height: 32px; }
-  .Message .iconWrap {
-    height: 100%;
-    background: #6a6a6a;
-    width: 32px;
-    display: table-cell;
-    position: absolute;
-    text-align: center;
-    border-radius: 4px 0 0 4px;
-    padding: 4px;
-    left: 0;
-    top: 0;
-    line-height: 1.5em;
-    border-right: 1px solid rgba(255, 255, 255, 0.36); }
-  .Message .theContent {
-    color: #fff; }
-  .Message.large {
-    min-height: 48px;
-    padding: 8px;
-    padding-left: 56px !important; }
-    .Message.large .iconWrap {
-      width: 48px;
-      padding: 8px;
-      background-size: 40px !important; }
-  .Message .closeButton {
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    width: 16px;
-    height: 16px;
-    padding: 2px;
-    text-decoration: right;
-    cursor: pointer; }
-  .Message.contentItem {
-    margin-bottom: 0px;
-    margin-top: -8px;
-    margin-left: -8px;
-    margin-right: -8px;
-    border-radius: 4px 4px 0 0; }
-  .Message.warning, .Message.error {
-    background: #eb5768; }
-    .Message.warning .iconWrap, .Message.error .iconWrap {
-      background: #e84054;
-}
-  .Message.question {
-    background: #EF7413; }
-    .Message.question .iconWrap {
-      background: #da680f;
-}
-  .Message.success {
-    background: #68DA0E; }
-    .Message.success .iconWrap {
-      background: #5dc20c; }
-*/

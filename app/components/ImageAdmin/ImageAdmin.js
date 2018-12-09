@@ -63,7 +63,7 @@ export default class ImageAdmin extends Component {
 			aspects,
 			activeControl,
 			activeSelect,
-			adjustmentSets,
+			// adjustmentSets,
 			doRenders,
 			doSave,
 			doRenderPreview,
@@ -193,6 +193,9 @@ export default class ImageAdmin extends Component {
 								/>
 								UPDATED
 							</div>
+						)}
+						{isLoadingImageData && (
+							<div className={`${styles.message}`}>loading Image Data</div>
 						)}
 						{/*SETTINGS*/}
 						{activeControl === "settings" && (
@@ -340,8 +343,8 @@ export default class ImageAdmin extends Component {
 												type="text"
 												name="theTitle"
 												value={imageData && imageData.theTitle}
-												ref={theTitle => {
-													this.textInput = theTitle;
+												ref={theImageTitle => {
+													this.textInput = theImageTitle;
 												}}
 												onChange={this.handleInputChange}
 											/>
