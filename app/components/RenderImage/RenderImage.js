@@ -22,8 +22,8 @@ export default class RenderImage extends Component {
 		hasSaved: false,
 		// theHue: 10,
 		theId: this.makeId(),
-		showDetail: false,
-		size: this.props.mode
+		showDetail: false
+		// size: this.props.mode
 		/*
 		svgArributes: {
 			version: "1.1",
@@ -77,7 +77,7 @@ export default class RenderImage extends Component {
 			showRendered,
 			renderUrl,
 			theId = this.makeId(),
-			size,
+			// size,
 			dataUrl
 		} = this.state;
 		const {
@@ -178,14 +178,15 @@ export default class RenderImage extends Component {
 							<span>Mode: </span>
 							<span>{this.props.mode}</span>
 						</p>
-						<div className={styles.column}>
-							<h4>Size</h4>
-							<span>{size}</span>
-						</div>
-
 						{this.props.hasFrame && (
 							<p>
 								<span>hasFrame: </span>
+								<span>Yes</span>
+							</p>
+						)}
+						{this.props.hasBackground && (
+							<p>
+								<span>hasBackground: </span>
 								<span>Yes</span>
 							</p>
 						)}
@@ -295,7 +296,7 @@ export default class RenderImage extends Component {
 										<button
 											onClick={() => this.doAssignRenderToProduct(renderUrl)}
 										>
-											save to product renders
+											save as product Preview
 										</button>
 									)}
 								</div>
@@ -418,33 +419,44 @@ export default class RenderImage extends Component {
 		console.log("saving the render details:", snapshot, size, hex);
 		const currentDateTime = new Date();
 		const {
+			productId,
+			productName,
+			adjustmentName,
 			aspect,
 			file,
 			mode,
 			swatchName,
+			slug,
 			hasFrame,
 			hasBackground,
 			imageColorArray
 		} = this.props;
 		const renderObj = {};
+		renderObj.productId = productId;
+		renderObj.productName = productName;
 		renderObj.aspect = aspect;
 		renderObj.mode = mode;
-		renderObj.imageId = file;
-		renderObj.slug = file;
+		renderObj.slug = slug || file || productId;
 		renderObj.hasFrame = hasFrame;
 		renderObj.imageColorArray = imageColorArray;
 		renderObj.swatchName = swatchName;
-		renderObj.hasBackground = hasBackground;
+		renderObj.hasBackground = hasBackground || false;
 		renderObj.downloadURL = snapshot.downloadURL;
 		renderObj.fullPath = snapshot.metadata && snapshot.metadata.fullPath;
 		renderObj.modifiedDate = currentDateTime;
-		console.log("renderObj is", renderObj, "file is", file);
-		if (file) {
+		// console.log("renderObj is", renderObj, "productId is", productId);
+		if (productId) {
 			fbase
 				.collection("renders")
 				.add({
 					hex: hex || "none",
-					slug: file,
+					productId,
+					mode,
+					swatchName,
+					adjustmentName,
+					aspect,
+					downloadUrl: snapshot.downloadURL,
+					slug: slug || file || productId,
 					modifiedDate: currentDateTime,
 					[mode]: renderObj
 				})

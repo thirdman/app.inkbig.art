@@ -97,6 +97,15 @@ button{
 		color: #fff;
 	}
 }
+.btn, button.btn{
+	background-color: #38393c;
+	color: #ddd;
+	@media (hover: hover) {		
+		&:hover{
+			background-color: #181a1d;
+		}
+	}
+}
 
 input[type="text"]{
     width: 100%;
@@ -131,6 +140,7 @@ input[type="text"]{
 	color: #000;
 	padding: 16px;
 	font-size: 16px;
+	z-index: 999999999;
 	&.error{
 		background: #d92a2a;
 		color: #fff;

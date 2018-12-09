@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import { BrowserRouter as Router } from 'react-router-dom'
 // import * as firebase from 'firebase';
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import fbase from "../../firebase";
 
 import styles from "./Home.scss";
@@ -71,11 +71,13 @@ const colorObj = {
 };
 
 export default class Home extends Component {
+	/*
 	static propTypes = {
 		history: React.PropTypes.shape({
 			push: React.PropTypes.func.isRequired
 		}).isRequired
 	};
+*/
 
 	state = {
 		isEditing: false,
@@ -127,7 +129,7 @@ export default class Home extends Component {
 				}`}
 			>
 				<div className={`${styles.column} `}>
-					<h2>Home: Remote SVG</h2>
+					<h2>SVG</h2>
 					{isDeleting && <div>Deleting...</div>}
 					{isLoadingSvg && (
 						<div className={styles.loadingWrap}>
@@ -226,7 +228,7 @@ export default class Home extends Component {
 					<h2>Home: Local SVG</h2>
 					{imageNames.map(name => {
 						return (
-							<a
+							<div
 								key={`image${name}`}
                 onClick={() => this.doRoute("edit", name)} // eslint-disable-line
 								role="presentation"
@@ -243,7 +245,7 @@ export default class Home extends Component {
 									saturation={theSaturation}
 									lightness={theLightness}
 								/>
-							</a>
+							</div>
 						);
 					})}
 				</div>
@@ -283,7 +285,7 @@ export default class Home extends Component {
 												}`}
 											>
 												{img.data && img.data.preview && (
-													<img src={img.data.preview} />
+													<img src={img.data.preview} alt="" />
 												)}
 												{img.data && img.data.image && !img.data.preview && (
 													<DisplayImage

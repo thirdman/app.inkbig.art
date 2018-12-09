@@ -125,6 +125,15 @@
 			vertical-align: middle;
 		}
 	}
+	
+	.renderRow{
+		align-items: center;
+		justify-content: space-between;
+		.column{
+			padding: 8px;
+		}
+	}
+	
 	&.isUpdated{
 		.notice{
 			visibility: visible;
@@ -150,7 +159,15 @@
 	}
 	.listItem{
 		font-size: 11px;
-		border-top: 1px solid #ddd;
+		border-bottom: 1px solid #ccc;
+		align-items: flex-start;
+		justify-content: stretch;
+		>div{
+			flex-basis: 30%;
+			flex-shrink: 1;
+			flex-grow: 1;
+			padding: 4px;
+		}
 		padding: 4px 0;
 		&:hover{
 			background: rgba(255,255,255, .2);
@@ -160,6 +177,9 @@
 		}
 		.thumbnail{
 			height: 30px;
+		}
+		&.listHeader{
+			font-weight: bold;
 		}
 	}
 	.svgItem{

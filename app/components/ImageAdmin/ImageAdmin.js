@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
 import classNames from "classnames";
+import { distanceInWords } from "date-fns";
 import Toggle from "react-toggle";
 import fbase from "../../firebase";
 import Tick from "../../assets/icons/tick.svg";
@@ -70,6 +71,7 @@ export default class ImageAdmin extends Component {
 			doRenderPrint,
 			doRenderPromo,
 			imageData,
+			imageRenders,
 			isError,
 			isUpdated,
 			isAdding,
@@ -505,7 +507,7 @@ export default class ImageAdmin extends Component {
 														combo[1].data.scope === "all") ||
 													combo[1].data.scope === combo[0].name ||
 													!combo[1].data.scope;
-												console.log("willRender: ", willRender);
+												// console.log("willRender: ", willRender);
 												const thisKey = `PREVIEW_${combo[0].name}
 														${combo[1].name}
 														${combo[2].name}`;
@@ -565,7 +567,7 @@ export default class ImageAdmin extends Component {
 														combo[1].data.scope === "all") ||
 													combo[1].data.scope === combo[0].name ||
 													!combo[1].data.scope;
-												console.log("willRender: ", willRender);
+												// console.log("willRender: ", willRender);
 												const thisKey = `PRINT_${combo[0].name}
 														${combo[1].name}
 														${combo[2].name}`;
@@ -611,6 +613,8 @@ export default class ImageAdmin extends Component {
 												<h4>PROMOTIONAL:</h4>
 												<p>Includes grey backgrounds and/or frames</p>
 												<RenderImage
+													productId={imageId}
+													productName={imageData.name}
 													key="renderMediumPortraitBackgroundFrame"
 													doSave={false}
 													doRender={doRenders}
@@ -639,6 +643,8 @@ export default class ImageAdmin extends Component {
 													]}
 												/>
 												<RenderImage
+													productId={imageId}
+													productName={imageData.name}
 													key="renderMediumPortraitBackground"
 													doSave={false}
 													doRender={doRenders}
@@ -668,6 +674,8 @@ export default class ImageAdmin extends Component {
 													]}
 												/>
 												<RenderImage
+													productId={imageId}
+													productName={imageData.name}
 													key="renderMediumCircle"
 													doSave={false}
 													doRender={doRenders}
@@ -761,7 +769,12 @@ export default class ImageAdmin extends Component {
 											// console.log('isNewAspect: ', isNewAspect);
 											currentComboName = combo[0].name;
 											return isNewAspect ? (
-												<div style={{ flexBasis: "100%" }}>
+												<div
+													style={{ flexBasis: "100%" }}
+													key={`${combo[0].name}
+														${combo[1].name}
+														${combo[2].name}`}
+												>
 													<h3>{combo[0].name}</h3>
 												</div>
 											) : (
@@ -930,10 +943,49 @@ export default class ImageAdmin extends Component {
 									})}
 							</div>
 						)}
-						{/*RENDERS*/}
+						{/*RENDERs files*/}
 						{activeControl === "renders" && (
 							<div>
-								<h3>Current Renders</h3>
+								<button
+									className={styles.btn}
+									onClick={() => this.getAvailableRenders(imageId)}
+								>
+									reload renders
+								</button>
+								<h3>Preview Render</h3>
+								{imageRenders &&
+									Object.entries(imageRenders).map(([key, value]) => {
+										console.log(
+											"imagerender key: ",
+											key,
+											" and value: ",
+											value
+										);
+										return (
+											<div
+												className={`${styles.row} ${styles.renderRow}`}
+												key={key}
+											>
+												<div className={styles.column}>
+													<span>
+														<a
+															href={value}
+															target="_blank"
+															rel="noopener noreferrer"
+														>
+															{key}
+														</a>
+													</span>{" "}
+												</div>
+												<div>
+													<button onClick={() => this.removeRender(key)}>
+														delete
+													</button>
+												</div>
+											</div>
+										);
+									})}
+								<h3>Selected Renders</h3>
 								{currentRendersArray &&
 									currentRendersArray.map(render => {
 										return (
@@ -947,9 +999,26 @@ export default class ImageAdmin extends Component {
 											</div>
 										);
 									})}
+								{!currentRendersArray && <div>None</div>}
 								<h3>Available renders</h3>
+								{filesArray && (
+									<div
+										className={`${styles.listItem} ${styles.row} ${
+											styles.listHeader
+										}`}
+									>
+										{/*<div className={styles.column}>ProductId/slug</div>*/}
+										<div className={styles.column}>Aspect</div>
+										<div className={styles.column}>Mode</div>
+										<div className={styles.column}>Swatch</div>
+										<div className={styles.column}>renderId</div>
+										<div className={styles.column}>Modified</div>
+										<div className={styles.column}>Action</div>
+									</div>
+								)}
 								{filesArray &&
 									filesArray.map(file => {
+										console.log("file: ", file);
 										console.log(
 											"does it include? ",
 											currentRendersArray.includes(file.id)
@@ -962,10 +1031,10 @@ export default class ImageAdmin extends Component {
 														? styles.isActive
 														: ""
 												}`}
-												onClick={() => this.toggleIncludeRender(file.id)}
-												role="presentation"
+												// onClick={() => this.toggleIncludeRender(file.id)}
+												// role="presentation"
 											>
-												<div className={styles.column}>
+												{/*<div className={styles.column}>
 													{file.data && file.data.slug}
 													{file.data &&
 														file.data.thumbnail &&
@@ -973,24 +1042,45 @@ export default class ImageAdmin extends Component {
 															<span> : {file.data.thumbnail.aspect}</span>
 														)}
 												</div>
+												*/}
 												<div className={styles.column}>
-													{file.data && file.data.thumbnail && (
-														<img
-															src={file.data.thumbnail.downloadURL}
-															alt=""
-															className={styles.thumbnail}
-														/>
-													)}
+													{file.data && file.data.aspect
+														? file.data.aspect
+														: "-"}
 												</div>
 												<div className={styles.column}>
-													{file.data && file.data.name}
+													{file.data && file.data.mode ? file.data.mode : "-"}
 												</div>
 												<div className={styles.column}>
-													{file.data && file.data.images && "yes"}
+													{file.data && file.data.swatchName
+														? file.data.swatchName
+														: "-"}
 												</div>
-												<div className={styles.column}>{file.id}</div>
 												<div className={styles.column}>
-													{file.data && file.data.modifiedDate.toString()}
+													<a
+														href={file.data.downloadUrl}
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{file.id}
+													</a>
+												</div>
+												<div className={styles.column}>
+													{
+														//file.data && file.data.modifiedDate.toString()
+													}
+													{distanceInWords(file.data.modifiedDate, new Date())}{" "}
+													ago
+												</div>
+												<div className={styles.column}>
+													<button
+														className={styles.btn}
+														onClick={() => this.toggleIncludeRender(file.id)}
+													>
+														{currentRendersArray.includes(file.id)
+															? "Remove"
+															: "Select"}
+													</button>
 												</div>
 											</div>
 										);
@@ -1020,9 +1110,10 @@ export default class ImageAdmin extends Component {
 						isLoadingImageData: false,
 						imageData: doc.data(),
 						selectedSvg: doc.data().svgId,
-						swatchSets: doc.data().swatchSets
+						swatchSets: doc.data().swatchSets,
+						imageRenders: doc.data().imageRenders
 					});
-					this.getAvailableFiles(doc.data().image); // image = imageid!
+					this.getAvailableRenders(imageId);
 					this.getImageRenders(imageId);
 					this.getSvgData(doc.data().svgId);
 				} else {
@@ -1118,52 +1209,6 @@ export default class ImageAdmin extends Component {
 			});
 	};
 
-	getAvailableFiles(imageId) {
-		const filesRef = fbase.collection("renders").where("slug", "==", imageId);
-		const filesArray = [];
-		filesRef
-			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(doc => {
-					const tempThing = {};
-					tempThing.id = doc.id;
-					tempThing.data = doc.data();
-					filesArray.push(tempThing);
-				});
-				this.setState({
-					filesArray
-				});
-			})
-			.catch(error => {
-				console.log("Error getting documents: ", error);
-			});
-	}
-
-	getImageRenders(imageId) {
-		const rendersRef = fbase
-			.collection("images")
-			.doc(imageId)
-			.collection("renders");
-		const currentRendersArray = [];
-		rendersRef
-			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(doc => {
-					console.log(doc);
-					const tempThing = {};
-					tempThing.renderId = doc.id;
-					currentRendersArray.push(doc.id);
-				});
-				this.setState({
-					currentRendersArray
-				});
-				this.combinations();
-			})
-			.catch(error => {
-				console.log("Error getting documents: ", error);
-			});
-	}
-
 	handleInputChange = event => {
 		const { target } = event;
 		const value = target.type === "checkbox" ? target.checked : target.value;
@@ -1212,6 +1257,102 @@ export default class ImageAdmin extends Component {
 					isUpdated: false,
 					isError: true
 				});
+			});
+	}
+
+	////////////////////////////////////////
+	// RENDERS (TO REFACTOR)
+	////////////////////////////////////////
+
+	doAssignRenderToProduct = (fileName, url, isPreview) => {
+		const {
+			productName,
+			imageId = this.props.location.state && this.props.location.state.imageId
+		} = this.props;
+		console.log("productId, productName: ", imageId, productName);
+		const obj = {
+			[fileName]: url
+		};
+		console.log("this will assign url to imageId: ", imageId, url, obj);
+		const currentDateTime = new Date();
+
+		fbase
+			.collection("images")
+			.doc(imageId)
+			.update({
+				modifiedDate: currentDateTime,
+				imageRenders: obj,
+				preview: isPreview ? url : ""
+			}) // , { merge: true }
+			.then(() => {
+				console.log("Document successfully written!");
+				this.setState({
+					isSaving: false,
+					isUpdated: true,
+					isError: false,
+					imageRenders: obj,
+					preview: isPreview ? url : ""
+				});
+				setTimeout(() => {
+					this.setState({
+						isUpdated: false
+					});
+				}, 2000);
+			})
+			.catch(error => {
+				console.error("Error writing document: ", error);
+				this.setState({
+					isSaving: false,
+					isUpdated: false,
+					isError: true
+				});
+			});
+	};
+
+	//// OLD RENDER STUFF
+	getAvailableRenders(productId) {
+		const filesRef = fbase.collection("renders").where("slug", "==", productId);
+		const filesArray = [];
+		filesRef
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					const tempThing = {};
+					tempThing.id = doc.id;
+					tempThing.data = doc.data();
+					filesArray.push(tempThing);
+				});
+				this.setState({
+					filesArray
+				});
+			})
+			.catch(error => {
+				console.log("Error getting documents: ", error);
+			});
+	}
+
+	getImageRenders(productId) {
+		const rendersRef = fbase
+			.collection("images")
+			.doc(productId)
+			.collection("renders");
+		const currentRendersArray = [];
+		rendersRef
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					console.log(doc);
+					const tempThing = {};
+					tempThing.renderId = doc.id;
+					currentRendersArray.push(doc.id);
+				});
+				this.setState({
+					currentRendersArray
+				});
+				this.combinations();
+			})
+			.catch(error => {
+				console.log("Error getting documents: ", error);
 			});
 	}
 
@@ -1287,54 +1428,6 @@ export default class ImageAdmin extends Component {
 		}
 	}
 
-	// RENDERS (TO REFACTOR)
-	//
-
-	doAssignRenderToProduct = (fileName, url, isPreview) => {
-		const {
-			productName,
-			imageId = this.props.location.state && this.props.location.state.imageId
-		} = this.props;
-		console.log("productId, productName: ", imageId, productName);
-		const obj = {
-			[fileName]: url
-		};
-		console.log("this will assign url to imageId: ", imageId, url, obj);
-		const currentDateTime = new Date();
-
-		fbase
-			.collection("images")
-			.doc(imageId)
-			.update({
-				modifiedDate: currentDateTime,
-				imageRenders: obj,
-				preview: isPreview ? url : ""
-			}) // , { merge: true }
-			.then(() => {
-				console.log("Document successfully written!");
-				this.setState({
-					isSaving: false,
-					isUpdated: true,
-					isError: false,
-					imageRenders: obj,
-					preview: isPreview ? url : ""
-				});
-				setTimeout(() => {
-					this.setState({
-						isUpdated: false
-					});
-				}, 2000);
-			})
-			.catch(error => {
-				console.error("Error writing document: ", error);
-				this.setState({
-					isSaving: false,
-					isUpdated: false,
-					isError: true
-				});
-			});
-	};
-
 	/////////////////////////
 	// Selecting
 	/////////////////////////
@@ -1358,7 +1451,7 @@ export default class ImageAdmin extends Component {
 			console.log("no iamgeId");
 			return "no iamge Id";
 		}
-		fbase
+		return fbase
 			.collection("images")
 			.doc(imageId)
 			.update({
@@ -1410,7 +1503,7 @@ export default class ImageAdmin extends Component {
 		tempSwatchSets[thisSwatch.id] = thisSwatch.data;
 		console.log(tempSwatchSets);
 
-		fbase
+		return fbase
 			.collection("images")
 			.doc(imageId)
 			.update({
@@ -1544,7 +1637,9 @@ export default class ImageAdmin extends Component {
 
 	fetchData = () => {
 		const { printfulApiKey } = AppConfig;
-		const base64Key = new Buffer(printfulApiKey).toString("base64");
+		// const base64Key = new Buffer(printfulApiKey).toString("base64");
+		const base64Key = Buffer.from(printfulApiKey).toString("base64");
+		console.log("base64key", base64Key);
 		// Where we're fetching data from
 		fetch(`https://api.printful.com/mockup-generator/create-task/171`, {
 			method: "post",
