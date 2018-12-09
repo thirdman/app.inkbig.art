@@ -322,6 +322,21 @@ export default class DisplayImage extends Component {
 						fill: hsla(${hue}, ${saturation * 100}%, ${imageLevels[4]}%, 0.1);
 				}
 
+				#svg${file}${this.state.theId} svg .hidden path,
+				#svg${file}${this.state.theId} svg .hidden,
+				#svg${file}${this.state.theId} svg .hidden rect,
+				#svg${file}${this.state.theId} svg .hidden circle,
+				#svg${file}${this.state.theId} svg .hidden polygon{
+						display: none;
+				}
+				#svg${file}${this.state.theId} svg .white path,
+				#svg${file}${this.state.theId} svg .white,
+				#svg${file}${this.state.theId} svg .white rect,
+				#svg${file}${this.state.theId} svg .white circle,
+				#svg${file}${this.state.theId} svg .white polygon{
+						fill: #fff;
+				}
+
 			.color1 {
 			  stop-color: hsl(${hue}, ${saturation * 100}%, ${(lightness + 0.2) * 100}%);
 			}

@@ -152,15 +152,14 @@ export default class App extends Component {
 			});
 */
 
-			/*
 			const sortedArray = svgArray.sort((a, b) => {
 				// console.log("a.data.filename:", a.data.filename);
 				return b.data.filename - a.data.filename;
 			});
-*/
+
 			// console.log("sortedArray", sortedArray);
 			this.setState({
-				dataSources: svgArray,
+				dataSources: sortedArray,
 				isLoadingSvg: false
 			});
 		});

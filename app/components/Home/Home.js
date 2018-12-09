@@ -162,7 +162,10 @@ export default class Home extends Component {
                     } // eslint-disable-line
 									>
 										<div className={styles.svgIcon}>svg</div>
-										{svg.data.filename}
+										<div>{svg.data.filename}</div>
+										{svg.data.modifiedDate && (
+											<div>{svg.data.modifiedDate.toDateString()}</div>
+										)}
 									</div>
 									<div>{svg.data.size && `${svg.data.size}b`}</div>
 									<div className={styles.buttonWrap}>
