@@ -86,6 +86,8 @@ export default class App extends Component {
 							isLoadingSvg={isLoadingSvg}
 							dataEditions={dataEditions}
 							isLoadingEditions={isLoadingEditions}
+							getProducts={() => this.getEditions()}
+							getSources={() => this.getSources()}
 						/>
 					)}
 				/>

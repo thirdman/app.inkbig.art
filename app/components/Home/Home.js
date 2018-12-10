@@ -90,7 +90,8 @@ export default class Home extends Component {
 		// isLoading: true,
 		// isLoadingSvg: true,
 		// isLoadingEditions: true,
-		toDelete: null
+		toDelete: null,
+		toDeleteProduct: null
 	};
 
 	componentWillMount() {}
@@ -120,6 +121,7 @@ export default class Home extends Component {
 			// isLoadingSvg,
 			// isLoadingEditions,
 			toDelete,
+			toDeleteProduct,
 			isDeleting
 		} = this.state;
 		return (
@@ -129,7 +131,12 @@ export default class Home extends Component {
 				}`}
 			>
 				<div className={`${styles.column} `}>
-					<h2>SVG</h2>
+					<h2>
+						SVG{" "}
+						<button onClick={() => this.props.getSources()}>
+							Reload sources
+						</button>
+					</h2>
 					{isDeleting && <div>Deleting...</div>}
 					{isLoadingSvg && (
 						<div className={styles.loadingWrap}>
@@ -250,7 +257,12 @@ export default class Home extends Component {
 					})}
 				</div>
 				<div className={`${styles.column} `}>
-					<h2>Products</h2>
+					<h2>
+						Products{" "}
+						<button onClick={() => this.props.getProducts()}>
+							Reload Products
+						</button>
+					</h2>
 					{isLoadingEditions && (
 						<div className={styles.loadingWrap}>
 							{isLoadingEditions && (
@@ -271,11 +283,11 @@ export default class Home extends Component {
 									return (
 										<div
 											key={`img${img.id}`}
-											className={`${styles.imageCard} ${styles.listItem}`}
-											role="presentation"
-											onClick={() =>
-												this.doRouteImageEdit("/image/admin", img.id)
-                      } // eslint-disable-line
+											className={`${styles.imageCard} ${styles.listItem} ${
+												toDeleteProduct === img.id ? styles.toDelete : ""
+											}`}
+											// role="presentation"
+											// onClick={() => this.doRouteImageEdit("/image/admin", img.id)} // eslint-disable-line
 										>
 											<div
 												className={`${styles.preview} ${
@@ -309,7 +321,9 @@ export default class Home extends Component {
 												<h5>{img.data.name || img.data.image || "-"}</h5>
 												<h6>
 													{img.data.modifiedDate && (
-														<div>{img.data.modifiedDate.toDateString()}</div>
+														<div>
+															{img.data.modifiedDate.toDateString()} - {img.id}
+														</div>
 													)}
 												</h6>
 											</div>
@@ -320,15 +334,44 @@ export default class Home extends Component {
 														{img.renders.length}
 													</div>
 												)}
-												<button
-													className={styles.editButton}
-													onClick={() =>
-														this.doRouteImageEdit("/image/admin", img.id)
+												<div className={styles.buttonWrap}>
+													<button
+														className={styles.editButton}
+														onClick={() =>
+															this.doRouteImageEdit("/image/admin", img.id)
                           } // eslint-disable-line
-												>
-													edit
-												</button>
+													>
+														edit
+													</button>
+													<button
+														className={`${styles.btn} ${styles.delete}`}
+														onClick={() => this.doDeleteProduct(img.id)}
+													>
+														delete
+													</button>
+												</div>
 											</div>
+											{toDeleteProduct === img.id && (
+												<div className={styles.deleteWarning}>
+													<strong>Are you sure? This cannot be undone.</strong>
+													<div>
+														<button
+															className={styles.confirm}
+															onClick={() =>
+																this.onConfirmDeleteProduct(img.id)
+															}
+														>
+															Confirm
+														</button>
+														<button
+															className={styles.edit}
+															onClick={() => this.onCancelDelete()}
+														>
+															Cancel
+														</button>
+													</div>
+												</div>
+											)}
 										</div>
 									);
 								})}
@@ -414,8 +457,38 @@ export default class Home extends Component {
 
 	onCancelDelete = () => {
 		this.setState({
-			toDelete: null
+			toDelete: null,
+			toDeleteProduct: null
 		});
+	};
+
+	doDeleteProduct = productId => {
+		console.log("this should now confirm delete: ", productId);
+		this.setState({
+			toDeleteProduct: productId
+		});
+	};
+
+	onConfirmDeleteProduct = productId => {
+		console.log("this shoudl attempt to delete product: ", productId);
+		console.log(fbase.collection("images").doc(productId));
+		this.setState({
+			isDeleting: true
+		});
+		fbase
+			.collection("images")
+			.doc(productId)
+			.delete()
+			.then(snapshot => {
+				console.log("Product successfully deleted!", snapshot);
+				this.setState({
+					toDeleteProduct: null,
+					isDeleting: false
+				});
+			})
+			.catch(error => {
+				console.error("Error removing document: ", error);
+			});
 	};
 }
 
