@@ -48,7 +48,7 @@ export default class DisplayImage extends Component {
 */
 	state = {
 		isLoading: true,
-		hasLoaded: false,
+		// hasLoaded: false,
 		// theHue: 10,
 		theId: this.makeId(),
 		svgAttributes: {
@@ -97,7 +97,11 @@ export default class DisplayImage extends Component {
 	}
 
 	render() {
-		const { isLoading, svgAttributes, workingSvg } = this.state;
+		const {
+			isLoading
+			// svgAttributes,
+			// workingSvg
+		} = this.state;
 		const {
 			divId,
 			sourceSvg,
@@ -266,6 +270,7 @@ export default class DisplayImage extends Component {
 			colorStop4 = imageColorArray[3];
 			colorStop5 = imageColorArray[4];
 		}
+		//var foo = array[someIndex];
 
 		return (
 			<InlineCss

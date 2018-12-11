@@ -349,10 +349,12 @@ export default class RenderImage extends Component {
 			productId,
 			productName,
 			file,
+			mode,
 			aspect,
 			hasFrame = false,
 			hasBackground,
-			swatchName
+			swatchName,
+			adjustmentName
 			// sourceSvg
 		} = this.props;
 		const { size } = this.state;
@@ -366,7 +368,8 @@ export default class RenderImage extends Component {
 			productName,
 			file,
 			aspect,
-			swatchName
+			swatchName,
+			adjustmentName
 		);
 		const cleanSwatchName = swatchName.replace(/\s+/g, "-");
 
@@ -374,9 +377,9 @@ export default class RenderImage extends Component {
 		// console.log(fbase.collection("renders"));
 		const fStorage = firebase.storage();
 		const storageLocation = `renders/${productId}_${productName ||
-			file}_${cleanSwatchName}_${aspect}_${size}${hasFrame ? "_Frame" : ""}${
-			hasBackground ? "_Background" : ""
-		}.jpg`;
+			file}_${cleanSwatchName}_${adjustmentName}_${aspect}_${mode}${
+			hasFrame ? "_Frame" : ""
+		}${hasBackground ? "_Background" : ""}.jpg`;
 		// const renderType = sourceSvg ? "source" : "file";
 		// console.log("cleanSwatchName: ", cleanSwatchName);
 		// console.log("renderType: ", renderType);

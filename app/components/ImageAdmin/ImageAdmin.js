@@ -13,6 +13,8 @@ import RenderImage from "../RenderImage/RenderImage";
 import AppConfig from "../../../appConfig.config";
 import styles from "./ImageAdmin.scss";
 
+const funtionBase = "https://us-central1-inkbig-717ee.cloudfunctions.net";
+
 export default class ImageAdmin extends Component {
 	state = {
 		profile: {},
@@ -107,6 +109,7 @@ export default class ImageAdmin extends Component {
 						<h1>Product: {imageData && imageData.name}</h1>
 						<h5>ID: {imageId}</h5>
 						<button onClick={() => this.fetchData()}>fetch data</button>
+						<button onClick={() => this.fetchData2()}>fetch data2</button>
 					</div>
 				</div>
 				<div className={styles.row}>
@@ -117,7 +120,9 @@ export default class ImageAdmin extends Component {
 								className={classNames(styles.btn, {
 									[styles.selected]: this.state.activeControl === "settings"
 								})}
-								onClick={() => this.setState({ activeControl: "settings" })}
+								onClick={() =>
+									this.setState({ activeControl: "settings", activeSelect: "" })
+								}
 								role="presentation"
 							>
 								Settings
@@ -144,7 +149,12 @@ export default class ImageAdmin extends Component {
 								className={classNames(styles.btn, {
 									[styles.selected]: this.state.activeControl === "swatches"
 								})}
-								onClick={() => this.setState({ activeControl: "swatches" })}
+								onClick={() =>
+									this.setState({
+										activeControl: "swatches",
+										activeSelect: "swatches"
+									})
+								}
 								role="presentation"
 							>
 								swatches
@@ -1018,11 +1028,8 @@ export default class ImageAdmin extends Component {
 								)}
 								{filesArray &&
 									filesArray.map(file => {
-										console.log("file: ", file);
-										console.log(
-											"does it include? ",
-											currentRendersArray.includes(file.id)
-										);
+										// console.log("file: ", file);
+										// console.log("does it include? ",currentRendersArray.includes(file.id));
 										return (
 											<div
 												key={`imageRef${file.id}`}
@@ -1184,17 +1191,17 @@ export default class ImageAdmin extends Component {
 				xhr.responseType = "";
 				xhr.onload = event => {
 					const blob = xhr.response;
-					console.log("XHR event", event);
+					// console.log("XHR event", event);
 					this.setState({
 						sourceSvgBlob: blob,
-						isLoadingSource: false
+						isLoadingSource: false,
+						xhrEvent: event
 						// sourceSvg: url
 					});
 				};
 				xhr.open("GET", url);
 				xhr.send();
-
-				console.log("xhr: ", xhr);
+				// console.log("xhr: ", xhr);
 
 				this.setState({
 					isLoadingSvg: false
@@ -1341,7 +1348,7 @@ export default class ImageAdmin extends Component {
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
-					console.log(doc);
+					// console.log(doc);
 					const tempThing = {};
 					tempThing.renderId = doc.id;
 					currentRendersArray.push(doc.id);
@@ -1634,6 +1641,34 @@ export default class ImageAdmin extends Component {
 	//
 	// PRINTFUL
 	//
+	fetchData2 = () => {
+		const functionUrl = `${funtionBase}/printfulApi?endpoint=info&productId=12345`;
+		fetch(functionUrl, (error, response, body) => {
+			console.log("error, response, body", error, response, body);
+			if (!error && response.statusCode === 200) {
+				const objBody = JSON.parse(body);
+				console.log("cors attempt at info:", objBody.blog);
+			}
+			if (error) {
+				console.log(error);
+				this.createMessage("error", "Error", error, null, "bottom");
+			}
+		});
+
+		/*
+		request(functionUrl, (error, response, body) => {
+			console.log("error, response, body", error, response, body);
+			if (!error && response.statusCode === 200) {
+				const objBody = JSON.parse(body);
+				console.log("cors attempt at info:", objBody.blog);
+			}
+			if (error) {
+				console.log(error);
+				this.createMessage("error", "Error", error, null, "bottom");
+			}
+		});
+*/
+	};
 
 	fetchData = () => {
 		const { printfulApiKey } = AppConfig;

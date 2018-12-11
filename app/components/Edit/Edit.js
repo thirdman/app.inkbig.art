@@ -102,7 +102,7 @@ export default class Edit extends Component {
 	componentWillMount() {}
 
 	componentDidMount() {
-		const { image } = this.state;
+		// const { image } = this.state;
 		const mode =
       (this.props.location.state && this.props.location.state.mode) || "local"; // eslint-disable-line
 		const colorObj =
@@ -147,8 +147,7 @@ export default class Edit extends Component {
 			image,
 			imageSaved,
 			editCustomColor,
-			colorObj = this.props.location.state &&
-				this.props.location.state.colorObj,
+			// colorObj = this.props.location.state && this.props.location.state.colorObj,
 			colorsArray,
 			swatchArray,
 			customSwatchArray,
@@ -178,7 +177,7 @@ export default class Edit extends Component {
 				this.props.location.state.colorObj.hsl.l) ||
 				0.5,
 			imageLevels,
-			selectedColorName,
+			// selectedColorName,
 			showColorSave,
 			showAdjustmentSave,
 			showTitleSave,
@@ -213,7 +212,7 @@ export default class Edit extends Component {
 						{colorSaved && "Color saved!"}
 						<div>
 							{this.state.image && (
-								<button onClick={() => this.doSaveImage()}>
+								<button onClick={() => this.doSaveProduct()}>
 									Create Product from svg
 								</button>
 							)}
@@ -1082,7 +1081,7 @@ export default class Edit extends Component {
 								{swatchArray &&
 									swatchArray.map(swatch => {
 										return (
-											<div style={{ display: "flex" }}>
+											<div style={{ display: "flex" }} key={`img${swatch.id}`}>
 												<SwatchGroup
 													key={`img${swatch.id}`}
 													swatch={swatch.data}
@@ -1334,8 +1333,8 @@ export default class Edit extends Component {
 									type="text"
 									name="theTitle"
 									value={theTitle}
-									ref={theTitle => {
-										this.textInput = theTitle;
+									ref={theTitleInput => {
+										this.textInput = theTitleInput;
 									}}
 									onChange={this.handleInputChange}
 								/>
@@ -1751,19 +1750,21 @@ export default class Edit extends Component {
 			height: "100%",
 			preserveAspectRatio: "xMidYMid slice"
 		};
-		if (workingSvg) {
-			svgAttributes &&
-				Object.entries(svgAttributes).map(([key, value]) => {
+		if (workingSvg && svgAttributes) {
+			Object.entries(svgAttributes).map(([key, value]) => {
           // eslint-disable-line
-					console.log("setting key: ", key, " and value: ", value);
-					workingSvg.setAttribute(key, value);
-				});
-			workingSvg.setAttribute("hello", 88776439);
-			const SvgCode = tempElement.innerHTML;
-			// console.log('svgtopass', svgtopass);
-			this.doSaveSvg(SvgCode);
+				console.log("setting key: ", key, " and value: ", value);
+				return workingSvg.setAttribute(key, value);
+			});
+		} else {
+			return false;
 		}
+		workingSvg.setAttribute("hello", 88776439);
+		const SvgCode = tempElement.innerHTML;
+		// console.log('svgtopass', svgtopass);
+		this.doSaveSvg(SvgCode);
 		console.log("working svg2", workingSvg);
+		return workingSvg;
 	};
 
 	doSaveSvg = SvgCode => {
@@ -1774,7 +1775,6 @@ export default class Edit extends Component {
 		const filename =
 			this.props.location.state && this.props.location.state.filename;
 		// const file = files[0];
-		let newFileAddress;
 		const tempFile = new Blob([SvgCode], { type: "text/plain" });
 		console.log("tenpfile: ", tempFile);
 		const fStorage = firebase.storage();
@@ -1844,8 +1844,7 @@ export default class Edit extends Component {
 			snapshot.ref
 				.getDownloadURL()
 				.then(url => {
-					newFileAddress = url;
-					return snapshot;
+					return url;
 				})
 				.then(() => {
 					this.setState({
@@ -1925,41 +1924,36 @@ export default class Edit extends Component {
 		}
 		const { colorObj, imageLevels } = this.state;
 		const currentDateTime = new Date();
-		if (!colorId) {
-			fbase
-				.collection("colors")
-				.add({
-					colorObj,
-					name: selectedColorName,
-					imageLevels,
-					modifiedDate: currentDateTime
-				})
-				.then(docRef => {
-					console.log(
-						"Color successfully written!, with reference of: ",
-						docRef
-					);
-					this.setState({
-						colorSaved: true,
-						isError: false
-					});
-					setTimeout(() => {
-						this.setState({
-							imageSaved: false
-						});
-					}, 2000);
-				})
-				.catch(error => {
-					console.error("Error writing image: ", error);
-					this.setState({
-						imageSaved: false,
-						isError: true
-					});
+		return fbase
+			.collection("colors")
+			.add({
+				colorObj,
+				name: selectedColorName,
+				imageLevels,
+				modifiedDate: currentDateTime
+			})
+			.then(docRef => {
+				console.log("Color successfully written!, with reference of: ", docRef);
+				this.setState({
+					colorSaved: true,
+					isError: false
 				});
-		}
+				setTimeout(() => {
+					this.setState({
+						imageSaved: false
+					});
+				}, 2000);
+			})
+			.catch(error => {
+				console.error("Error writing image: ", error);
+				this.setState({
+					imageSaved: false,
+					isError: true
+				});
+			});
 	}
 
-	doSaveImage() {
+	doSaveProduct() {
 		console.log("this will save the image");
 		const currentDateTime = new Date();
 
@@ -1981,8 +1975,7 @@ export default class Edit extends Component {
 			theSubTitle1 = "",
 			theSubTitle2 = ""
 		} = this.state;
-		const { file } = this.props;
-		console.log("do save iamge: ", image, file);
+		// const { file } = this.props;
 		console.log(
 			"trying to save:",
 			aspect,
@@ -2001,11 +1994,15 @@ export default class Edit extends Component {
 			theSubTitle1,
 			theSubTitle2
 		);
+		this.setState({
+			isSaving: true
+		});
+
 		if (image) {
 			fbase
 				.collection("images")
 				.add({
-					name: slug,
+					name: theTitle || slug || image || "",
 					aspect,
 					adjustmentSets,
 					colorObj,
@@ -2029,7 +2026,8 @@ export default class Edit extends Component {
 					);
 					this.setState({
 						imageSaved: true,
-						isError: false
+						isError: false,
+						isSaving: false
 					});
 					setTimeout(() => {
 						this.setState({
@@ -2041,7 +2039,8 @@ export default class Edit extends Component {
 					console.error("Error writing color: ", error);
 					this.setState({
 						colorSaved: false,
-						isError: true
+						isError: true,
+						isSaving: false
 					});
 				});
 		}
@@ -2155,9 +2154,9 @@ export default class Edit extends Component {
 	// TITLES
 	//////////////////////////////
 	handleInputChange = event => {
-		const target = event.target;
+		const { target } = event;
 		const value = target.type === "checkbox" ? target.checked : target.value;
-		const name = target.name;
+		const { name } = target;
 		this.setState({
 			[name]: value
 		});
@@ -2181,7 +2180,7 @@ export default class Edit extends Component {
 		if (!svgId) {
 			return "no svg Id";
 		}
-		fbase
+		return fbase
 			.collection("svg")
 			.doc(svgId)
 			.set(
@@ -2418,6 +2417,7 @@ export default class Edit extends Component {
 			swatchName: "",
 			tempSwatchName: "unnamed swatch"
 		});
+		return tempSwatch;
 	};
 
 	////////////////////////////////////////////////
@@ -2483,7 +2483,7 @@ export default class Edit extends Component {
 			tempSwatchName = "unnamed swatch",
 			colorType,
 			pairColorArray,
-			swatchColorArray,
+			// swatchColorArray,
 			customSwatchArray,
 			pairColor1,
 			pairColor2,
@@ -2547,7 +2547,7 @@ export default class Edit extends Component {
 		this.setState({
 			isSaving: true
 		});
-		fbase
+		return fbase
 			.collection("swatches")
 			.doc(swatchId)
 			.delete()
@@ -2678,7 +2678,7 @@ export default class Edit extends Component {
 		if (!svgId) {
 			return "no svg Id";
 		}
-		fbase
+		return fbase
 			.collection("svg")
 			.doc(svgId)
 			.set(
@@ -2726,7 +2726,7 @@ export default class Edit extends Component {
 		if (!svgId) {
 			return "no svg Id";
 		}
-		fbase
+		return fbase
 			.collection("svg")
 			.doc(svgId)
 			.update({
