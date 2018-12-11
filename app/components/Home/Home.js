@@ -173,7 +173,7 @@ export default class Home extends Component {
 										<div className={styles.svgIcon}>svg</div>
 										<div>{svg.data.filename}</div>
 										{svg.data.modifiedDate && (
-											<div>{svg.data.modifiedDate.toDateString()}</div>
+											<h6>{svg.data.modifiedDate.toDateString()}</h6>
 										)}
 									</div>
 									<div>{svg.data.size && `${svg.data.size}b`}</div>
@@ -327,29 +327,29 @@ export default class Home extends Component {
 													)}
 												</h6>
 											</div>
-											<div>{img.data.svgId}</div>
+											<div className={styles.svgWrap}>{img.data.svgId}</div>
 											<div className={styles.meta}>
 												{img.renders && ( // (img.renders.length >= 0) &&
 													<div className={styles.theCount}>
 														{img.renders.length}
 													</div>
 												)}
-												<div className={styles.buttonWrap}>
-													<button
-														className={styles.editButton}
-														onClick={() =>
-															this.doRouteImageEdit("/image/admin", img.id)
-                          } // eslint-disable-line
-													>
-														edit
-													</button>
-													<button
-														className={`${styles.btn} ${styles.delete}`}
-														onClick={() => this.doDeleteProduct(img.id)}
-													>
-														delete
-													</button>
-												</div>
+											</div>
+											<div className={styles.buttonWrap}>
+												<button
+													className={styles.editButton}
+													onClick={() =>
+														this.doRouteImageEdit("/image/admin", img.id)
+                        } // eslint-disable-line
+												>
+													edit
+												</button>
+												<button
+													className={`${styles.btn} ${styles.delete}`}
+													onClick={() => this.doDeleteProduct(img.id)}
+												>
+													delete
+												</button>
 											</div>
 											{toDeleteProduct === img.id && (
 												<div className={styles.deleteWarning}>

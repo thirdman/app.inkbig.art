@@ -14,9 +14,19 @@ import AppConfig from "../../../appConfig.config";
 import styles from "./ImageAdmin.scss";
 
 const funtionBase = "https://us-central1-inkbig-717ee.cloudfunctions.net";
+const defaultAdjustmentSets = {
+	noAdjustment: {
+		theScale: 1.0,
+		theTranslateX: 0,
+		theTranslateY: 0,
+		scope: "all",
+		name: "noAdjustment"
+	}
+};
 
 export default class ImageAdmin extends Component {
 	state = {
+		adjustmentSets: defaultAdjustmentSets,
 		profile: {},
 		loggedIn: false,
 		filesArray: [],
@@ -39,7 +49,6 @@ export default class ImageAdmin extends Component {
 		selectedSvg: "",
 		tempSelectedSvg: "",
 		aspects: ["portrait", "circle"]
-		// adjustmentSets: [{ default: { theScale: 1, theTranslateX: 0, theTranslateY: 0 } }]
 	};
 
 	componentWillMount() {}
@@ -66,7 +75,7 @@ export default class ImageAdmin extends Component {
 			aspects,
 			activeControl,
 			activeSelect,
-			// adjustmentSets,
+			adjustmentSets,
 			doRenders,
 			doSave,
 			doRenderPreview,
@@ -230,13 +239,13 @@ export default class ImageAdmin extends Component {
 									{!sourceSvgData && (
 										<div>
 											<h5>No Source</h5>
-											<button
-												onClick={() => this.setState({ activeSelect: "svg" })}
-											>
-												Select SVG
-											</button>
 										</div>
 									)}
+									<button
+										onClick={() => this.setState({ activeSelect: "svg" })}
+									>
+										Select SVG
+									</button>
 								</section>
 								<h3>Variations</h3>
 								<div className={styles.variationList}>
@@ -503,6 +512,7 @@ export default class ImageAdmin extends Component {
 											imageData &&
 											sourceSvgBlob &&
 											sourceSvgData &&
+											(sourceSvgData.adjustmentSets || adjustmentSets) &&
 											// sourceSvgData.adjustmentSets &&
 											renderCombinations &&
 											swatchSets &&
@@ -536,8 +546,8 @@ export default class ImageAdmin extends Component {
 															mode="medium"
 															hasFrame={false}
 															scale={combo[1].data.theScale || 1}
-															translateX={combo[1].data.translateX || 1}
-															translateY={combo[1].data.translateY || 1}
+															translateX={combo[1].data.translateX || 0}
+															translateY={combo[1].data.translateY || 0}
 															theTitle={theTitle}
 															theSubtitle1={theSubtitle1}
 															theSubtitle2={theSubtitle2}
@@ -752,6 +762,13 @@ export default class ImageAdmin extends Component {
 										loading source blob
 									</div>
 								)}
+								{!isLoadingSource &&
+									sourceSvgData &&
+									Object.keys(swatchSets).length === 0 && (
+										<div className={`${styles.message} ${styles.error}`}>
+											No swatches applied: {Object.keys(swatchSets).length}
+										</div>
+									)}
 								<div
 									style={{
 										display: "flex",
@@ -761,7 +778,7 @@ export default class ImageAdmin extends Component {
 								>
 									{!isLoadingSource &&
 										sourceSvgData &&
-										// sourceSvgData.adjustmentSets &&
+										(sourceSvgData.adjustmentSets || adjustmentSets) &&
 										sourceSvgBlob &&
 										renderCombinations &&
 										renderCombinations.map(combo => {
@@ -810,8 +827,8 @@ export default class ImageAdmin extends Component {
 																mode="preview"
 																hasTitles={combo[0].name === "circle"}
 																scale={combo[1].data.theScale || 1}
-																translateX={combo[1].data.translateX || 1}
-																translateY={combo[1].data.translateY || 1}
+																translateX={combo[1].data.translateX || 0}
+																translateY={combo[1].data.translateY || 0}
 																theTitle={theTitle}
 																theSubtitle1={theSubtitle1}
 																theSubtitle2={theSubtitle2}
@@ -1827,8 +1844,18 @@ export default class ImageAdmin extends Component {
 		}
 		// console.log("swatchSetArray", swatchSetArray);
 		// console.log("swatchSetArraylength", swatchSetArray.length);
-
-		const adjustmentSetSource = sourceSvgData && sourceSvgData.adjustmentSets;
+		const defaultAdjustmentSets = {
+			noAdjustment: {
+				theScale: 1.0,
+				theTranslateX: 0,
+				theTranslateY: 0,
+				type: "adjustment",
+				scope: "all",
+				name: "noAdjustment"
+			}
+		};
+		const adjustmentSetSource =
+			(sourceSvgData && sourceSvgData.adjustmentSets) || defaultAdjustmentSets;
 		console.log("adjustmentSetSource", adjustmentSetSource);
 		if (adjustmentSetSource) {
 			console.log("sourceSvgData.adjustmentSets", adjustmentSetSource);

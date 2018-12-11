@@ -27,6 +27,15 @@ import { DisplayImage, RenderImage, SwatchGroup, NamedColor } from "..";
 import styles from "./Edit.scss";
 
 const imageSizes = ["Thumbnail", "Small", "Medium", "Large", "Print"];
+const defaultAdjustmentSets = {
+	noAdjustment: {
+		theScale: 1.0,
+		theTranslateX: 0,
+		theTranslateY: 0,
+		scope: "all",
+		name: "noAdjustment"
+	}
+};
 
 export default class Edit extends Component {
 	/*
@@ -41,7 +50,7 @@ export default class Edit extends Component {
 		image: this.props.location.state && this.props.location.state.image,
 		profile: {},
 		colorType: "swatch",
-		adjustmentSets: [],
+		adjustmentSets: defaultAdjustmentSets,
 		activeAdjustmentSet: null,
 		isLoading: true,
 		isAdding: false,
@@ -525,7 +534,7 @@ export default class Edit extends Component {
 									<h5>saved Sets</h5>
 									<div>
 										{Object.entries(adjustmentSets).map(([key, value]) => {
-											// console.log("setting key: ", key, " and value: ", value);
+											console.log("setting key: ", key, " and value: ", value);
 											return (
 												<div className={styles.row} key={key}>
 													<span>{key}</span>{" "}
@@ -1659,14 +1668,14 @@ export default class Edit extends Component {
 	//////////////////////////////
 
 	loadSvgData = () => {
-		const { svgId } = this.state;
+		const { svgId, adjustmentSets } = this.state;
 		const svgRef = fbase.collection("svg").doc(svgId);
 		svgRef.get().then(snapshot => {
 			const data = snapshot.data();
 			console.log("svgData Found: ", snapshot.data());
 			this.setState({
 				isLoadingSvg: false,
-				adjustmentSets: data.adjustmentSets,
+				adjustmentSets: data.adjustmentSets || adjustmentSets,
 				theTitle: data.theTitle,
 				theSubtitle1: data.theSubtitle1,
 				theSubtitle2: data.theSubtitle2
@@ -1956,10 +1965,19 @@ export default class Edit extends Component {
 	doSaveProduct() {
 		console.log("this will save the image");
 		const currentDateTime = new Date();
+		const defaultAdjustmentSet = {
+			noAdjustment: {
+				theScale: 1.0,
+				theTranslateX: 0,
+				theTranslateY: 0,
+				scope: "all",
+				name: "noAdjustment"
+			}
+		};
 
 		const {
 			aspect,
-			adjustmentSets,
+			adjustmentSets = defaultAdjustmentSet,
 			colorObj = this.props.location.state &&
 				this.props.location.state.colorObj,
 			hasFrame,

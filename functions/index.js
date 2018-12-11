@@ -29,8 +29,8 @@ exports.printfulApi = functions.https.onRequest((req, res) => {
 	// console.log("base64Key encoded: ", base64Key);
 	// Where we're fetching data from
 	// fetch(`https://api.printful.com/mockup-generator/create-task/171`, {
-		
-	const options ={
+
+	const options = {
 		// method: "post",
 		method: "get",
 		headers: {
@@ -62,8 +62,8 @@ exports.printfulApi = functions.https.onRequest((req, res) => {
 		}
 */
 	};
-	
-	fetch(`https://api.printful.com/products/171`, {options})
+
+	fetch(`https://api.printful.com/products/171`, { options })
 		// We get the API response and receive data in JSON format...
 		.then(response => {
 			console.log("response: ", response);

@@ -61,6 +61,7 @@
 			font-size: 11px;
 			flex-basis: 1.25rem;
 			flex-grow: 0;
+			float: left;
 		}
 		.buttonWrap{
 			flex-basis: 20%;
@@ -185,9 +186,9 @@
 			position: relative;
 	    border-radius: 3px;
 	    box-shadow: 0 1px 12px -8px rgba(0,0,0,.2);	
+	    align-items: center;
 			button{
 				position: relative;
-				// background: transparent;
 				box-shadow: none;
 /*
 				&.editButton{
@@ -201,23 +202,47 @@
 					background: #dd1d1d;
 				}
 			}
+			.svgWrap{
+				flex-basis: 20%;
+			}
 			.meta{
 				display: flex;
 				justify-content: space-around;
 				align-items: center;
+				flex-basis: 200px;
+				flex-shrink: 1;
+		    flex-basis: 100px;
+		    flex-grow: 1;
+				.theCount{
+					width: 18px;
+					height: 18px;
+					background: #222;
+					text-align: center;
+					line-height: 18px;
+					font-size: 12px;
+					color: #eee;
+					border-radius: 50%;
+					display: inline-block;
+					vertical-align: middle;
+				}
 			}
-			.theCount{
-				width: 18px;
-				height: 18px;
-				background: #222;
-				text-align: center;
-				line-height: 18px;
-				font-size: 12px;
-				color: #eee;
-				border-radius: 50%;
-				display: inline-block;
-				vertical-align: middle;
+			.buttonWrap{
+				flex-basis: 120px;
+				flex-grow: 1;
+				white-space: nowrap;
+				display: flex;
+				justify-content: stretch;
+				align-items: stretch;
+				height: 100%;
+				button{
+					height: 100%;
+					flex-basis: 50%;
+					flex-shrink: 0;
+					margin: 0;
+					border-radius: 0;
+				}
 			}
+
 			&.toDelete{
 		    // background: rgb(255, 218, 222);
 		    background: #fff;
