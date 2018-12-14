@@ -1086,58 +1086,58 @@ background-clip: padding-box !important;
 			    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
 			    z-index: 11;
 				}
-		  }
-			&.hasBackground{
-				width: calc(#{$mediumShort} + #{$mediumBgMore});
-				height: calc(#{$mediumLong} + #{$mediumBgLess});
-				background: #eee;
-				.theSvg{
-					// left: #{$mediumBgMore/2};
-					// top: #{$mediumBgLess/2};	
-					width: calc(#{$mediumShort} * 0.8);
-					height: calc(#{$mediumShort} * 0.8);
-					left: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
-					top: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
-
-				}
-				&.hasFrame{
-					box-shadow: none; // added later
+				&.hasBackground{
+					width: calc(#{$mediumShort} + #{$mediumBgMore});
+					height: calc(#{$mediumLong} + #{$mediumBgLess});
+					background: #eee;
 					.theSvg{
-						padding: 0 !important;
+						// left: #{$mediumBgMore/2};
+						// top: #{$mediumBgLess/2};	
+						width: calc(#{$mediumShort} * 0.8);
+						height: calc(#{$mediumShort} * 0.8);
 						left: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
 						top: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+	
 					}
-		    	.imgFrame{
-			    	// border: 12px solid #f9f9f9;
-			    	border: $mediumFrame solid #f9f9f9;
-						left: calc(#{$mediumBgMore}/2);
-						right: calc(#{$mediumBgMore}/2);
-						top: calc(#{$mediumBgLess}/2;
-						bottom: calc(#{$mediumBgLess}/2);
-					}
-					&:before{
-				    content: "";
-				    position: absolute;
-						left: calc(#{$mediumBgMore}/2);
-						right: calc(#{$mediumBgMore}/2);
-						top: calc(#{$mediumBgLess}/2);
-						bottom: calc(#{$mediumBgLess}/2);
-				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3);
-				    z-index: 0;
-				    background: #fff; 
-					}
-					&:after{
-				    content: "";
-				    position: absolute;
-						left: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
-						right: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
-						top: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
-						bottom: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
-				    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
-				    z-index: 11;
+					&.hasFrame{
+						box-shadow: none; // added later
+						.theSvg{
+							padding: 0 !important;
+							left: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+							top: calc((((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+						}
+			    	.imgFrame{
+				    	// border: 12px solid #f9f9f9;
+				    	border: $mediumFrame solid #f9f9f9;
+							left: calc(#{$mediumBgMore}/2);
+							right: calc(#{$mediumBgMore}/2);
+							top: calc(#{$mediumBgLess}/2;
+							bottom: calc(#{$mediumBgLess}/2);
+						}
+						&:before{
+					    content: "";
+					    position: absolute;
+							left: calc(#{$mediumBgMore}/2);
+							right: calc(#{$mediumBgMore}/2);
+							top: calc(#{$mediumBgLess}/2);
+							bottom: calc(#{$mediumBgLess}/2);
+					    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3);
+					    z-index: 0;
+					    background: #fff; 
+						}
+						&:after{
+					    content: "";
+					    position: absolute;
+							left: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+							right: calc((#{$mediumBgMore}/2) + #{$mediumFrame});
+							top: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+							bottom: calc((#{$mediumBgLess}/2) + #{$mediumFrame});
+					    box-shadow: ($mediumShadow/8) ($mediumShadow/8) $mediumShadow (-$mediumShadow/4) rgba(0, 0, 0, 0.3) inset;
+					    z-index: 11;
+						}
 					}
 				}
-			}
+		  }
 		}
 		&.hasTitles{
 			.titleBlock{
@@ -1160,14 +1160,61 @@ background-clip: padding-box !important;
 					width: calc(#{$mediumShort} * 0.7);
 					height: calc(#{$mediumShort} * 0.7);
 					left: calc(#{$mediumShort} * 0.3 / 2); // 10% of the length, divided by 2
-					top: calc(((#{$mediumLong} / 3) - ((#{$mediumShort} * 0.7) / 3)); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
+					top: calc(((#{$mediumLong} / 3) - ((#{$mediumShort} * 0.7) / 3))); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
 					border-radius: $mediumShort; // make the circle
 					-moz-background-clip: padding; 
 					-webkit-background-clip: padding-box !important;
 					background-clip: padding-box !important;
 				}	
 			}
+			&.hasBackground{
+				.titleBlock{
+					left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2));
+					bottom: 13.5%;
+				}
+				.theSvg{
+					left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.7) / 3));
+					top: calc(((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.7) / 2))); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles				//- ((#{$smallShort} * 0.3) / 3)
+				}
+			}
+
 		}
+		&.hasBackground{
+			width: calc(#{$mediumShort} + #{$mediumBgMore});
+			height: calc(#{$mediumLong} + #{$mediumBgLess});
+			background: #eee;
+			.theSvg{
+				// left: #{$mediumBgMore/2};
+				// top: #{$mediumBgLess/2};	
+				width: calc(#{$mediumShort} * 0.8);
+				height: calc(#{$mediumShort} * 0.8);
+				left: calc( ((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+				top: calc( ((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+			}
+			&.hasPaper{
+				.paper{
+					position: absolute;
+					box-shadow: 0 8px 60px -15px rgba(0,0,0,.2);
+					top: calc((#{$mediumShort} * 0.2 / 2)); // 10% of the length, divided by 2
+					left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				}
+			}
+		}
+
+		&.hasPaper{
+			&.hasBackground{
+				.paper{
+					width: $mediumShort;
+					height: $mediumLong;
+			    background: #fff;
+					position: absolute;
+					box-shadow: 0 8px 60px -15px rgba(0,0,0,.2);
+					top: calc((#{$mediumShort} * 0.2 / 2)); // 10% of the length, divided by 2
+					left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				}
+	    }
+		}
+
 	}
 /*
 	&.large{

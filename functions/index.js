@@ -3,8 +3,19 @@ const functions = require("firebase-functions");
 
 const admin = require("firebase-admin");
 require("isomorphic-fetch");
+const request = require("request");
+const cors = require("cors")({ origin: true });
 
 const printfulApiKey = "0l91417i-cbp6-69f4:e352-2w2zhu2f9yv2";
+const corsOptions = {
+	origin: [
+		"https://app.inkbig.app",
+		"http://localhost/",
+		"http://localhost:8080"
+	],
+	optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 admin.initializeApp(functions.config().firebase);
 
 // const { printfulApiKey } = AppConfig;
@@ -19,27 +30,30 @@ admin.initializeApp(functions.config().firebase);
 // PRINTFUL
 exports.printfulApi = functions.https.onRequest((req, res) => {
 	// console.log("this is the printful api request", req, res);
-	// cors(req, res, () => {
-	const endpoint = req.query.endpoint;
-	const body = req.query.body;
-	console.log("endpoint", endpoint);
-	console.log("body", body);
-	// const printfulApiKey = "1234";
-	const base64Key = Buffer.from(printfulApiKey).toString("base64");
-	// console.log("base64Key encoded: ", base64Key);
-	// Where we're fetching data from
-	// fetch(`https://api.printful.com/mockup-generator/create-task/171`, {
+	cors(req, res, () => {
+		const endpoint = req.query.endpoint;
+		const body = req.query.body;
+		const url = req.query.url;
+		const bodyObj = req.query.bodyObj;
+		console.log("endpoint", endpoint);
+		console.log("url", url);
+		console.log("bodyObj", bodyObj);
+		// const printfulApiKey = "1234";
+		const base64Key = Buffer.from(printfulApiKey).toString("base64");
+		// console.log("base64Key encoded: ", base64Key);
+		// Where we're fetching data from
+		// fetch(`https://api.printful.com/mockup-generator/create-task/171`, {
 
-	const options = {
-		// method: "post",
-		method: "get",
-		headers: {
-			Authorization: `Basic ${base64Key}`,
-			// content-Type: 'application/x-www-form-urlencoded'
-			"content-type": "application/json"
-		},
-		body: "id=171"
-		/*
+		const options = {
+			// method: "post",
+			method: "get",
+			headers: {
+				Authorization: `Basic ${base64Key}`,
+				// content-Type: 'application/x-www-form-urlencoded'
+				"content-type": "application/json"
+			},
+			body: "id=171"
+			/*
 		body: {
 			product_id: 171,
 			variant_ids: [6876, 6880, 7845],
@@ -61,24 +75,44 @@ exports.printfulApi = functions.https.onRequest((req, res) => {
 			]
 		}
 */
-	};
+		};
 
-	fetch(`https://api.printful.com/products/171`, { options })
-		// We get the API response and receive data in JSON format...
-		.then(response => {
-			console.log("response: ", response);
-			response.json();
-			console.log("response for fetch: ", response);
-			console.log("response body for fetch: ", response.body);
-			// console.log("parse response: ", JSON.parse(response.body));
-			res.send(response.body);
-			return response;
-		})
-		// Catch any errors we hit and update the app
-		.catch(error => {
-			console.error("error: ", error);
-			console.log("error for fetch: ", error);
-			res.send(error);
-			return error;
-		});
+		request(
+			"https://api.printful.com/products/171",
+			(error, response, body) => {
+				console.log("error, response, body", error, response, body);
+				if (!error && response.statusCode === 200) {
+					console.log("cors body:", body);
+					res.send(response);
+					const objBody = JSON.parse(body);
+					console.log("cors objBody:", objBody);
+				}
+				if (error) {
+					console.log("error:", error);
+					res.send(error);
+				}
+			}
+		);
+
+		/*
+		fetch(`https://api.printful.com/products/171`, { options })
+			// We get the API response and receive data in JSON format...
+			.then(response => {
+				console.log("response: ", response);
+				response.json();
+				console.log("response for fetch: ", response);
+				console.log("response body for fetch: ", response.body);
+				// console.log("parse response: ", JSON.parse(response.body));
+				res.send(response.body);
+				return response;
+			})
+			// Catch any errors we hit and update the app
+			.catch(error => {
+				console.error("error: ", error);
+				console.log("error for fetch: ", error);
+				res.send(error);
+				return error;
+			});
+*/
+	});
 });

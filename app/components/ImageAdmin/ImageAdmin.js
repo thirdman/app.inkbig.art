@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as firebase from "firebase";
 import classNames from "classnames";
 import { distanceInWords } from "date-fns";
+// import request from "request";
 import Toggle from "react-toggle";
 import fbase from "../../firebase";
 import Tick from "../../assets/icons/tick.svg";
@@ -35,7 +36,7 @@ export default class ImageAdmin extends Component {
 		doSave: false,
 		doRenderPreview: false,
 		doRenderPrint: false,
-		doRenderPromo: true,
+		doRenderPromo: false,
 		isLoadingSource: true,
 		isLoadingSvgData: true,
 		isLoadingImageData: true,
@@ -47,8 +48,10 @@ export default class ImageAdmin extends Component {
 		activeControl: "settings",
 		activeSelect: "",
 		selectedSvg: "",
+		showRenderDetail: null,
 		tempSelectedSvg: "",
-		aspects: ["portrait", "circle"]
+		aspects: ["portrait", "circle"],
+		tempSelectedRenders: []
 	};
 
 	componentWillMount() {}
@@ -97,10 +100,12 @@ export default class ImageAdmin extends Component {
 			tempSelectedSvg,
 			swatchSets,
 			sourceSvgBlob,
+			showRenderDetail,
 			theTitle,
 			theSubtitle1,
 			theSubtitle2,
-			renderCombinations
+			renderCombinations,
+			tempSelectedRenders
 		} = this.state;
 		let currentComboName = ""; // used to determin rows
 		// console.log('state is', this.state);
@@ -606,8 +611,8 @@ export default class ImageAdmin extends Component {
 															mode="print"
 															hasFrame={false}
 															scale={combo[1].data.theScale || 1}
-															translateX={combo[1].data.translateX || 1}
-															translateY={combo[1].data.translateY || 1}
+															translateX={combo[1].data.translateX || 0}
+															translateY={combo[1].data.translateY || 0}
 															theTitle={theTitle}
 															theSubtitle1={theSubtitle1}
 															theSubtitle2={theSubtitle2}
@@ -641,7 +646,7 @@ export default class ImageAdmin extends Component {
 													sourceSvg={sourceSvgBlob}
 													// svgBackgroundColor={svgBackgroundColor}
 													aspect="portrait"
-													mode="print"
+													mode="medium"
 													hasFrame
 													hasBackground
 													hasTitles={false}
@@ -668,13 +673,13 @@ export default class ImageAdmin extends Component {
 													key="renderMediumPortraitBackground"
 													doSave={false}
 													doRender={doRenders}
-													displayMode="mini"
 													sourceSvg={sourceSvgBlob}
 													hasTitles
 													// svgBackgroundColor={svgBackgroundColor}
 													aspect="circle"
-													mode="print"
+													mode="medium"
 													hasFrame={false}
+													hasPaper
 													hasBackground
 													// scale={theScale}
 													// translateX={theTranslateX}
@@ -686,13 +691,14 @@ export default class ImageAdmin extends Component {
 													swatchName="test"
 													adjustmentName="none"
 													imageColorArray={[
-														"hsl(100, 14.285714285714288%, 15%)",
-														"hsl(100, 14.285714285714288%, 35%)",
-														"hsl(100, 14.285714285714288%, 50%)",
-														"hsl(100, 14.285714285714288%, 65%)",
-														"hsl(100, 14.285714285714288%, 85%)"
+														"hsl(22.85714285714286, 16.660000000000004%, 18%)",
+														"hsl(222.85714285714286, 16.660000000000004%, 35%)",
+														"hsl(222.85714285714286, 16.660000000000004%, 50%)",
+														"hsl(222.85714285714286, 16.660000000000004%, 65%)",
+														"hsl(222.85714285714286, 16.660000000000004%, 84%)"
 													]}
 												/>
+
 												<RenderImage
 													productId={imageId}
 													productName={imageData.name}
@@ -982,12 +988,14 @@ export default class ImageAdmin extends Component {
 								<h3>Preview Render</h3>
 								{imageRenders &&
 									Object.entries(imageRenders).map(([key, value]) => {
+										/*
 										console.log(
 											"imagerender key: ",
 											key,
 											" and value: ",
 											value
 										);
+*/
 										return (
 											<div
 												className={`${styles.row} ${styles.renderRow}`}
@@ -1012,7 +1020,16 @@ export default class ImageAdmin extends Component {
 											</div>
 										);
 									})}
-								<h3>Selected Renders</h3>
+								<h3>Temp Selected Renders</h3>
+								{tempSelectedRenders && (
+									<div>
+										{tempSelectedRenders.map(renderId => (
+											<div key={renderId}>{renderId}</div>
+										))}
+									</div>
+								)}
+
+								<h3>Assigned Renders</h3>
 								{currentRendersArray &&
 									currentRendersArray.map(render => {
 										return (
@@ -1035,12 +1052,15 @@ export default class ImageAdmin extends Component {
 										}`}
 									>
 										{/*<div className={styles.column}>ProductId/slug</div>*/}
+										<div className={styles.column}>Select</div>
 										<div className={styles.column}>Aspect</div>
 										<div className={styles.column}>Mode</div>
 										<div className={styles.column}>Swatch</div>
 										<div className={styles.column}>renderId</div>
 										<div className={styles.column}>Modified</div>
-										<div className={styles.column}>Action</div>
+										<div className={`${styles.column} ${styles.actions}`}>
+											Action
+										</div>
 									</div>
 								)}
 								{filesArray &&
@@ -1068,6 +1088,19 @@ export default class ImageAdmin extends Component {
 												</div>
 												*/}
 												<div className={styles.column}>
+													<div
+														className={`${styles.fakeSelectBox} ${
+															this.filterTempRenderArray(
+																tempSelectedRenders,
+																file.id
+															)
+																? styles.isSelected
+																: ""
+														}`}
+														onClick={() => this.selectRender(file.id)}
+													/>
+												</div>
+												<div className={styles.column}>
 													{file.data && file.data.aspect
 														? file.data.aspect
 														: "-"}
@@ -1086,7 +1119,7 @@ export default class ImageAdmin extends Component {
 														target="_blank"
 														rel="noopener noreferrer"
 													>
-														{file.id}
+														{file.adjustmentName || "open"}
 													</a>
 												</div>
 												<div className={styles.column}>
@@ -1096,16 +1129,65 @@ export default class ImageAdmin extends Component {
 													{distanceInWords(file.data.modifiedDate, new Date())}{" "}
 													ago
 												</div>
-												<div className={styles.column}>
+												<div className={`${styles.column} ${styles.actions}`}>
 													<button
 														className={styles.btn}
 														onClick={() => this.toggleIncludeRender(file.id)}
 													>
 														{currentRendersArray.includes(file.id)
 															? "Remove"
-															: "Select"}
+															: "Assign"}
+													</button>
+													<button
+														className={styles.btn}
+														onClick={() => this.toggleRenderInfo(file.id)}
+													>
+														Info
+													</button>
+													<button
+														className={`{styles.btn} ${styles.delete}`}
+														onClick={() => this.deleteRender(file.id)}
+													>
+														Delete
 													</button>
 												</div>
+												{showRenderDetail === file.id && (
+													<div className={`${styles.column} ${styles.detail}`}>
+														<div className={styles.row}>
+															<div className={`${styles.column} ${styles.key}`}>
+																Filename
+															</div>
+															<div
+																className={`${styles.column} ${styles.value}`}
+															>
+																<a
+																	href={file.data.downloadUrl}
+																	target="_blank"
+																	rel="noopener noreferrer"
+																>
+																	{file.id}
+																</a>
+															</div>
+														</div>
+														<div className={styles.row}>
+															<div className={`${styles.column} ${styles.key}`}>
+																Mockup
+															</div>
+															<div
+																className={`${styles.column} ${styles.value}`}
+															>
+																<button
+																	className={styles.btn}
+																	onClick={() =>
+																		this.beginGenerateMockup(file.id)
+																	}
+																>
+																	Generate
+																</button>
+															</div>
+														</div>
+													</div>
+												)}
 											</div>
 										);
 									})}
@@ -1333,7 +1415,10 @@ export default class ImageAdmin extends Component {
 			});
 	};
 
+	////////////////////////////////////
 	//// OLD RENDER STUFF
+	////////////////////////////////////
+
 	getAvailableRenders(productId) {
 		const filesRef = fbase.collection("renders").where("slug", "==", productId);
 		const filesArray = [];
@@ -1451,6 +1536,113 @@ export default class ImageAdmin extends Component {
 				});
 		}
 	}
+
+	selectRender = renderId => {
+		console.log("renderId: ", renderId);
+		const { tempSelectedRenders } = this.state;
+		const existingIndex = tempSelectedRenders.findIndex(o => {
+			return o === renderId;
+		});
+
+		if (existingIndex !== -1) {
+			// exists, so we need to remove it.
+			console.log("tempSelectedRenders: ", tempSelectedRenders);
+			console.log(
+				"exists so we need to remove it. existing index: ",
+				existingIndex
+			);
+			console.log("spliced array: ", tempSelectedRenders.slice());
+			const currentRendersArrayTemp = tempSelectedRenders.slice();
+			currentRendersArrayTemp.splice(existingIndex, 1);
+			this.setState({
+				tempSelectedRenders: currentRendersArrayTemp
+			});
+		} else {
+			this.setState(prevState => ({
+				tempSelectedRenders: [...prevState.tempSelectedRenders, renderId]
+			}));
+		}
+	};
+
+	filterTempRenderArray = (tempRenders, renderId) => {
+		if (!tempRenders || !renderId) {
+			console.log("missing id or swatches");
+			return false;
+		}
+		const selected = tempRenders.filter(thisItem => thisItem === renderId);
+		return selected.length > 0;
+	};
+
+	deleteRender = renderId => {
+		const {
+			imageId = (this.props.location.state &&
+				this.props.location.state.imageId) ||
+				"milfordSound"
+		} = this.props;
+		if (!renderId || !imageId) {
+			return false;
+		}
+		const renderRef = fbase
+			// .collection("images")
+			// .doc(imageId)
+			.collection("renders")
+			.doc(renderId);
+		console.log("renderref:", renderRef);
+		console.log("todelete renderid and productId: ", renderId, imageId);
+
+		return renderRef
+			.delete()
+			.then(() => {
+				this.setState({
+					isUpdated: true,
+					isAdding: false
+				});
+				setTimeout(() => {
+					this.setState({
+						isUpdated: false
+					});
+				}, 2000);
+			})
+			.catch(error => {
+				console.error("Error removing document: ", error);
+				this.setState({
+					isAdding: false,
+					isError: true
+				});
+			});
+	};
+
+	toggleRenderInfo = renderId => {
+		this.setState({
+			showRenderDetail: renderId
+		});
+	};
+
+	// GENERATING MOCKUPS
+
+	beginGenerateMockup = renderId => {
+		console.log("this would start generation for: ", renderId);
+		// https://api.printful.com/mockup-generator/create-task/171
+		const bodyObj = {
+			variant_ids: [6876, 6880, 7845],
+			format: "jpg",
+			files: [
+				{
+					image_url:
+						"https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/renders%2Fyk8EUxlwesgdm3VL3EwF_Auckland%20Rangitoto_R-Artemis_CircleCrop_circle_print.jpg?alt=media&token=d60c270a-62a2-4c1c-961a-a5239c769221"
+				},
+				{
+					image_url:
+						"https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/renders%2Fyk8EUxlwesgdm3VL3EwF_Auckland%20Rangitoto_R-Artemis_CircleCrop_circle_print.jpg?alt=media&token=d60c270a-62a2-4c1c-961a-a5239c769221"
+				},
+				{
+					image_url:
+						"https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/renders%2Fyk8EUxlwesgdm3VL3EwF_Auckland%20Rangitoto_R-Artemis_CircleCrop_circle_print.jpg?alt=media&token=d60c270a-62a2-4c1c-961a-a5239c769221"
+				}
+			]
+		};
+		return this.fetchData2("mockup-generator/create-task/171", bodyObj);
+	};
 
 	/////////////////////////
 	// Selecting
@@ -1658,19 +1850,39 @@ export default class ImageAdmin extends Component {
 	//
 	// PRINTFUL
 	//
-	fetchData2 = () => {
-		const functionUrl = `${funtionBase}/printfulApi?endpoint=info&productId=12345`;
-		fetch(functionUrl, (error, response, body) => {
-			console.log("error, response, body", error, response, body);
-			if (!error && response.statusCode === 200) {
-				const objBody = JSON.parse(body);
-				console.log("cors attempt at info:", objBody.blog);
-			}
-			if (error) {
-				console.log(error);
-				this.createMessage("error", "Error", error, null, "bottom");
-			}
+	fetchData2 = (url, bodyObj) => {
+		console.log("url, bodyObj: ", url, bodyObj);
+		const functionUrl = `${funtionBase}/printfulApi?endpoint=info&productId=171&url=${url}&bodyObj=${bodyObj}`;
+		const options = {};
+		this.setState({
+			isError: false,
+			isLoading: true
 		});
+		fetch(functionUrl, options)
+			.then(res => res.json())
+			.then(response => {
+				console.log("response", response);
+				console.log("response.body", response.body);
+				console.log("response.body.result", response.body.result);
+				if (response.status === 200) {
+					/// const objBody = JSON.parse(response.body);
+					// const objBody = response.json();
+					const objBody = response.body;
+					console.log("fetchdata2 objBody:", objBody);
+					this.setState({
+						isError: false,
+						isLoading: false
+					});
+				}
+			})
+			.catch(error => {
+				console.error("error: ", error);
+				console.log("error for fetch: ", error);
+				this.setState({
+					isError: true,
+					isLoading: false
+				});
+			});
 
 		/*
 		request(functionUrl, (error, response, body) => {
@@ -1844,6 +2056,7 @@ export default class ImageAdmin extends Component {
 		}
 		// console.log("swatchSetArray", swatchSetArray);
 		// console.log("swatchSetArraylength", swatchSetArray.length);
+		/*
 		const defaultAdjustmentSets = {
 			noAdjustment: {
 				theScale: 1.0,
@@ -1854,6 +2067,7 @@ export default class ImageAdmin extends Component {
 				name: "noAdjustment"
 			}
 		};
+*/
 		const adjustmentSetSource =
 			(sourceSvgData && sourceSvgData.adjustmentSets) || defaultAdjustmentSets;
 		console.log("adjustmentSetSource", adjustmentSetSource);

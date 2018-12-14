@@ -162,8 +162,12 @@
 		border-bottom: 1px solid #ccc;
 		align-items: flex-start;
 		justify-content: stretch;
+			flex-wrap: wrap;
+		&.hasDetail{
+			flex-wrap: wrap;
+		}
 		>div{
-			flex-basis: 30%;
+			flex-basis: 10%;
 			flex-shrink: 1;
 			flex-grow: 1;
 			padding: 4px;
@@ -180,6 +184,47 @@
 		}
 		&.listHeader{
 			font-weight: bold;
+		}
+		.fakeSelectBox{
+			margin: 4px; 
+			width: 1.5rem;
+			height: 1.5rem;
+			border-radius: 3px;
+			border: 1px solid #777;
+			background: rgba(0,0,0,.12);
+			@media (hover: hover) {		
+				&:hover{
+					background: #eee;
+					cursor: pointer;
+				}
+			}
+
+			&.isSelected{
+				background: #b1f1b1;
+				border-color: #50af50;
+    	}
+		}
+		.column{
+			&.actions{
+				flex-basis: 150px;
+			}
+			&.detail{
+				flex-basis: 100%;
+				padding: 0;
+				.row{
+					padding: 0;
+				}
+				.column{
+					padding: .25rem;
+					&.key{
+						flex-basis: 15%;
+						font-weight: bold;
+					}
+					&.value{
+						flex-basis: 85%;
+					}
+				}
+			}
 		}
 	}
 	.svgItem{

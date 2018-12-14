@@ -448,9 +448,29 @@ export default class RenderImage extends Component {
 		renderObj.fullPath = snapshot.metadata && snapshot.metadata.fullPath;
 		renderObj.modifiedDate = currentDateTime;
 		// console.log("renderObj is", renderObj, "productId is", productId);
+		const fileName = snapshot.metadata && snapshot.metadata.name;
+		console.log("fileName is: ", fileName);
 		if (productId) {
 			fbase
 				.collection("renders")
+				.doc(fileName)
+				.set(
+					{
+						hex: hex || "none",
+						productId,
+						mode,
+						swatchName,
+						adjustmentName,
+						aspect,
+						downloadUrl: snapshot.downloadURL,
+						slug: slug || file || productId,
+						modifiedDate: currentDateTime,
+						[mode]: renderObj
+					},
+					{ merge: true }
+				)
+
+				/*
 				.add({
 					hex: hex || "none",
 					productId,
@@ -463,6 +483,7 @@ export default class RenderImage extends Component {
 					modifiedDate: currentDateTime,
 					[mode]: renderObj
 				})
+*/
 				.then(renderRef => {
 					console.log(
 						"render successfully added to db, with reference of: ",

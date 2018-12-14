@@ -257,19 +257,31 @@ export default class DisplayImage extends Component {
 		// fill: hsl(${hue}, 82%, 61%);
 		// fill: hsl(${hue}, 82%, 79%);
 		const theTransform = `scale(${scale}) translateX(${translateX}%) translateY(${translateY}%)`;
-		let colorStop1 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[0]}%)`;
-		let colorStop2 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[1]}%)`;
-		let colorStop3 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%)`;
-		let colorStop4 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[3]}%)`;
-		let colorStop5 = `hsl(${hue}, ${saturation * 100}%, ${imageLevels[4]}%)`;
+		const colorStop1 =
+			(imageColorArray && imageColorArray[0]) ||
+			`hsl(${hue}, ${saturation * 100}%, ${imageLevels[0]}%)`;
+		const colorStop2 =
+			(imageColorArray && imageColorArray[1]) ||
+			`hsl(${hue}, ${saturation * 100}%, ${imageLevels[1]}%)`;
+		const colorStop3 =
+			(imageColorArray && imageColorArray[2]) ||
+			`hsl(${hue}, ${saturation * 100}%, ${imageLevels[2]}%)`;
+		const colorStop4 =
+			(imageColorArray && imageColorArray[3]) ||
+			`hsl(${hue}, ${saturation * 100}%, ${imageLevels[3]}%)`;
+		const colorStop5 =
+			(imageColorArray && imageColorArray[4]) ||
+			`hsl(${hue}, ${saturation * 100}%, ${imageLevels[4]}%)`;
 		// console.log('colorStop1 and imageColorArray', colorStop1, imageColorArray);
+		/*
 		if (imageColorArray) {
-			colorStop1 = imageColorArray[0];
+			// colorStop1 = imageColorArray[0];
 			colorStop2 = imageColorArray[1];
 			colorStop3 = imageColorArray[2];
 			colorStop4 = imageColorArray[3];
 			colorStop5 = imageColorArray[4];
 		}
+*/
 		//var foo = array[someIndex];
 
 		return (
