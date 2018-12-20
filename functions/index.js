@@ -38,6 +38,10 @@ exports.printfulApi = functions.https.onRequest((req, res) => {
 		console.log("endpoint", endpoint);
 		console.log("url", url);
 		console.log("bodyObj", bodyObj);
+		const apiUrl = "https://api.printful.com";
+		const apiEndpoint = endpoint || "/products/171";
+		const apiRequestString = apiUrl + apiEndpoint;
+		const apiBody = body || "id=171";
 		// const printfulApiKey = "1234";
 		const base64Key = Buffer.from(printfulApiKey).toString("base64");
 		// console.log("base64Key encoded: ", base64Key);
@@ -52,7 +56,7 @@ exports.printfulApi = functions.https.onRequest((req, res) => {
 				// content-Type: 'application/x-www-form-urlencoded'
 				"content-type": "application/json"
 			},
-			body: "id=171"
+			body: apiBody
 			/*
 		body: {
 			product_id: 171,
@@ -77,22 +81,19 @@ exports.printfulApi = functions.https.onRequest((req, res) => {
 */
 		};
 
-		request(
-			"https://api.printful.com/products/171",
-			(error, response, body) => {
-				console.log("error, response, body", error, response, body);
-				if (!error && response.statusCode === 200) {
-					console.log("cors body:", body);
-					res.send(response);
-					const objBody = JSON.parse(body);
-					console.log("cors objBody:", objBody);
-				}
-				if (error) {
-					console.log("error:", error);
-					res.send(error);
-				}
+		request(apiRequestString, (error, response, body) => {
+			console.log("error, response, body", error, response, body);
+			if (!error && response.statusCode === 200) {
+				console.log("cors body:", body);
+				res.send(response);
+				const objBody = JSON.parse(body);
+				console.log("cors objBody:", objBody);
 			}
-		);
+			if (error) {
+				console.log("error:", error);
+				res.send(error);
+			}
+		});
 
 		/*
 		fetch(`https://api.printful.com/products/171`, { options })

@@ -640,15 +640,16 @@ export default class ImageAdmin extends Component {
 												<RenderImage
 													productId={imageId}
 													productName={imageData.name}
-													key="renderMediumPortraitBackgroundFrame"
+													key="renderMediumPortraitBackgroundNoPaper"
 													doSave={false}
 													doRender={doRenders}
 													sourceSvg={sourceSvgBlob}
 													// svgBackgroundColor={svgBackgroundColor}
 													aspect="portrait"
 													mode="medium"
-													hasFrame
+													hasFrame={false}
 													hasBackground
+													hasPaper={false}
 													hasTitles={false}
 													// scale={theScale}
 													// translateX={theTranslateX}
@@ -665,6 +666,44 @@ export default class ImageAdmin extends Component {
 														"hsl(100, 14.285714285714288%, 50%)",
 														"hsl(100, 14.285714285714288%, 65%)",
 														"hsl(100, 14.285714285714288%, 85%)"
+													]}
+												/>
+												<RenderImage
+													productId={imageId}
+													productName={imageData.name}
+													key="renderMediumPortraitBackgroundPaper"
+													doSave={false}
+													doRender={doRenders}
+													sourceSvg={sourceSvgBlob}
+													// svgBackgroundColor={svgBackgroundColor}
+													aspect="portrait"
+													mode="medium"
+													hasFrame={false}
+													hasBackground
+													hasPaper
+													hasScene
+													scene="bluePillows"
+													hasTitles={false}
+													// scale={theScale}
+													// translateX={theTranslateX}
+													// translateY={theTranslateY}
+													// theTitle={theTitle}
+													// theSubtitle1={theSubtitle1}
+													// theSubtitle2={theSubtitle2}
+													// imageColorArray={swatchColorArray || pairColorArray}
+													swatchName="test"
+													adjustmentName="none"
+													imageColorArray={[
+														//  "hsl(100, 14.285714285714288%, 15%)",
+														// "hsl(100, 14.285714285714288%, 35%)",
+														// "hsl(100, 14.285714285714288%, 50%)",
+														// "hsl(100, 14.285714285714288%, 65%)",
+														// "hsl(100, 14.285714285714288%, 85%)"
+														"hsl(206.7146974063401, 32%, 23%)",
+														"hsl(206.7146974063401, 32%, 35%)",
+														"hsl(206.7146974063401, 32%, 50%)",
+														"hsl(206.7146974063401, 32%, 65%)",
+														"hsl(206.7146974063401, 32%, 85%)"
 													]}
 												/>
 												<RenderImage

@@ -65,6 +65,7 @@ export default class Edit extends Component {
 		hasPaper: false,
 		hasHighlight: false,
 		hasBackground: false,
+		hasScene: false,
 		hasTitles: false,
 		loggedIn: false,
 		showSources: false,
@@ -168,6 +169,7 @@ export default class Edit extends Component {
 			hasPaper,
 			hasBackground,
 			hasTitles,
+			hasScene,
 			pairColor1,
 			pairColor2,
 			pairColorArray,
@@ -261,6 +263,7 @@ export default class Edit extends Component {
 									hasFrame={hasFrame}
 									hasBackground={hasBackground}
 									hasPaper={hasPaper}
+									hasScene={hasScene}
 									imageLevels={imageLevels}
 									isCentered
 									hasMargin
@@ -458,6 +461,24 @@ export default class Edit extends Component {
 										onChange={this.togglePaper}
 									/>
 									<label htmlFor="hasPaperToggle">Show Paper</label>
+								</div>
+							</div>
+							<div
+								className={`${styles.formItem} ${
+									this.state.hasScene ? styles.isActive : ""
+								}`}
+							>
+								<h5>
+									hasScene: <span>{this.state.hasScene ? "yes" : "no"}</span>
+								</h5>
+								<div className={styles.switchWrap}>
+									<Toggle
+										className={styles.theToggle}
+										id="hasSceneToggle"
+										defaultChecked={this.state.hasScene}
+										onChange={this.toggleScene}
+									/>
+									<label htmlFor="hasSceneToggle">Show Scene</label>
 								</div>
 							</div>
 							<div
@@ -717,6 +738,8 @@ export default class Edit extends Component {
 									</div>
 								</div>
 							</div>
+
+							{/* PAIR */}
 							<div
 								className={`${styles.formItem}`}
 								style={{
@@ -726,21 +749,6 @@ export default class Edit extends Component {
 								<h5>Pair</h5>
 								<p>Generates colours evenly between two points.</p>
 								<div className={styles.row}>
-									<div className={styles.columnSelect}>
-										<h5>Color 1 (Darkest).</h5>
-										<div className={styles.swatch}>
-											<div
-												className={styles.color}
-												style={{ backgroundColor: pairColor1 }}
-											/>
-										</div>
-										<ChromePicker
-											color={pairColor1}
-											onChange={color => {
-												this.setColor1(color);
-											}}
-										/>
-									</div>
 									<div className={styles.columnSelect}>
 										<h5>Color 2 (Lightest).</h5>
 										<div className={styles.swatch}>
@@ -753,6 +761,21 @@ export default class Edit extends Component {
 											color={pairColor2}
 											onChange={color => {
 												this.setColor2(color);
+											}}
+										/>
+									</div>
+									<div className={styles.columnSelect}>
+										<h5>Color 1 (Darkest).</h5>
+										<div className={styles.swatch}>
+											<div
+												className={styles.color}
+												style={{ backgroundColor: pairColor1 }}
+											/>
+										</div>
+										<ChromePicker
+											color={pairColor1}
+											onChange={color => {
+												this.setColor1(color);
 											}}
 										/>
 									</div>
@@ -820,6 +843,8 @@ export default class Edit extends Component {
 									)}
 								</section>
 							</div>
+
+							{/* HUE */}
 							<section>
 								<div
 									className={`${styles.formItem}`}
@@ -1867,101 +1892,6 @@ export default class Edit extends Component {
 		});
 	};
 
-	//////////////////////////////
-	// COLORS
-	//////////////////////////////
-
-	getColors() {
-		const colorsRef = fbase.collection("colors");
-		const colorsArray = [];
-		colorsRef.get().then(querySnapshot => {
-			querySnapshot.forEach(doc => {
-				// console.log(doc.id, ' => ', doc.data());
-				// imagesArray[doc.id] = doc.data();
-				const tempThing = {};
-				tempThing.id = doc.id;
-				tempThing.data = doc.data();
-				colorsArray.push(tempThing);
-			});
-			this.setState({
-				colorsArray
-			});
-		});
-	}
-
-	loadColor(colorId) {
-		const { colorsArray } = this.state;
-		console.log("loading color data from: ", colorId);
-		console.log("colorsArray is: ", colorsArray);
-		this.setState({
-			isLoading: true,
-			isApplying: true
-		});
-		const docRef = fbase.collection("colors").doc(colorId);
-		docRef
-			.get()
-			.then(doc => {
-				if (doc.exists) {
-					console.log("color data:", doc.data());
-					this.setState({
-						colorObj: doc.data().colorObj,
-						selectedColorName: doc.data().name,
-						imageLevels: doc.data().imageLevels,
-						theHue: doc.data().colorObj.hsl.h,
-						theSaturation: doc.data().colorObj.hsl.s,
-						theLightness: doc.data().colorObj.hsl.l
-					});
-					this.setState({
-						isLoading: false,
-						isApplying: false
-					});
-				} else {
-					console.log("No such color!");
-				}
-			})
-			.catch(error => {
-				console.log("Error getting color:", error);
-			});
-	}
-
-	doSaveColor(colorId) {
-		const { selectedColorName } = this.state;
-		if (colorId) {
-			console.log("Saving the color wid id: ", colorId);
-		} else {
-			console.log("should save a new colour since there is no id");
-		}
-		const { colorObj, imageLevels } = this.state;
-		const currentDateTime = new Date();
-		return fbase
-			.collection("colors")
-			.add({
-				colorObj,
-				name: selectedColorName,
-				imageLevels,
-				modifiedDate: currentDateTime
-			})
-			.then(docRef => {
-				console.log("Color successfully written!, with reference of: ", docRef);
-				this.setState({
-					colorSaved: true,
-					isError: false
-				});
-				setTimeout(() => {
-					this.setState({
-						imageSaved: false
-					});
-				}, 2000);
-			})
-			.catch(error => {
-				console.error("Error writing image: ", error);
-				this.setState({
-					imageSaved: false,
-					isError: true
-				});
-			});
-	}
-
 	doSaveProduct() {
 		console.log("this will save the image");
 		const currentDateTime = new Date();
@@ -2068,7 +1998,105 @@ export default class Edit extends Component {
 		console.log("this will trigger renders");
 	};
 
-	// TOGGLE OPTIONS
+	//////////////////////////////
+	// COLORS
+	//////////////////////////////
+
+	getColors() {
+		const colorsRef = fbase.collection("colors");
+		const colorsArray = [];
+		colorsRef.get().then(querySnapshot => {
+			querySnapshot.forEach(doc => {
+				// console.log(doc.id, ' => ', doc.data());
+				// imagesArray[doc.id] = doc.data();
+				const tempThing = {};
+				tempThing.id = doc.id;
+				tempThing.data = doc.data();
+				colorsArray.push(tempThing);
+			});
+			this.setState({
+				colorsArray
+			});
+		});
+	}
+
+	loadColor(colorId) {
+		const { colorsArray } = this.state;
+		console.log("loading color data from: ", colorId);
+		console.log("colorsArray is: ", colorsArray);
+		this.setState({
+			isLoading: true,
+			isApplying: true
+		});
+		const docRef = fbase.collection("colors").doc(colorId);
+		docRef
+			.get()
+			.then(doc => {
+				if (doc.exists) {
+					console.log("color data:", doc.data());
+					this.setState({
+						colorObj: doc.data().colorObj,
+						selectedColorName: doc.data().name,
+						imageLevels: doc.data().imageLevels,
+						theHue: doc.data().colorObj.hsl.h,
+						theSaturation: doc.data().colorObj.hsl.s,
+						theLightness: doc.data().colorObj.hsl.l
+					});
+					this.setState({
+						isLoading: false,
+						isApplying: false
+					});
+				} else {
+					console.log("No such color!");
+				}
+			})
+			.catch(error => {
+				console.log("Error getting color:", error);
+			});
+	}
+
+	doSaveColor(colorId) {
+		const { selectedColorName } = this.state;
+		if (colorId) {
+			console.log("Saving the color wid id: ", colorId);
+		} else {
+			console.log("should save a new colour since there is no id");
+		}
+		const { colorObj, imageLevels } = this.state;
+		const currentDateTime = new Date();
+		return fbase
+			.collection("colors")
+			.add({
+				colorObj,
+				name: selectedColorName,
+				imageLevels,
+				modifiedDate: currentDateTime
+			})
+			.then(docRef => {
+				console.log("Color successfully written!, with reference of: ", docRef);
+				this.setState({
+					colorSaved: true,
+					isError: false
+				});
+				setTimeout(() => {
+					this.setState({
+						imageSaved: false
+					});
+				}, 2000);
+			})
+			.catch(error => {
+				console.error("Error writing image: ", error);
+				this.setState({
+					imageSaved: false,
+					isError: true
+				});
+			});
+	}
+
+	//////////////////////////////
+	// TOGGLES
+	//////////////////////////////
+
 	setAspect = aspect => {
 		this.setState({
 			aspect
@@ -2096,6 +2124,12 @@ export default class Edit extends Component {
 	toggleBackground = () => {
 		this.setState({
 			hasBackground: !this.state.hasBackground
+		});
+	};
+
+	toggleScene = () => {
+		this.setState({
+			hasScene: !this.state.hasScene
 		});
 	};
 
@@ -2129,13 +2163,6 @@ export default class Edit extends Component {
 		});
 	};
 
-	/*
-	toggleColorEdit = () => {
-		this.setState({
-			showColorEdit: !this.state.showColorEdit
-		});
-	}
-*/
 	toggleDoSave = () => {
 		this.setState({
 			doSave: !this.state.doSave
@@ -2153,13 +2180,6 @@ export default class Edit extends Component {
 			doRenders: true
 		});
 	};
-	/*
-	toggleShowRenders = () => {
-		this.setState({
-			showRenders: !this.state.showRenders
-		});
-	}
-*/
 
 	toggleRender = renderMode => {
 		console.log("toggleRender: ", renderMode);
@@ -2178,9 +2198,6 @@ export default class Edit extends Component {
 		this.setState({
 			[name]: value
 		});
-		// setTimeout(() => {
-		// this.saveImage();
-		// }, 1000);
 	};
 
 	doSaveTitles = () => {
@@ -2302,6 +2319,7 @@ export default class Edit extends Component {
 		);
 	};
 
+	// HUE
 	setColor(color, mode = "auto") {
 		const { imageLevels } = this.state;
 		const theHue = mode === "auto" ? color.hsl.h : color.h;
@@ -2346,12 +2364,14 @@ export default class Edit extends Component {
 			theSaturation,
 			theLightness,
 			tempSwatchName: "unsaved swatch",
+			tempSwatchType: "hue",
 			swatchName: "",
 			swatch: tempSwatch,
 			swatchColorArray: tempColorArray
 		});
 	}
 
+	// PAIR
 	setColor1(color) {
 		console.log("PAIR: setting the color1", color);
 		const { pairColor2 } = this.state;
@@ -2366,12 +2386,20 @@ export default class Edit extends Component {
 			pairColor2
 		];
 		console.log(tempArray);
+		const tempSwatch = {
+			name: "unsaved swatch",
+			type: "pair",
+			swatchColorArray: tempArray
+		};
+
 		this.setState({
 			pairColor1: color.hex,
 			pairColorArray: tempArray,
 			swatchColorArray: tempArray,
+			tempSwatchType: "pair",
 			swatchName: "",
-			tempSwatchName: "unnamed swatch"
+			tempSwatchName: "unnamed swatch",
+			swatch: tempSwatch
 		});
 	}
 
@@ -2392,15 +2420,23 @@ export default class Edit extends Component {
 			colorStop4,
 			color.hex
 		];
+		const tempSwatch = {
+			name: "unsaved swatch",
+			type: "pair",
+			swatchColorArray: tempArray
+		};
 		this.setState({
 			pairColor2: color.hex,
 			pairColorArray: tempArray,
 			swatchColorArray: tempArray,
+			tempSwatchType: "pair",
 			swatchName: "",
-			tempSwatchName: "unnamed swatch"
+			tempSwatchName: "unnamed swatch",
+			swatch: tempSwatch
 		});
 	}
 
+	// CUSTOM
 	setCustomColor = (index, color) => {
     // eslint-disable-line
 		console.log(index, color);
@@ -2432,8 +2468,10 @@ export default class Edit extends Component {
 		this.setState({
 			customSwatchArray: tempArray,
 			swatchColorArray: tempArray,
+			tempSwatchType: "custom",
 			swatchName: "",
-			tempSwatchName: "unnamed swatch"
+			tempSwatchName: "unnamed swatch",
+			swatch: tempSwatch
 		});
 		return tempSwatch;
 	};
@@ -2512,9 +2550,28 @@ export default class Edit extends Component {
 		this.setState({
 			isSaving: true
 		});
+		let arrayToSave;
+		switch (colorType) {
+			case "hue":
+				console.log("setting the array to save as hue");
+				arrayToSave = pairColorArray;
+				break;
+			case "pair":
+				console.log("setting the array to save as pair");
+				arrayToSave = pairColorArray;
+				break;
+			case "custom":
+				console.log("setting the array to save as custom");
+				arrayToSave = customSwatchArray;
+				break;
+			default:
+				console.error("error: not colorType set");
+				break;
+		}
 
-		// TODO:
 		console.log("this state swatch ", swatch);
+		console.log("this state pairColorArray ", pairColorArray);
+		console.log("this state customSwatchArray ", customSwatchArray);
 
 		// convert hue swatches into custom ones.
 		// and save as array
@@ -2524,9 +2581,9 @@ export default class Edit extends Component {
 				.add({
 					name: tempSwatchName,
 					type: colorType,
-					pairColorArray,
+					// pairColorArray,
 					swatchColorArray: swatch.swatchColorArray,
-					customSwatchArray,
+					// customSwatchArray,
 					pairColor1,
 					pairColor2,
 					// theHue,
@@ -2652,7 +2709,7 @@ export default class Edit extends Component {
 	}
 
 	////////////////////////////////////////////////////////////
-	// ADJUSTMENTS ////////////////////////////////////////////////////////////
+	// ADJUSTMENTS /////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
 
 	setAdjustmentName(evt) {
@@ -2812,6 +2869,9 @@ export default class Edit extends Component {
 		});
 	};
 
+	///////////////////////////////////
+	// MISC
+	///////////////////////////////////
 	padToTwo(numberString) {
 		console.log(this.state);
 		let newNumberString = numberString;

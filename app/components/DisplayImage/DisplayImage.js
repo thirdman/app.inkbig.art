@@ -4,6 +4,7 @@ import InlineCss from "react-inline-css";
 import styles from "./DisplayImage.scss";
 import variables from "../../assets/scss/variables.scss";
 import "../../assets/scss/variables.css";
+import scene_bluePillows from "../../assets/scene/scene_bluePillows.jpg";
 
 import Loading from "../Loading/Loading";
 
@@ -114,6 +115,7 @@ export default class DisplayImage extends Component {
 			hasMargin = false,
 			hasHighlight = false,
 			hasPaper = true,
+			hasScene = false,
 			hasTitles = this.props.aspect === "circle" || false,
 			isInline = false,
 			isCentered = false,
@@ -127,7 +129,8 @@ export default class DisplayImage extends Component {
 			imageColorArray,
 			theTitle,
 			theSubtitle1,
-			theSubtitle2
+			theSubtitle2,
+			scene = "bluePillows"
 		} = this.props;
 		let theSvg = sourceSvg || file;
 		if (file === "montenegro") {
@@ -396,6 +399,7 @@ export default class DisplayImage extends Component {
 				${hasPaper ? styles.hasPaper : ""} 
 				${hasMargin ? styles.hasMargin : ""} 
 				${hasBackground ? styles.hasBackground : ""} 
+				${hasScene ? styles.hasScene : ""} 
 				${titleLength && titleLength > 15 ? styles.hasNarrowTitle : ""}
 				`}
 					id={divId || `theImage${mode}`}
@@ -403,7 +407,6 @@ export default class DisplayImage extends Component {
 					{!isLoading && hasFrame && (
 						<div className={styles.imgFrame} style={tempStyle} />
 					)}
-
 					<div
 						className={styles.theSvg}
 						id={`svg${file}${this.state.theId}`}
@@ -417,6 +420,11 @@ export default class DisplayImage extends Component {
 								{theSubtitle2 && <span className={styles.divider} />}
 								{theSubtitle2}
 							</h3>
+						</div>
+					)}
+					{hasScene && scene === "bluePillows" && (
+						<div className={styles.scene}>
+							<img src="../../assets/scene/scene_bluePillows.jpg" />
 						</div>
 					)}
 					{!isLoading && hasPaper && <div className={styles.paper} />}

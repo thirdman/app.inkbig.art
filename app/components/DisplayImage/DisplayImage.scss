@@ -114,6 +114,39 @@ background-clip: padding-box !important;
 			position: absolute;
 		}
 	}
+	&.hasScene{
+		&.hasBackground{
+			.scene{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 2;
+				background: pink;
+				img{
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.theSvg{
+				    transform: scale(.63);
+				    &:before{
+					    content: "";
+						    position: absolute;
+						    left: 0;
+						    top: 0;
+						    width: 100%;
+						    height: 100%;
+						    z-index: 1;
+						    background: rgba(44,44,44,.04);
+						    background: linear-gradient(to bottom, rgba(255,255,255,.2) 33%, rgba(255,255,255, 0) 100%);
+						    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 33%, rgba(44, 44, 44, 0.14) 100%);
+						    box-shadow: 0 6px 12px 2px rgba(0, 0, 0, 0.15) inset;
+				    }
+			}
+		}
+	}
 	&.hasNarrowTitle{
 		.titleBlock{
 			h2{
@@ -1054,11 +1087,11 @@ background-clip: padding-box !important;
 				width: calc(#{$mediumShort} * 0.8);
 				height: calc(#{$mediumShort} * 0.8);
 				left: calc(#{$mediumShort} * 0.2 / 2); // 10% of the length, divided by 2
-				top: calc(((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
+				top: calc( (#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2)); // half the hight of hte paper, then minus half the height of the iamge
 				border-radius: $mediumShort; // make the circle
 				-moz-background-clip: padding; 
--webkit-background-clip: padding-box !important;
-background-clip: padding-box !important;
+				-webkit-background-clip: padding-box !important;
+				background-clip: padding-box !important;
 			}
 			&.hasFrame{
 				.imgFrame{
@@ -1138,6 +1171,21 @@ background-clip: padding-box !important;
 					}
 				}
 		  }
+			&.hasBackground{
+				.theSvg{
+					left: calc(((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
+				}
+				&.hasBackground{
+					.titleBlock{
+						left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.8) / 2));
+						bottom: 13.5%;
+					}
+					.theSvg{
+						left: calc(((#{$mediumShort} + #{$mediumBgMore}) / 2) - ((#{$mediumShort} * 0.7) / 2));
+						top: calc(((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.7) / 2)) );
+					}
+				}
+			}
 		}
 		&.hasTitles{
 			.titleBlock{
@@ -1159,7 +1207,9 @@ background-clip: padding-box !important;
 				.theSvg{
 					width: calc(#{$mediumShort} * 0.7);
 					height: calc(#{$mediumShort} * 0.7);
-					left: calc(#{$mediumShort} * 0.3 / 2); // 10% of the length, divided by 2
+					left: calc(#{$mediumShort} * 0.3 / 2); 
+					// imagewidth /2 minus circle width /2
+					
 					top: calc(((#{$mediumLong} / 3) - ((#{$mediumShort} * 0.7) / 3))); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles
 					border-radius: $mediumShort; // make the circle
 					-moz-background-clip: padding; 
@@ -1173,7 +1223,9 @@ background-clip: padding-box !important;
 					bottom: 13.5%;
 				}
 				.theSvg{
-					left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.7) / 3));
+					left: calc((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.7) / 2));
+
+					
 					top: calc(((#{$mediumLong} / 2) - ((#{$mediumShort} * 0.7) / 2))); // half the hight of hte paper, then minus half the height of the iamge, then adjust for titles				//- ((#{$smallShort} * 0.3) / 3)
 				}
 			}
@@ -1186,8 +1238,11 @@ background-clip: padding-box !important;
 			.theSvg{
 				// left: #{$mediumBgMore/2};
 				// top: #{$mediumBgLess/2};	
-				width: calc(#{$mediumShort} * 0.8);
-				height: calc(#{$mediumShort} * 0.8);
+				// width: calc(#{$mediumShort} * 0.8);
+				// height: calc(#{$mediumShort} * 0.8);
+				width: $mediumShort;
+				height: $mediumLong;
+
 				left: calc( ((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
 				top: calc( ((#{$mediumLong} + #{$mediumBgLess}) / 2) - (((#{$mediumShort}) * 0.8) / 2));
 			}
@@ -1216,28 +1271,6 @@ background-clip: padding-box !important;
 		}
 
 	}
-/*
-	&.large{
-		&.portrait{
-			width: 3000px;
-			height: 4004px;
-			overflow: hidden;
-			.theSvg{
-				width: 3000px;
-				height: 4004px;
-			}
-		}
-		&.landscape{
-			width: 4000px;
-			height: 3004px;
-			overflow: hidden;
-			.theSvg{
-				width: 4000px;
-				height: 3004px;
-			}
-		}
-	}
-*/
 	&.large{
 		&.hasFrame{
 			.imgFrame{
