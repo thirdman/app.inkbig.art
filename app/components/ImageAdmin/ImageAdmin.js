@@ -84,6 +84,9 @@ export default class ImageAdmin extends Component {
 			doRenderPreview,
 			doRenderPrint,
 			doRenderPromo,
+			generatingId,
+			generatingKey,
+			generatingStatus,
 			imageData,
 			imageRenders,
 			isError,
@@ -1223,6 +1226,19 @@ export default class ImageAdmin extends Component {
 																>
 																	Generate
 																</button>
+																{generatingId && generatingId === file.id && (
+																	<button
+																		className={styles.btn}
+																		onClick={() =>
+																			this.checkMockupGeneration(
+																				file.id,
+																				generatingKey
+																			)
+																		}
+																	>
+																		check: {generatingStatus}
+																	</button>
+																)}
 															</div>
 														</div>
 													</div>
@@ -1307,14 +1323,13 @@ export default class ImageAdmin extends Component {
 	}
 
 	getSvgSource = filename => {
-		console.log("this will load svg");
 		if (!filename) {
 			console.error("no filename");
 			return false;
 		}
 		this.setState({ isLoadingSvg: true });
 		// console.log("imageId: ", imageId);
-		console.log("filename: ", filename);
+		// console.log("filename: ", filename);
 
 		const fStorage = firebase.storage();
 		const storageLocation = "svg";
@@ -1667,20 +1682,28 @@ export default class ImageAdmin extends Component {
 			format: "jpg",
 			files: [
 				{
+					placement: "default",
 					image_url:
-						"https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/renders%2Fyk8EUxlwesgdm3VL3EwF_Auckland%20Rangitoto_R-Artemis_CircleCrop_circle_print.jpg?alt=media&token=d60c270a-62a2-4c1c-961a-a5239c769221"
-				},
-				{
-					image_url:
-						"https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/renders%2Fyk8EUxlwesgdm3VL3EwF_Auckland%20Rangitoto_R-Artemis_CircleCrop_circle_print.jpg?alt=media&token=d60c270a-62a2-4c1c-961a-a5239c769221"
-				},
-				{
-					image_url:
-						"https://firebasestorage.googleapis.com/v0/b/inkbig-717ee.appspot.com/o/renders%2Fyk8EUxlwesgdm3VL3EwF_Auckland%20Rangitoto_R-Artemis_CircleCrop_circle_print.jpg?alt=media&token=d60c270a-62a2-4c1c-961a-a5239c769221"
+						"https://cdn.shopify.com/s/files/1/2477/7864/products/MflOzOcJTIGISpbRtW7c_Auckland-One-Tree-Hill_R-Artemis_Circlrcrop_circle_pri_mockup_Person_Person_12x18_84f19493-12d0-4399-a5aa-f6c549205922_360x.jpg?v=1545132007"
 				}
 			]
 		};
-		return this.fetchData2("mockup-generator/create-task/171", bodyObj);
+		return this.fetchData2("mockup-generator/create-task/171", bodyObj).then(
+			data => {
+				console.log("data: ", data);
+				if (data.code === 200) {
+					this.setState({
+						generatingId: renderId,
+						generatingKey: data.result.task_key,
+						generatingStatus: data.result.status
+					});
+				}
+			}
+		);
+	};
+
+	checkMockupGeneration = (renderId, generatingKey) => {
+		console.log("checkMockupGeneration: ", renderId, generatingKey);
 	};
 
 	/////////////////////////
@@ -1891,27 +1914,29 @@ export default class ImageAdmin extends Component {
 	//
 	fetchData2 = (url, bodyObj) => {
 		console.log("url, bodyObj: ", url, bodyObj);
-		const functionUrl = `${funtionBase}/printfulApi?endpoint=info&productId=171&url=${url}&bodyObj=${bodyObj}`;
+		const body = JSON.stringify(bodyObj);
+		console.log("body: ", body);
+		const functionUrl = `${funtionBase}/printfulApi?endpoint=${url}&productId=171&url=${url}&bodyObj=${body}`;
 		const options = {};
 		this.setState({
 			isError: false,
 			isLoading: true
 		});
-		fetch(functionUrl, options)
+		return fetch(functionUrl, options)
 			.then(res => res.json())
 			.then(response => {
-				console.log("response", response);
-				console.log("response.body", response.body);
-				console.log("response.body.result", response.body.result);
-				if (response.status === 200) {
-					/// const objBody = JSON.parse(response.body);
+				// console.log("response", response);
+				if (response.statusCode === 200) {
+					console.log("response.body", response.body);
+					const objBody = JSON.parse(response.body);
 					// const objBody = response.json();
-					const objBody = response.body;
+					// const objBody = response.body;
 					console.log("fetchdata2 objBody:", objBody);
 					this.setState({
 						isError: false,
 						isLoading: false
 					});
+					return objBody;
 				}
 			})
 			.catch(error => {
@@ -1922,20 +1947,6 @@ export default class ImageAdmin extends Component {
 					isLoading: false
 				});
 			});
-
-		/*
-		request(functionUrl, (error, response, body) => {
-			console.log("error, response, body", error, response, body);
-			if (!error && response.statusCode === 200) {
-				const objBody = JSON.parse(body);
-				console.log("cors attempt at info:", objBody.blog);
-			}
-			if (error) {
-				console.log(error);
-				this.createMessage("error", "Error", error, null, "bottom");
-			}
-		});
-*/
 	};
 
 	fetchData = () => {
@@ -1976,6 +1987,7 @@ export default class ImageAdmin extends Component {
 			// We get the API response and receive data in JSON format...
 			.then(response => {
 				console.log("response", response);
+				console.log("response.body", response.body);
 				response.json();
 			})
 			// ...then we update the users state

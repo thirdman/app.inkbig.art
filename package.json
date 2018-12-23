@@ -17,7 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage": "jest --coverage",
-    "precommit": "npm run lint --no-verify",
+    "precommitxxxx": "npm run lint --no-verify",
     "precommitOld": "cross-env npm run lint && npm test",
     "prepush": "cross-env npm run lint && npm test"
   },
