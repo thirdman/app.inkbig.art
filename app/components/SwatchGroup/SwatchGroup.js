@@ -14,13 +14,13 @@ export default class SwatchGroup extends Component {
 	render() {
 		const { isLoading } = this.state;
 		const { isHorizontal = false, swatch, isFav = false } = this.props;
-		let {
+		const {
 			colorArray = (this.props.swatch && this.props.swatch.swatchColorArray) ||
 				[]
 		} = this.props;
-		if (swatch && swatch.type === "pair") {
-			colorArray = swatch.pairColorArray;
-		}
+		// if (swatch && swatch.type === "pair") {
+		// 	colorArray = swatch.pairColorArray;
+		// }
 		return swatch ? (
 			<div
 				className={`${styles.SwatchGroup} ${

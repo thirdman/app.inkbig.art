@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 import domtoimage from "dom-to-image";
 import * as firebase from "firebase";
 import fbase from "../../firebase";
@@ -8,35 +7,18 @@ import { DisplayImage } from "..";
 import styles from "./RenderImage.scss";
 import Tick from "../../assets/icons/tick.svg";
 import Loading from "../../assets/icons/loading.svg";
-// import Message from "../Message/Message.js";
 
 require("firebase/firestore"); // loads the storage part
 
 export default class RenderImage extends Component {
 	state = {
 		isLoading: true,
-		// hasLoaded: false,
 		isRendering: false,
 		hasRendered: false,
 		isSaving: false,
 		hasSaved: false,
-		// theHue: 10,
 		theId: this.makeId(),
 		showDetail: false
-		// size: this.props.mode
-		/*
-		svgArributes: {
-			version: "1.1",
-			xmlns: "http://www.w3.org/2000/svg",
-			"xmlns:xlink": "http://www.w3.org/1999/xlink",
-			x: "0",
-			y: "0",
-			viewBox: "0, 0, 3000, 3000",
-			width: "100%",
-			height: "100%",
-			preserveAspectRatio: "xMidYMid slice"
-		}
-*/
 	};
 
 	componentWillMount() {}
@@ -50,16 +32,7 @@ export default class RenderImage extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		//	prevState
 		const { doRender } = this.props;
-		//, doSave
-		// console.log('prevProps: ', prevProps);
-		/*
-	    if (doRender) {
-	      console.log("did update. Do render? ", doRender);
-	      // this.doRender(doSave);
-	    }
-		*/
 		if (prevProps.doRender !== doRender && doRender) {
 			console.log("THIS WOULD RENDER");
 			this.doRender(false);
@@ -77,7 +50,6 @@ export default class RenderImage extends Component {
 			showRendered,
 			renderUrl,
 			theId = this.makeId(),
-			// size,
 			dataUrl
 		} = this.state;
 		const {
