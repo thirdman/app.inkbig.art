@@ -32,9 +32,8 @@
 		justify-content: stretch;
 		flex-wrap:wrap;
 		&.toDelete{
-	    // background: rgb(255, 218, 222);
+	    
 	    background: #fff;
-	    // border-top: 1px solid red;
 	    .buttonWrap{
 		    opacity: 0;
 		    visibility: 0;
@@ -244,10 +243,7 @@
 			}
 
 			&.toDelete{
-		    // background: rgb(255, 218, 222);
 		    background: #fff;
-		    // border-top: 1px solid red;
-		    border: 1px solid red;
 		    display: flex;
 		    flex-direction: row;
 		    justify-content: stretch;
@@ -267,8 +263,8 @@
 	    align-items: center;
 	    justify-content: space-between;
 	    // border: 2px solid red;
-	    border-radius: 4px;
-	    flex-basis: 98%;
+	    border-radius: 0;
+	    flex-basis: 100%;
 	    flex-shrink: 0;
 	    line-height: 2rem;
 	    padding: 1rem;

@@ -32,17 +32,18 @@ export default class SwatchGroup extends Component {
 				<div className={`${styles.segment} ${styles.info}`}>
 					<h4>{swatch && swatch.name}</h4>
 				</div>
-				{colorArray.map(colorObj => {
-					return (
-						<div className={`${styles.segment}`} key={`col${colorObj}`}>
-							<span
-								className={styles.colorSwatch}
-								style={{ backgroundColor: colorObj }}
-							/>
-							<span className={styles.colorName}>{colorObj}</span>
-						</div>
-					);
-				})}
+				{colorArray &&
+					colorArray.map(colorObj => {
+						return (
+							<div className={`${styles.segment}`} key={`col${colorObj}`}>
+								<span
+									className={styles.colorSwatch}
+									style={{ backgroundColor: colorObj }}
+								/>
+								<span className={styles.colorName}>{colorObj}</span>
+							</div>
+						);
+					})}
 			</div>
 		) : (
 			<div>no swatch defined</div>

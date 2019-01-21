@@ -486,6 +486,9 @@ export default class Home extends Component {
 					isDeleting: false
 				});
 			})
+			.then(() => {
+				this.props.getProducts();
+			})
 			.catch(error => {
 				console.error("Error removing document: ", error);
 			});

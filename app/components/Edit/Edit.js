@@ -2550,7 +2550,7 @@ export default class Edit extends Component {
 		this.setState({
 			isSaving: true
 		});
-		let arrayToSave;
+		let arrayToSave; // eslint-disable-line
 		switch (colorType) {
 			case "hue":
 				console.log("setting the array to save as hue");
@@ -2566,6 +2566,7 @@ export default class Edit extends Component {
 				break;
 			default:
 				console.error("error: not colorType set");
+				arrayToSave = undefined;
 				break;
 		}
 

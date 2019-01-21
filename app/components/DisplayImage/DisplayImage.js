@@ -4,7 +4,7 @@ import InlineCss from "react-inline-css";
 import styles from "./DisplayImage.scss";
 import variables from "../../assets/scss/variables.scss";
 import "../../assets/scss/variables.css";
-import scene_bluePillows from "../../assets/scene/scene_bluePillows.jpg";
+// import sceneBluePillows from "../../assets/scene/scene_bluePillows.jpg";
 
 import Loading from "../Loading/Loading";
 
@@ -424,7 +424,7 @@ export default class DisplayImage extends Component {
 					)}
 					{hasScene && scene === "bluePillows" && (
 						<div className={styles.scene}>
-							<img src="../../assets/scene/scene_bluePillows.jpg" />
+							<img src="../../assets/scene/scene_bluePillows.jpg" alt="" />
 						</div>
 					)}
 					{!isLoading && hasPaper && <div className={styles.paper} />}

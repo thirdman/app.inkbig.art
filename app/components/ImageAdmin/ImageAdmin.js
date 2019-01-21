@@ -1938,6 +1938,7 @@ export default class ImageAdmin extends Component {
 					});
 					return objBody;
 				}
+				return response;
 			})
 			.catch(error => {
 				console.error("error: ", error);
